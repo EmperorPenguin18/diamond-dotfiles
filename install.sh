@@ -9,18 +9,20 @@ timedatectl set-ntp true
 
 #Partition disk
 pacman -S parted btrfs-progs
+DISKNAME=${lsblk | grep disk | }
 DISKSIZE=${${lsblk --output SIZE -n -d /dev/sda}%G}
 MEMSIZE=${dmidecode -t 17 | grep "Size.*MB" | awk '{s+=$2} END {print s / 1024}'}
-parted /dev/sda mklabel gpt mkaprt P1 fat32 0MiB 260MiB --esp 1
-parted /dev/sda mklabel gpt mkpart P2 btrfs 260MiB ${expr $DISKSIZE - $MEMSIZE}GiB
-parted /dev/sda mklabel gpt mkpart P3 linux-swap ${expr $DISKSIZE - $MEMSIZE}GiB ${echo $DISKSIZE}GiB
+parted /dev/$DISKNAME mklabel gpt mkaprt P1 fat32 0MiB 260MiB --esp 1
+parted /dev/$DISKNAME mklabel gpt mkpart P2 btrfs 260MiB ${expr $DISKSIZE - $MEMSIZE}GiB
+parted /dev/$DISKNAME mklabel gpt mkpart P3 linux-swap ${expr $DISKSIZE - $MEMSIZE}GiB ${echo $DISKSIZE}GiB
 
 #Format partitions
-mkfs.fat -F32 /dev/sda1
-mkfs.btrfs -L root /dev/sda2
-mkswap /dev/sda3
-swapon /dev/sda3
-mount /dev/sda2 /mnt
+mkfs.fat -F32 /dev/${echo $DISKNAME}1
+mkfs.btrfs /dev/${echo $DISKNAME}2
+mkswap /dev/${echo $DISKNAME}3
+swapon /dev/${echo $DISKNAME}3
+mount /dev/${echo $DISKNAME}2 /mnt
+mount /dev/${echo $DISKNAME}1 /mnt/boot
 
 #Configure mirrors
 pacman -S pacman-contrib
@@ -29,11 +31,10 @@ sed -i 's/^#Server/Server/' /etc/pacman.d/mirrorlist
 rankmirrors /etc/pacman.d/mirrorlist > /etc/pacman.d/mirrorlist
 
 #Install packages
-pacstrap /mnt base sudo vim grub parted pacman-contrib btrfs-progs
+pacstrap /mnt base sudo vim grub parted pacman-contrib btrfs-progs amd-ucode intel-ucode
 
 #Generate FSTAB
 genfstab -U /mnt >> /mnt/etc/fstab
-
 
 #Chroot into system
 arch-chroot /mnt
@@ -61,7 +62,8 @@ usermod -aG wheel,audio,video,optical,storage sebastien
 echo "%wheel ALL=(ALL) ALL" >> /etc/sudoers
 
 #Create bootloader
-grub-install /dev/sda
+pacman -S amd-ucode intel-ucode
+grub-install /dev/$DISKNAME
 grub-mkconfig -o /boot/grub/grub.cfg
 
 #Done
