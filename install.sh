@@ -8,8 +8,7 @@ fi
 timedatectl set-ntp true
 
 #Partition disk
-pacman -S parted btrfs-progs
-DISKNAME=${lsblk | grep disk | }
+DISKNAME=${lsblk | grep disk | awk '{print $1;}'}
 DISKSIZE=${${lsblk --output SIZE -n -d /dev/sda}%G}
 MEMSIZE=${dmidecode -t 17 | grep "Size.*MB" | awk '{s+=$2} END {print s / 1024}'}
 parted /dev/$DISKNAME mklabel gpt mkaprt P1 fat32 0MiB 260MiB --esp 1
