@@ -14,7 +14,7 @@ DISKSIZE=$(lsblk --output SIZE -n -d /dev/$DISKNAME | sed 's/.$//')
 MEMSIZE=$(dmidecode -t 17 | grep "Size.*MB" | awk '{s+=$2} END {print s / 1024}')
 parted --script /dev/$DISKNAME \
    mklabel gpt \
-   mkpart P1 fat32 0MiB 260MiB \
+   mkpart P1 fat32 1MiB 260MiB \
    set 1 esp on \
    mkpart P2 btrfs 260MiB $(expr $DISKSIZE - $MEMSIZE)GiB \
    mkpart P3 linux-swap $(expr $DISKSIZE - $MEMSIZE)GiB $(echo $DISKSIZE)GiB
