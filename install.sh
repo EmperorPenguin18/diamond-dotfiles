@@ -8,20 +8,20 @@ fi
 timedatectl set-ntp true
 
 #Partition disk
-DISKNAME=${lsblk | grep disk | awk '{print $1;}'}
-DISKSIZE=${${lsblk --output SIZE -n -d /dev/sda}%G}
-MEMSIZE=${dmidecode -t 17 | grep "Size.*MB" | awk '{s+=$2} END {print s / 1024}'}
+DISKNAME=$(lsblk | grep disk | awk '{print $1;}')
+DISKSIZE=$(${lsblk --output SIZE -n -d /dev/sda}%G)
+MEMSIZE=$(dmidecode -t 17 | grep "Size.*MB" | awk '{s+=$2} END {print s / 1024}')
 parted /dev/$DISKNAME mklabel gpt mkaprt P1 fat32 0MiB 260MiB --esp 1
-parted /dev/$DISKNAME mklabel gpt mkpart P2 btrfs 260MiB ${expr $DISKSIZE - $MEMSIZE}GiB
-parted /dev/$DISKNAME mklabel gpt mkpart P3 linux-swap ${expr $DISKSIZE - $MEMSIZE}GiB ${echo $DISKSIZE}GiB
+parted /dev/$DISKNAME mklabel gpt mkpart P2 btrfs 260MiB $(expr $DISKSIZE - $MEMSIZE)GiB
+parted /dev/$DISKNAME mklabel gpt mkpart P3 linux-swap $(expr $DISKSIZE - $MEMSIZE)GiB $(echo $DISKSIZE)GiB
 
 #Format partitions
-mkfs.fat -F32 /dev/${echo $DISKNAME}1
-mkfs.btrfs /dev/${echo $DISKNAME}2
-mkswap /dev/${echo $DISKNAME}3
-swapon /dev/${echo $DISKNAME}3
-mount /dev/${echo $DISKNAME}2 /mnt
-mount /dev/${echo $DISKNAME}1 /mnt/boot
+mkfs.fat -F32 /dev/$(echo $DISKNAME)1
+mkfs.btrfs /dev/$(echo $DISKNAME)2
+mkswap /dev/$(echo $DISKNAME)3
+swapon /dev/$(echo $DISKNAME)3
+mount /dev/$(echo $DISKNAME)2 /mnt
+mount /dev/$(echo $DISKNAME)1 /mnt/boot
 
 #Configure mirrors
 pacman -S pacman-contrib
