@@ -12,7 +12,7 @@ pacman -S dmidecode
 DISKNAME=$(lsblk | grep disk | awk '{print $1;}')
 DISKSIZE=$(lsblk --output SIZE -n -d /dev/$DISKNAME | sed 's/.$//')
 MEMSIZE=$(dmidecode -t 17 | grep "Size.*MB" | awk '{s+=$2} END {print s / 1024}')
-parted /dev/$DISKNAME mklabel gpt mkpart P1 fat32 0MiB 260MiB --esp 1
+parted /dev/$DISKNAME mklabel gpt mkpart P1 fat32 0MiB 260MiB set 1 esp on
 parted /dev/$DISKNAME mklabel gpt mkpart P2 btrfs 260MiB $(expr $DISKSIZE - $MEMSIZE)GiB
 parted /dev/$DISKNAME mklabel gpt mkpart P3 linux-swap $(expr $DISKSIZE - $MEMSIZE)GiB $(echo $DISKSIZE)GiB
 
