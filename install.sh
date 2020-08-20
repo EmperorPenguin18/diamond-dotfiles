@@ -8,10 +8,11 @@ fi
 timedatectl set-ntp true
 
 #Partition disk
+pacman -S dmidecode
 DISKNAME=$(lsblk | grep disk | awk '{print $1;}')
-DISKSIZE=$(${lsblk --output SIZE -n -d /dev/sda}%G)
+DISKSIZE=$($(lsblk --output SIZE -n -d /dev/sda)%G)
 MEMSIZE=$(dmidecode -t 17 | grep "Size.*MB" | awk '{s+=$2} END {print s / 1024}')
-parted /dev/$DISKNAME mklabel gpt mkaprt P1 fat32 0MiB 260MiB --esp 1
+parted /dev/$DISKNAME mklabel gpt mkpart P1 fat32 0MiB 260MiB --esp 1
 parted /dev/$DISKNAME mklabel gpt mkpart P2 btrfs 260MiB $(expr $DISKSIZE - $MEMSIZE)GiB
 parted /dev/$DISKNAME mklabel gpt mkpart P3 linux-swap $(expr $DISKSIZE - $MEMSIZE)GiB $(echo $DISKSIZE)GiB
 
@@ -30,7 +31,7 @@ sed -i 's/^#Server/Server/' /etc/pacman.d/mirrorlist
 rankmirrors /etc/pacman.d/mirrorlist > /etc/pacman.d/mirrorlist
 
 #Install packages
-pacstrap /mnt base sudo vim grub parted pacman-contrib btrfs-progs amd-ucode intel-ucode
+pacstrap /mnt base sudo vim grub parted pacman-contrib btrfs-progs amd-ucode intel-ucode dmidecode
 
 #Generate FSTAB
 genfstab -U /mnt >> /mnt/etc/fstab
