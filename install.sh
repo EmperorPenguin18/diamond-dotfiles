@@ -32,7 +32,7 @@ mount /dev/$(echo $DISKNAME)1 /mnt/boot
 pacman -S pacman-contrib
 curl 'https://www.archlinux.org/mirrorlist/?country=CA&protocol=http&protocol=https&ip_version=4' > /etc/pacman.d/mirrorlist
 sed -i 's/^#Server/Server/' /etc/pacman.d/mirrorlist
-rankmirrors /etc/pacman.d/mirrorlist > /etc/pacman.d/mirrorlist
+rankmirrors /etc/pacman.d/mirrorlist >> /etc/pacman.d/mirrorlist
 
 #Install packages
 pacman -Sy
