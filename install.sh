@@ -25,6 +25,7 @@ mkfs.btrfs /dev/$(echo $DISKNAME)2
 mkswap /dev/$(echo $DISKNAME)3
 swapon /dev/$(echo $DISKNAME)3
 mount /dev/$(echo $DISKNAME)2 /mnt
+mkdir /mnt/boot
 mount /dev/$(echo $DISKNAME)1 /mnt/boot
 
 #Configure mirrors
@@ -34,6 +35,7 @@ sed -i 's/^#Server/Server/' /etc/pacman.d/mirrorlist
 rankmirrors /etc/pacman.d/mirrorlist > /etc/pacman.d/mirrorlist
 
 #Install packages
+pacman -Sy
 pacstrap /mnt base sudo vim grub parted pacman-contrib btrfs-progs amd-ucode intel-ucode dmidecode
 
 #Generate FSTAB
