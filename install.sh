@@ -58,11 +58,11 @@ arch-chroot /mnt << "EOT"
    systemctl enable dhcpcd
    
    #Create root password
-   passwd
+   echo "Traceyemali1" >> passwd --stdin
    
    #Create user
    useradd -m sebastien
-   passwd sebastien
+   echo "Traceyemali1" >> passwd sebastien --stdin
    usermod -aG wheel,audio,video,optical,storage sebastien
    echo "%wheel ALL=(ALL) ALL" >> /etc/sudoers
    
