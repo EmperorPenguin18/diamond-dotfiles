@@ -67,7 +67,6 @@ usermod -aG wheel,audio,video,optical,storage sebastien
 echo "%wheel ALL=(ALL) ALL" >> /etc/sudoers
 
 #Create bootloader
-pacman -S amd-ucode intel-ucode
 grub-install /dev/$DISKNAME
 grub-mkconfig -o /boot/grub/grub.cfg
 
