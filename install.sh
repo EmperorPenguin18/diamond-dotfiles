@@ -45,6 +45,7 @@ genfstab -U /mnt >> /mnt/etc/fstab
 chmod +x install-chroot.sh
 cp install-chroot.sh /mnt/install-chroot.sh
 arch-chroot /mnt
+DISKNAME=$DISKNAME ./install-chroot.sh
 
 #Done
 rm /mnt/install-chroot.sh
