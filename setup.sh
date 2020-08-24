@@ -1,10 +1,10 @@
 #Setup pacman
 
 
-#Setup X Server
+#Setup login manager
 
 
-#Setup awesomewm
+#Setup Plymouth
 
 
 #Setup rclone mounts
@@ -13,7 +13,10 @@
 #Setup updates + backups
 
 
-#Setup Plymouth
+#Setup X Server
+
+
+#Setup awesomewm
 
 
 #Setup terminal emulator
