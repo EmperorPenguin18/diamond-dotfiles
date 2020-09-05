@@ -1,10 +1,10 @@
 #Setup pacman
 
 
-#Setup login manager
-
-
 #Setup Plymouth
+
+
+#Setup login manager
 
 
 #Setup rclone mounts
