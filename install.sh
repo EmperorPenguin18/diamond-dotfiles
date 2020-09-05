@@ -25,8 +25,8 @@ mkfs.btrfs /dev/$(echo $DISKNAME)2
 mkswap /dev/$(echo $DISKNAME)3
 swapon /dev/$(echo $DISKNAME)3
 mount /dev/$(echo $DISKNAME)2 /mnt
-mkdir /mnt/boot
-mount /dev/$(echo $DISKNAME)1 /mnt/boot
+mkdir /mnt/efi
+mount /dev/$(echo $DISKNAME)1 /mnt/efi
 
 #Configure mirrors
 pacman -S pacman-contrib
@@ -45,7 +45,6 @@ genfstab -U /mnt >> /mnt/etc/fstab
 chmod +x install-chroot.sh
 cp install-chroot.sh /mnt/install-chroot.sh
 arch-chroot /mnt
-DISKNAME=$DISKNAME ./install-chroot.sh
 
 #Done
 rm /mnt/install-chroot.sh
