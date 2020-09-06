@@ -35,6 +35,8 @@ systemctl enable rclone3
 
 #Setup updates + backups
 pacman -S cron
+echo '%wheel ALL=(ALL) NOPASSWD: /usr/bin/pacman' >> /etc/sudoers
+echo '%wheel ALL=(ALL) NOPASSWD: /usr/bin/yay' >> /etc/sudoers
 chmod +x update.sh
 mv update.sh ../update.sh
 echo "0 4 * * 1 sebastien /home/sebastien/update.sh" >> /etc/crontab
