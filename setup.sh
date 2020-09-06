@@ -34,7 +34,9 @@ systemctl enable rclone2
 systemctl enable rclone3
 
 #Setup updates + backups
-
+chmod +x update.sh
+mv update.sh ../update.sh
+echo "0 4 * * 1 root /home/sebastien/update.sh" >> /etc/crontab
 
 #Setup X Server
 pacman -S xorg
