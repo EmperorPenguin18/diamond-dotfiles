@@ -20,11 +20,15 @@ rm -r yay
 
 #Setup rclone mounts
 pacman -S rclone
+echo "user_allow_other" >> /etc/fuse.conf
 mv rclone.conf /home/sebastien/.config/rclone/rclone.conf
 chown sebastien:sebastien /home/sebastien/.config/rclone/rclone.conf
 mv rclone1.service /etc/systemd/system/rclone1.service
 mv rclone2.service /etc/systemd/system/rclone2.service
 mv rclone3.service /etc/systemd/system/rclone3.service
+mkdir /mnt/Personal
+mkdir /mnt/School
+mkdir /mnt/Media
 systemctl enable rclone1
 systemctl enable rclone2
 systemctl enable rclone3
