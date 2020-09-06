@@ -25,6 +25,7 @@ mkfs.btrfs /dev/$(echo $DISKNAME)2
 mkswap /dev/$(echo $DISKNAME)3
 swapon /dev/$(echo $DISKNAME)3
 mount /dev/$(echo $DISKNAME)2 /mnt
+btrfs subvolume create /mnt/
 
 #Configure mirrors
 pacman -S pacman-contrib
