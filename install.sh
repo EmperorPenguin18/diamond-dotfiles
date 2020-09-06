@@ -25,8 +25,6 @@ mkfs.btrfs /dev/$(echo $DISKNAME)2
 mkswap /dev/$(echo $DISKNAME)3
 swapon /dev/$(echo $DISKNAME)3
 mount /dev/$(echo $DISKNAME)2 /mnt
-mkdir /mnt/boot/EFI
-mount /dev/$(echo $DISKNAME)1 /mnt/boot/EFI
 
 #Configure mirrors
 pacman -S pacman-contrib
