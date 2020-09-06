@@ -25,8 +25,8 @@ mkfs.btrfs /dev/$(echo $DISKNAME)2
 mkswap /dev/$(echo $DISKNAME)3
 swapon /dev/$(echo $DISKNAME)3
 mount /dev/$(echo $DISKNAME)2 /mnt
-mkdir /mnt/efi
-mount /dev/$(echo $DISKNAME)1 /mnt/efi
+mkdir /mnt/boot/EFI
+mount /dev/$(echo $DISKNAME)1 /mnt/boot/EFI
 
 #Configure mirrors
 pacman -S pacman-contrib
@@ -36,7 +36,7 @@ rankmirrors /etc/pacman.d/mirrorlist >> /etc/pacman.d/mirrorlist
 
 #Install packages
 pacman -Sy
-pacstrap /mnt base sudo vim grub efibootmgr parted pacman-contrib btrfs-progs amd-ucode intel-ucode dmidecode networkmanager
+pacstrap /mnt base sudo vim grub efibootmgr dosfstools os-prober mtools parted pacman-contrib btrfs-progs amd-ucode intel-ucode dmidecode networkmanager git
 
 #Generate FSTAB
 genfstab -U /mnt >> /mnt/etc/fstab
