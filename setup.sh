@@ -91,3 +91,4 @@ pacman -S firefox
 #Other
 pacman -S openssh
 #*Improving performance*
+#*Manjaro settings*
