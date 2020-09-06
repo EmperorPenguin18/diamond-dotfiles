@@ -21,6 +21,7 @@ rm -r yay
 #Setup rclone mounts
 pacman -S rclone
 mv rclone.conf /home/sebastien/.config/rclone/rclone.conf
+chown sebastien:sebastien /home/sebastien/.config/rclone/rclone.conf
 mv rclone1.service /etc/systemd/system/rclone1.service
 mv rclone2.service /etc/systemd/system/rclone2.service
 mv rclone3.service /etc/systemd/system/rclone3.service
