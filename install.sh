@@ -36,7 +36,7 @@ rankmirrors /etc/pacman.d/mirrorlist >> /etc/pacman.d/mirrorlist
 
 #Install packages
 pacman -Sy
-pacstrap /mnt base sudo vim grub efibootmgr dosfstools os-prober mtools parted pacman-contrib btrfs-progs amd-ucode intel-ucode dmidecode networkmanager git
+pacstrap /mnt base linux linux-firmware sudo vim grub efibootmgr dosfstools os-prober mtools parted pacman-contrib btrfs-progs amd-ucode intel-ucode dmidecode networkmanager git
 
 #Generate FSTAB
 genfstab -U /mnt >> /mnt/etc/fstab
