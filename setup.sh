@@ -37,7 +37,8 @@ systemctl enable rclone3
 
 
 #Setup X Server
-
+pacman -S xorg
+#*Compositor*
 
 #Setup login manager
 
@@ -63,7 +64,7 @@ sed "s/Theme=.*/Theme=powered-plymouth-theme/g" /etc/plymouth/plymouthd.conf
 mkinitcpio -P
 
 #Setup awesomewm
-
+#*Wallpaper*
 
 #Setup terminal emulator
 pacman -S alacritty
