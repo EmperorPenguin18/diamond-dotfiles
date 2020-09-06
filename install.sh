@@ -40,7 +40,7 @@ pacstrap /mnt base linux linux-firmware sudo vim grub efibootmgr dosfstools os-p
 
 #Generate FSTAB
 genfstab -U /mnt >> /mnt/etc/fstab
-#*Btrfs subvolumes
+#*Btrfs subvolumes*
 
 #Chroot into system
 chmod +x install-chroot.sh
