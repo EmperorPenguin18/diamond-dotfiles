@@ -1,6 +1,6 @@
 #Get the diskname
 ls /dev
-echo "Enter the name of the install disk (e.g. /dev/sda)"
+echo "Enter the name of the install disk (e.g. sda)"
 read DISKNAME
 
 #Create subvolumes
