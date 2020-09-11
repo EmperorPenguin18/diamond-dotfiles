@@ -51,11 +51,6 @@ reflector --country Canada --protocol https --sort rate --save /etc/pacman.d/mir
 #Install packages
 pacman -Sy
 pacstrap /mnt base linux linux-firmware sudo vim grub grub-btrfs efibootmgr dosfstools os-prober mtools parted reflector btrfs-progs amd-ucode intel-ucode dmidecode networkmanager git
-echo "MODULES()" > /etc/mkinitcpio.conf
-echo "BINARIES()" >> /etc/mkinitcpio.conf
-echo "FILES()" >> /etc/mkinitcpio.conf
-echo "HOOKS=(base udev autodetect modconf block btrfs filesystems keyboard fsck)" >> /etc/mkinitcpio.conf
-mkinitcpio -P
 
 #Generate FSTAB
 genfstab -U /mnt >> /mnt/etc/fstab
