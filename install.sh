@@ -53,7 +53,13 @@ pacman -Sy
 pacstrap /mnt base linux linux-firmware sudo vim grub grub-btrfs efibootmgr dosfstools os-prober mtools parted reflector btrfs-progs amd-ucode intel-ucode dmidecode networkmanager git
 
 #Generate FSTAB
-genfstab -U /mnt >> /mnt/etc/fstab
+#*Get UUIDs*
+echo "UUID= /  btrfs rw,relatime,compress=lzo,ssd,discard,autodefrag,space_cache,subvol=/_active/rootvol   0  0" >> /mnt/etc/fstab
+echo "UUID= /boot/EFI   vfat  rw,relatime,fmask=0022,dmask=0022,codepage=437,iocharset=iso8859-1,shortname=mixed,utf8,errors=remount-ro   0  2" >> /mnt/etc/fstab
+echo "UUID= /tmp  btrfs rw,relatime,compress=lzo,ssd,discard,autodefrag,space_cache,subvol=_active/tmp  0  0" >> /mnt/etc/fstab
+echo "UUID= /home btrfs rw,relatime,compress=lzo,ssd,discard,autodefrag,space_cache,subvol=_active/homevol   0  0" >> /mnt/etc/fstab
+echo "UUID= none  swap  defaults 0  0" >> /mnt/etc/fstab
+echo "UUID= /home/sebastien/.snapshots btrfs rw,relatime,compress=lzo,ssd,discard,autodefrag,space_cache,subvol=_snapshots 0  0" >> /mnt/etc/fstab
 
 #Chroot into system
 chmod +x install-chroot.sh
