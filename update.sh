@@ -1,7 +1,3 @@
-#Backup system
-btrfs subvolume snapshot / /home/sebastien/.snapshots/"$(echo date)"
-rclone sync --config=/home/sebastien/.config/rclone/rclone.conf /home/sebastien/.snapshots onedriveschool:/Backups/
-
 #Update system
 curl 'https://www.archlinux.org/mirrorlist/?country=CA&protocol=http&protocol=https&ip_version=4' > /etc/pacman.d/mirrorlist
 sed -i 's/^#Server/Server/' /etc/pacman.d/mirrorlist
