@@ -21,20 +21,41 @@ parted --script /dev/$DISKNAME \
 
 #Format partitions
 mkfs.fat -F32 /dev/$(echo $DISKNAME)1
-mkfs.btrfs /dev/$(echo $DISKNAME)2
+mkfs.btrfs -L arch /dev/$(echo $DISKNAME)2
 mkswap /dev/$(echo $DISKNAME)3
 swapon /dev/$(echo $DISKNAME)3
 mount /dev/$(echo $DISKNAME)2 /mnt
 
+#BTRFS subvolumes
+cd /mnt
+btrfs subvolume create _active
+btrfs subvolume create _active/rootvol
+btrfs subvolume create _active/homevol
+btrfs subvolume create _active/tmp
+btrfs subvolume create _snapshots
+cd ../
+
+#Mount subvolumes for install
+umount /mnt
+mount -o subvol=_active/rootvol /dev/$(echo $DISKNAME)2 /mnt
+mkdir /mnt/{home,tmp,boot}
+mkdir /mnt/boot/EFI
+mount -o subvol=_active/tmp /dev/$(echo $DISKNAME)2 /mnt/tmp
+mount /dev/$(echo $DISKNAME)1 /mnt/boot/EFI
+mount -o subvol=_active/homevol /dev/$(echo $DISKNAME)2 /mnt/home
+
 #Configure mirrors
-pacman -S pacman-contrib
-curl 'https://www.archlinux.org/mirrorlist/?country=CA&protocol=http&protocol=https&ip_version=4' > /etc/pacman.d/mirrorlist
-sed -i 's/^#Server/Server/' /etc/pacman.d/mirrorlist
-rankmirrors /etc/pacman.d/mirrorlist >> /etc/pacman.d/mirrorlist
+pacman -S reflector
+reflector --country Canada --protocol https --sort rate --save /etc/pacman.d/mirrorlist
 
 #Install packages
 pacman -Sy
-pacstrap /mnt base linux linux-firmware sudo vim grub efibootmgr dosfstools os-prober mtools parted pacman-contrib btrfs-progs amd-ucode intel-ucode dmidecode networkmanager git
+pacstrap /mnt base linux linux-firmware sudo vim grub grub-btrfs efibootmgr dosfstools os-prober mtools parted reflector btrfs-progs amd-ucode intel-ucode dmidecode networkmanager git
+echo "MODULES()" > /etc/mkinitcpio.conf
+echo "BINARIES()" >> /etc/mkinitcpio.conf
+echo "FILES()" >> /etc/mkinitcpio.conf
+echo "HOOKS=(base udev autodetect modconf block btrfs filesystems keyboard fsck)" >> /etc/mkinitcpio.conf
+mkinitcpio -P
 
 #Generate FSTAB
 genfstab -U /mnt >> /mnt/etc/fstab
@@ -42,6 +63,8 @@ genfstab -U /mnt >> /mnt/etc/fstab
 #Chroot into system
 chmod +x install-chroot.sh
 cp install-chroot.sh /mnt/install-chroot.sh
+echo ""
+echo "Run install-chroot.sh now"
 arch-chroot /mnt
 
 #Done
