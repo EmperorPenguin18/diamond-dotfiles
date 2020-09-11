@@ -39,6 +39,9 @@ echo '%wheel ALL=(ALL) NOPASSWD: /usr/bin/pacman' >> /etc/sudoers
 echo '%wheel ALL=(ALL) NOPASSWD: /usr/bin/yay' >> /etc/sudoers
 chmod +x update.sh
 mv update.sh ../update.sh
+chmod +x backup.sh
+mv backup.sh ../backup.sh
+echo "0 3 * * 1 root /home/sebastien/backup.sh" >> /etc/crontab
 echo "0 4 * * 1 sebastien /home/sebastien/update.sh" >> /etc/crontab
 
 #Setup X Server
