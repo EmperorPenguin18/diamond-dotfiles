@@ -25,8 +25,6 @@ mkfs.btrfs /dev/$(echo $DISKNAME)2
 mkswap /dev/$(echo $DISKNAME)3
 swapon /dev/$(echo $DISKNAME)3
 mount /dev/$(echo $DISKNAME)2 /mnt
-btrfs subvolume create /mnt
-btrfs subvolume create /mnt/home
 
 #Configure mirrors
 pacman -S pacman-contrib
@@ -40,7 +38,6 @@ pacstrap /mnt base linux linux-firmware sudo vim grub efibootmgr dosfstools os-p
 
 #Generate FSTAB
 genfstab -U /mnt >> /mnt/etc/fstab
-#*Btrfs subvolumes*
 
 #Chroot into system
 chmod +x install-chroot.sh
