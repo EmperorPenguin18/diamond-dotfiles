@@ -3,10 +3,6 @@ ls /dev
 echo "Enter the name of the install disk (e.g. sda)"
 read DISKNAME
 
-#Create subvolumes
-btrfs subvolume create /
-btrfs subvolume create /home
-
 #Set localization stuff
 ln -sf /usr/share/zoneinfo/America/Toronto /etc/localtime
 hwclock --systohc
