@@ -47,6 +47,7 @@ echo "0 4 * * 1 sebastien /home/sebastien/update.sh" >> /etc/crontab
 #Setup X Server
 pacman -S xorg
 #*Compositor*
+#*10-monitor.conf*
 
 #Setup login manager
 
@@ -97,3 +98,4 @@ pacman -S firefox
 pacman -S openssh
 #*Improving performance*
 #*Manjaro settings*
+#*Security*
