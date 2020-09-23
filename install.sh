@@ -18,6 +18,11 @@ parted --script /dev/$DISKNAME \
    set 1 esp on \
    mkpart P2 btrfs 261MB $(expr $DISKSIZE - $MEMSIZE)GB \
    mkpart P3 linux-swap $(expr $DISKSIZE - $MEMSIZE)GB $(echo $DISKSIZE)GB
+if [ $(echo $DISKNAME | head -c 2 ) -eq "sd" ]; then
+   DISKNAME=$DISKNAME
+else
+   DISKNAME=$(echo $DISKNAME)p
+fi
 
 #Format partitions
 mkfs.fat -F32 /dev/$(echo $DISKNAME)1
