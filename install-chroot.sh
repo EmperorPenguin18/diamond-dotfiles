@@ -1,7 +1,7 @@
 #Add btrfs to HOOKS
-echo "MODULES()" > /etc/mkinitcpio.conf
-echo "BINARIES()" >> /etc/mkinitcpio.conf
-echo "FILES()" >> /etc/mkinitcpio.conf
+echo "MODULES=()" > /etc/mkinitcpio.conf
+echo "BINARIES=()" >> /etc/mkinitcpio.conf
+echo "FILES=()" >> /etc/mkinitcpio.conf
 echo "HOOKS=(base udev autodetect modconf block btrfs filesystems keyboard fsck)" >> /etc/mkinitcpio.conf
 mkinitcpio -P
 
