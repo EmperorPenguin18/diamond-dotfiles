@@ -38,7 +38,7 @@ btrfs subvolume create _active/rootvol
 btrfs subvolume create _active/homevol
 btrfs subvolume create _active/tmp
 btrfs subvolume create _snapshots
-cd ../
+cd /root/LinuxConfigs
 
 #Mount subvolumes for install
 umount /mnt
