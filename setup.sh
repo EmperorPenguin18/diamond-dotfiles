@@ -54,9 +54,9 @@ pacman -S xorg
 
 #Setup Plymouth
 yay -S plymouth
-echo "MODULES()" > /etc/mkinitcpio.conf
-echo "BINARIES()" >> /etc/mkinitcpio.conf
-echo "FILES()" >> /etc/mkinitcpio.conf
+echo "MODULES=()" > /etc/mkinitcpio.conf
+echo "BINARIES=()" >> /etc/mkinitcpio.conf
+echo "FILES=()" >> /etc/mkinitcpio.conf
 echo "HOOKS=(base udev plymouth autodetect modconf block btrfs filesystems keyboard fsck)" >> /etc/mkinitcpio.conf
 sed '6d' /etc/default/grub
 sed '5 a GRUB_CMDLINE_LINUX_DEFAULT="quiet splash loglevel=3 rd.udev.log_priority=3 vt.global_cursor_default=0"' /etc/default/grub
