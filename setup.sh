@@ -5,21 +5,20 @@ if [[ $EUID -ne 0 ]]; then
 fi
 
 #Setup pacman
-echo "[multilib]" >> /etc/pacman.conf
-echo "Include = /etc/pacman.d/mirrorlist" >> /etc/pacman.conf
-echo "" >> /etc/pacman.conf
-echo "Color" >> /etc/pacman.conf
-echo "ILoveCandy" >> /etc/pacman.conf
-pacman -Sy --needed base-devel
+mv pacman.conf /etc/pacman.conf
+echo '%wheel ALL=(ALL) NOPASSWD: /usr/bin/pacman' >> /etc/sudoers
+echo '%wheel ALL=(ALL) NOPASSWD: /usr/bin/yay' >> /etc/sudoers
+echo '%wheel ALL=(ALL) NOPASSWD: /usr/bin/makepkg' >> /etc/sudoers
+pacman -Sy --needed base-devel --noconfirm
+#*Optimize compiling*
 git clone https://aur.archlinux.org/yay.git
 cd yay
-makepkg -si
+su sebastien -c "makepkg -si --noconfirm"
 cd ../
 rm -r yay
-#*Optimize compiling*
 
 #Setup rclone mounts
-pacman -S rclone
+pacman -S rclone --noconfirm
 echo "user_allow_other" >> /etc/fuse.conf
 mv rclone.conf /home/sebastien/.config/rclone/rclone.conf
 chown sebastien:sebastien /home/sebastien/.config/rclone/rclone.conf
@@ -34,9 +33,7 @@ systemctl enable rclone2
 systemctl enable rclone3
 
 #Setup updates + backups
-pacman -S cron
-echo '%wheel ALL=(ALL) NOPASSWD: /usr/bin/pacman' >> /etc/sudoers
-echo '%wheel ALL=(ALL) NOPASSWD: /usr/bin/yay' >> /etc/sudoers
+pacman -S cron --noconfirm
 chmod +x update.sh
 mv update.sh ../update.sh
 chmod +x backup.sh
@@ -45,15 +42,17 @@ echo "0 3 * * 1 root /home/sebastien/backup.sh" >> /etc/crontab
 echo "0 4 * * 1 sebastien /home/sebastien/update.sh" >> /etc/crontab
 
 #Setup X Server
-pacman -S xorg
-#*Compositor*
-#*10-monitor.conf*
+pacman -S xorg xorg-drivers lib32-mesa lib32-vulkan-icd-loader vulkan-intel lib32-vulkan-intel intel-media-driver libva-intel-driver libva-mesa-driver mesa-vdpau vulkan-radeon lib32-vulkan-radeon amdvlk lib32-amdvlk picom --noconfirm
+mv picom.conf ~/.config/picom.conf
+#*Enable vsync, freesync/gsync, hardware acceleration, vulkan etc
+mv 10-monitor.conf /etc/X11/xorg.conf.d/10-monitor.conf
+#*Multi-monitor*
 
 #Setup login manager
 
 
 #Setup Plymouth
-yay -S plymouth
+su sebastien -c "yay -S plymouth --noconfirm"
 echo "MODULES=()" > /etc/mkinitcpio.conf
 echo "BINARIES=()" >> /etc/mkinitcpio.conf
 echo "FILES=()" >> /etc/mkinitcpio.conf
@@ -76,7 +75,7 @@ mkinitcpio -P
 #*Wallpaper*
 
 #Setup terminal emulator
-pacman -S alacritty
+pacman -S alacritty --noconfirm
 mv alacritty.yml /home/sebastien/.config/alacritty/alacritty.yml
 #*Shell*
 #*Vim*
@@ -85,17 +84,19 @@ mv alacritty.yml /home/sebastien/.config/alacritty/alacritty.yml
 
 
 #Setup web browser
-pacman -S firefox
+pacman -S firefox --noconfirm
 #*Read arch wiki page*
 
 #Setup nvidia drivers
-
+pacman -S nvidia-prime --noconfirm
+#*prime-run*
 
 #Setup gaming
 
 
 #Other
-pacman -S openssh
+pacman -S openssh --noconfirm
 #*Improving performance*
 #*Manjaro settings*
 #*Security*
+#*Optional dependencies*
