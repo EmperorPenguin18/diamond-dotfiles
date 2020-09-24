@@ -42,14 +42,17 @@ echo "0 3 * * 1 root /home/sebastien/backup.sh" >> /etc/crontab
 echo "0 4 * * 1 sebastien /home/sebastien/update.sh" >> /etc/crontab
 
 #Setup X Server
-pacman -S xorg xorg-drivers lib32-mesa lib32-vulkan-icd-loader vulkan-intel lib32-vulkan-intel intel-media-driver libva-intel-driver libva-mesa-driver mesa-vdpau vulkan-radeon lib32-vulkan-radeon amdvlk lib32-amdvlk picom --noconfirm
-mv picom.conf ~/.config/picom.conf
+pacman -S xorg xorg-drivers lib32-mesa lib32-vulkan-icd-loader vulkan-intel lib32-vulkan-intel intel-media-driver libva-intel-driver libva-mesa-driver lib32-libva-mesa-driver mesa-vdpau lib32-mesa-vdpau vulkan-radeon lib32-vulkan-radeon amdvlk lib32-amdvlk picom --noconfirm
+mv picom.conf /home/sebastien/.config/picom.conf
 #*Enable vsync, freesync/gsync, hardware acceleration, vulkan etc
 mv 10-monitor.conf /etc/X11/xorg.conf.d/10-monitor.conf
 #*Multi-monitor*
 
 #Setup login manager
-
+pacman -S lightdm lightdm-webkit2-greeter --noconfirm
+mv lightdm.conf /etc/lightdm/lightdm.conf
+mv lightdm-webkit2-greeter.conf /etc/lightdm/lightdm-webkit2-greeter.conf
+#*Theme*
 
 #Setup Plymouth
 su sebastien -c "yay -S plymouth --noconfirm"
@@ -57,8 +60,8 @@ echo "MODULES=()" > /etc/mkinitcpio.conf
 echo "BINARIES=()" >> /etc/mkinitcpio.conf
 echo "FILES=()" >> /etc/mkinitcpio.conf
 echo "HOOKS=(base udev plymouth autodetect modconf block btrfs filesystems keyboard fsck)" >> /etc/mkinitcpio.conf
-sed '6d' /etc/default/grub
-sed '5 a GRUB_CMDLINE_LINUX_DEFAULT="quiet splash loglevel=3 rd.udev.log_priority=3 vt.global_cursor_default=0"' /etc/default/grub
+sed -i '6d' /etc/default/grub
+sed -i '5 a GRUB_CMDLINE_LINUX_DEFAULT="quiet splash loglevel=3 rd.udev.log_priority=3 vt.global_cursor_default=0"' /etc/default/grub
 #*Silent boot*
 grub-mkconfig -o /boot/grub/grub.cfg
 systemctl disable lightdm
@@ -68,10 +71,13 @@ cd powered-plymouth-theme/
 mv powered-plymouth-theme/ /usr/share/plymouth/themes/
 cd ../
 rm -r powered-plymouth-theme
-sed "s/Theme=.*/Theme=powered-plymouth-theme/g" /etc/plymouth/plymouthd.conf
+sed -i "s/Theme=.*/Theme=powered-plymouth-theme/g" /etc/plymouth/plymouthd.conf
 mkinitcpio -P
 
 #Setup awesomewm
+pacman -S awesome --noconfirm
+mv rc.lua /home/sebastien/.config/awesome/rc.lua
+mv default /home/sebastien/.config/awesome/themes/default
 #*Wallpaper*
 
 #Setup terminal emulator
