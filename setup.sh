@@ -100,3 +100,4 @@ pacman -S openssh --noconfirm
 #*Manjaro settings*
 #*Security*
 #*Optional dependencies*
+#*Power management*
