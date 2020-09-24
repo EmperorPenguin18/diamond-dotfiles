@@ -1,7 +1,7 @@
 #Check if script has root privileges
-if [[ $EUID -ne 0 ]]; then
-   echo "This script must be run as root" 
-   exit 1
+if [ "$(whoami)" != "root" ]; then
+        echo "Script must be run as user: root"
+        exit 255
 fi
 
 #Setup pacman
