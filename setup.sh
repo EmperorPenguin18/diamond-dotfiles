@@ -11,11 +11,13 @@ echo '%wheel ALL=(ALL) NOPASSWD: /usr/bin/yay' >> /etc/sudoers
 echo '%wheel ALL=(ALL) NOPASSWD: /usr/bin/makepkg' >> /etc/sudoers
 pacman -Sy --needed base-devel --noconfirm
 #*Optimize compiling*
-git clone https://aur.archlinux.org/yay.git
+cd ../
+su sebastien -c "git clone https://aur.archlinux.org/yay.git"
 cd yay
 su sebastien -c "makepkg -si --noconfirm"
 cd ../
 rm -r yay
+cd LinuxConfigs
 
 #Setup rclone mounts
 pacman -S rclone --noconfirm
@@ -43,15 +45,15 @@ echo "0 4 * * 1 sebastien /home/sebastien/update.sh" >> /etc/crontab
 
 #Setup X Server
 pacman -S xorg xorg-drivers lib32-mesa lib32-vulkan-icd-loader vulkan-intel lib32-vulkan-intel intel-media-driver libva-intel-driver libva-mesa-driver lib32-libva-mesa-driver mesa-vdpau lib32-mesa-vdpau vulkan-radeon lib32-vulkan-radeon amdvlk lib32-amdvlk picom --noconfirm
-mv picom.conf /home/sebastien/.config/picom.conf
+#mv picom.conf /home/sebastien/.config/picom.conf
 #*Enable vsync, freesync/gsync, hardware acceleration, vulkan etc
-mv 10-monitor.conf /etc/X11/xorg.conf.d/10-monitor.conf
+#mv 10-monitor.conf /etc/X11/xorg.conf.d/10-monitor.conf
 #*Multi-monitor*
 
 #Setup login manager
 pacman -S lightdm lightdm-webkit2-greeter --noconfirm
-mv lightdm.conf /etc/lightdm/lightdm.conf
-mv lightdm-webkit2-greeter.conf /etc/lightdm/lightdm-webkit2-greeter.conf
+#mv lightdm.conf /etc/lightdm/lightdm.conf
+#mv lightdm-webkit2-greeter.conf /etc/lightdm/lightdm-webkit2-greeter.conf
 #*Theme*
 
 #Setup Plymouth
@@ -76,13 +78,13 @@ mkinitcpio -P
 
 #Setup awesomewm
 pacman -S awesome --noconfirm
-mv rc.lua /home/sebastien/.config/awesome/rc.lua
-mv default /home/sebastien/.config/awesome/themes/default
+#mv rc.lua /home/sebastien/.config/awesome/rc.lua
+#mv default /home/sebastien/.config/awesome/themes/default
 #*Wallpaper*
 
 #Setup terminal emulator
 pacman -S alacritty --noconfirm
-mv alacritty.yml /home/sebastien/.config/alacritty/alacritty.yml
+#mv alacritty.yml /home/sebastien/.config/alacritty/alacritty.yml
 #*Shell*
 #*Vim*
 
