@@ -82,6 +82,7 @@ mv rc.lua /home/sebastien/.config/awesome/rc.lua
 mkdir -p /home/sebastien/.config/themes
 #mv default /home/sebastien/.config/awesome/themes/default
 #*Wallpaper*
+#*Fonts*
 
 #Setup terminal emulator
 pacman -S alacritty --noconfirm
