@@ -56,6 +56,8 @@ pacman -S lightdm lightdm-webkit2-greeter --noconfirm
 mv lightdm.conf /etc/lightdm/lightdm.conf
 mv lightdm-webkit2-greeter.conf /etc/lightdm/lightdm-webkit2-greeter.conf
 #*Theme*
+#*Sessions*
+#*On-screen keyboard*
 
 #Setup Plymouth
 su sebastien -c "yay -S plymouth --noconfirm"
