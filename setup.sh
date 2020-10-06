@@ -108,7 +108,7 @@ pacman -S nvidia-prime --noconfirm
 
 
 #Other
-pacman -S openssh --noconfirm
+yay -S openssh motionbox --noconfirm
 #*Improving performance*
 #*Manjaro settings*
 #*Security*
