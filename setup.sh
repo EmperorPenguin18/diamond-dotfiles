@@ -108,7 +108,7 @@ pacman -S nvidia-prime --noconfirm
 
 
 #Other
-yay -S openssh motionbox --noconfirm
+yay -S openssh freetube --noconfirm
 #*Improving performance*
 #*Manjaro settings*
 #*Security*
