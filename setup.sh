@@ -85,6 +85,8 @@ mkdir -p /home/sebastien/.config/themes
 #mv default /home/sebastien/.config/awesome/themes/default
 #*Wallpaper*
 #*Fonts*
+#*Widget*
+#*Search*
 
 #Setup terminal emulator
 pacman -S alacritty --noconfirm
@@ -114,3 +116,4 @@ yay -S openssh freetube --noconfirm
 #*Security*
 #*Optional dependencies*
 #*Power management*
+#*Audio*
