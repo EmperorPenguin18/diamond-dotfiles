@@ -52,7 +52,7 @@ mv 10-monitor.conf /etc/X11/xorg.conf.d/10-monitor.conf
 #*Multi-monitor*
 
 #Setup login manager
-pacman -S lightdm lightdm-webkit2-greeter --noconfirm
+yay -S lightdm lightdm-webkit2-greeter lightdm-webkit2-theme-glorious --noconfirm
 mv lightdm.conf /etc/lightdm/lightdm.conf
 mv lightdm-webkit2-greeter.conf /etc/lightdm/lightdm-webkit2-greeter.conf
 #*Theme*
