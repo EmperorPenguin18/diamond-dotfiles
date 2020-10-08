@@ -54,6 +54,7 @@ mv 10-monitor.conf /etc/X11/xorg.conf.d/10-monitor.conf
 yay -S lightdm lightdm-webkit2-greeter lightdm-webkit2-theme-glorious --noconfirm
 mv lightdm.conf /etc/lightdm/lightdm.conf
 mv lightdm-webkit2-greeter.conf /etc/lightdm/lightdm-webkit2-greeter.conf
+mv index.html /usr/share/lightdm-webkit/themes/glorious/
 rm /usr/share/backgrounds/*
 mv background.png /usr/share/backgrounds/
 mv steam-big-picture.desktop /usr/share/xsessions/
