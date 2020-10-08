@@ -78,3 +78,4 @@ arch-chroot /mnt
 #Done
 rm /mnt/install-chroot.sh
 reboot
+#*Encrypted disk*
