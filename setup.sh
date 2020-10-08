@@ -45,8 +45,7 @@ echo "0 3 * * 1 root /home/sebastien/backup.sh" >> /etc/crontab
 echo "0 4 * * 1 sebastien /home/sebastien/update.sh" >> /etc/crontab
 
 #Setup X Server
-pacman -S xorg xorg-drivers lib32-mesa lib32-vulkan-icd-loader vulkan-intel lib32-vulkan-intel intel-media-driver libva-intel-driver libva-mesa-driver lib32-libva-mesa-driver mesa-vdpau lib32-mesa-vdpau vulkan-radeon lib32-vulkan-radeon amdvlk lib32-amdvlk picom --noconfirm
-mv picom.conf /home/sebastien/.config/picom.conf
+pacman -S xorg xorg-drivers lib32-mesa lib32-vulkan-icd-loader vulkan-intel lib32-vulkan-intel intel-media-driver libva-intel-driver libva-mesa-driver lib32-libva-mesa-driver mesa-vdpau lib32-mesa-vdpau vulkan-radeon lib32-vulkan-radeon amdvlk lib32-amdvlk --noconfirm
 #*Enable vsync, freesync/gsync, hardware acceleration, vulkan etc
 mv 10-monitor.conf /etc/X11/xorg.conf.d/10-monitor.conf
 #*Multi-monitor*
@@ -57,6 +56,8 @@ mv lightdm.conf /etc/lightdm/lightdm.conf
 mv lightdm-webkit2-greeter.conf /etc/lightdm/lightdm-webkit2-greeter.conf
 rm /usr/share/backgrounds/*
 mv background.png /usr/share/backgrounds/
+mv steam-big-picture.desktop /usr/share/xsessions/
+mv jellyfin.desktop /usr/share/xsessions/
 #*Theme*
 #*Sessions*
 #*On-screen keyboard*
@@ -80,11 +81,12 @@ sed -i "s/Theme=.*/Theme=powered-plymouth-theme/g" /etc/plymouth/plymouthd.conf
 mkinitcpio -P
 
 #Setup awesomewm
-pacman -S awesome --noconfirm
+pacman -S awesome picom --noconfirm
 mkdir -p /home/sebastien/.config/awesome
 mv rc.lua /home/sebastien/.config/awesome/rc.lua
 mkdir -p /home/sebastien/.config/themes
 #mv default /home/sebastien/.config/awesome/themes/default
+mv picom.conf /home/sebastien/.config/picom.conf
 #*Wallpaper*
 #*Fonts*
 #*Widget*
@@ -96,6 +98,7 @@ mkdir -p /home/sebastien/.config/alacritty
 #mv alacritty.yml /home/sebastien/.config/alacritty/alacritty.yml
 #*Shell*
 #*Vim*
+#*Help command (for terminal utilities)*
 
 #Setup file manager
 
