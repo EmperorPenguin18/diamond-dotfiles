@@ -92,6 +92,7 @@ mv picom.conf /home/sebastien/.config/picom.conf
 #*Fonts*
 #*Widget*
 #*Search*
+#*Help/shortcuts*
 
 #Setup terminal emulator
 pacman -S alacritty --noconfirm
