@@ -85,8 +85,8 @@ mkinitcpio -P
 pacman -S awesome picom --noconfirm
 mkdir -p /home/sebastien/.config/awesome
 mv rc.lua /home/sebastien/.config/awesome/rc.lua
-mkdir -p /home/sebastien/.config/themes
-#mv default /home/sebastien/.config/awesome/themes/default
+mkdir -p /home/sebastien/.config/awesome/themes
+mv theme.lua /home/sebastien/.config/awesome/themes/theme.lua
 mv picom.conf /home/sebastien/.config/picom.conf
 #*Wallpaper*
 #*Fonts*
