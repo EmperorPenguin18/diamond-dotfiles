@@ -82,14 +82,13 @@ sed -i "s/Theme=.*/Theme=powered-plymouth-theme/g" /etc/plymouth/plymouthd.conf
 mkinitcpio -P
 
 #Setup awesomewm
-pacman -S awesome picom --noconfirm
+pacman -S awesome picom all-repository-fonts --noconfirm --needed
 mkdir -p /home/sebastien/.config/awesome
 mv rc.lua /home/sebastien/.config/awesome/rc.lua
 mkdir -p /home/sebastien/.config/awesome/themes
 mv theme.lua /home/sebastien/.config/awesome/themes/theme.lua
+mv wallpaper.jpg /home/sebastien/.config/awesome/themes/wallpaper.jpg
 mv picom.conf /home/sebastien/.config/picom.conf
-#*Wallpaper*
-#*Fonts*
 #*Widget*
 #*Search*
 #*Help/shortcuts*
