@@ -90,7 +90,7 @@ mv theme.lua /home/sebastien/.config/awesome/themes/theme.lua
 mv wallpaper.jpg /home/sebastien/.config/awesome/themes/wallpaper.jpg
 mv picom.conf /home/sebastien/.config/picom.conf
 #*Widget*
-#*Search*
+#*rofi*
 #*Help/shortcuts*
 
 #Setup terminal emulator
