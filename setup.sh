@@ -122,3 +122,6 @@ yay -S openssh freetube --noconfirm
 #*Optional dependencies*
 #*Power management*
 #*Audio*
+
+#Finish
+reboot
