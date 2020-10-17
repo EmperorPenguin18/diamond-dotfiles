@@ -89,6 +89,12 @@ mkdir -p /home/sebastien/.config/awesome/themes
 mv theme.lua /home/sebastien/.config/awesome/themes/theme.lua
 mv wallpaper.jpg /home/sebastien/.config/awesome/themes/wallpaper.jpg
 mv picom.conf /home/sebastien/.config/picom.conf
+cd ../
+git clone https://github.com/EmperorPenguin18/SkyrimCursor
+mkdir /home/sebastien/.local/share/icons/skyrim/cursor
+cp SkyrimCursor/Small/Linux/x11/* /home/sebastien/.local/share/icons/skyrim/cursor/
+rm -r SkyrimCursor
+cd LinuxConfigs
 #*rofi*
 #*Help/shortcuts*
 
