@@ -235,9 +235,9 @@ globalkeys = gears.table.join(
               {description = "increase the number of columns", group = "layout"}),
     awful.key({ modkey, "Control" }, "l",     function () awful.tag.incncol(-1, nil, true)    end,
               {description = "decrease the number of columns", group = "layout"}),
-    awful.key({ modkey,           }, "space", function () awful.layout.inc( 1)                end,
+    awful.key({ "Alt",           }, "space", function () awful.layout.inc( 1)                end,
               {description = "select next", group = "layout"}),
-    awful.key({ modkey, "Shift"   }, "space", function () awful.layout.inc(-1)                end,
+    awful.key({ "Alt", "Shift"   }, "space", function () awful.layout.inc(-1)                end,
               {description = "select previous", group = "layout"}),
 
     awful.key({ modkey, "Control" }, "n",
@@ -266,9 +266,17 @@ globalkeys = gears.table.join(
                   }
               end,
               {description = "lua execute prompt", group = "awesome"}),
-    -- Menubar
-    awful.key({ modkey }, "p", function() menubar.show() end,
-              {description = "show the menubar", group = "launcher"})
+    -- Rofi
+    awful.key({ modkey }, "up", function() awful.spawn("/home/sebastien/rofi-top.sh") end,
+              {description = "show the top rofi", group = "rofi"}),
+    awful.key({ modkey }, "right", function() awful.spawn("/home/sebastien/rofi-right.sh") end,
+              {description = "show the right rofi", group = "rofi"}),
+    awful.key({ modkey }, "down", function() awful.spawn("/home/sebastien/rofi-bottom.sh") end,
+              {description = "show the bottom rofi", group = "rofi"}),
+    awful.key({ modkey }, "left", function() awful.spawn("/home/sebastien/rofi-left.sh") end,
+              {description = "show the left rofi", group = "rofi"}),
+    awful.key({ modkey }, "space", function() awful.spawn("/home/sebastien/rofi-center.sh") end,
+              {description = "show the center rofi", group = "rofi"})
 )
 
 clientkeys = gears.table.join(
