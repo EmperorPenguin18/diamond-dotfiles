@@ -141,4 +141,6 @@ yay -S openssh freetube --noconfirm
 #*Audio*
 
 #Finish
+cd ../
+rm -r LinuxConfigs
 reboot
