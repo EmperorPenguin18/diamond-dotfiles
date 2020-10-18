@@ -100,7 +100,13 @@ mv *.otf /usr/share/fonts/
 chmod 0444 /usr/share/fonts/DTM-Mono.otf
 chmod 0444 /usr/share/fonts/DTM-Sans.otf
 fc-cache
-#*rofi*
+#mv top.rasi /usr/share/rofi/themes/
+#mv right.rasi /usr/share/rofi/themes/
+#mv bottom.rasi /usr/share/rofi/themes/
+#mv left.rasi /usr/share/rofi/themes/
+#mv center.rasi /usr/share/rofi/themes/
+mkdir /home/sebastien/.config/rofi
+#mv config.rasi /home/sebastien/.config/rofi/
 #*Help/shortcuts*
 
 #Setup terminal emulator
