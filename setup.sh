@@ -107,6 +107,11 @@ fc-cache
 #mv center.rasi /usr/share/rofi/themes/
 mkdir /home/sebastien/.config/rofi
 #mv config.rasi /home/sebastien/.config/rofi/
+#mv rofi-top.sh /home/sebastien/
+#mv rofi-right.sh /home/sebastien/
+#mv rofi-bottom.sh /home/sebastien/
+#mv rofi-left.sh /home/sebastien/
+#mv rofi-center.sh /home/sebastien/
 #*Help/shortcuts*
 
 #Setup terminal emulator
