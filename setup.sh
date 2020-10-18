@@ -95,6 +95,11 @@ mkdir /home/sebastien/.local/share/icons/skyrim/cursor
 cp SkyrimCursor/Small/Linux/x11/* /home/sebastien/.local/share/icons/skyrim/cursor/
 rm -r SkyrimCursor
 cd LinuxConfigs
+unzip DTM.zip
+mv *.otf /usr/share/fonts/
+chmod 0444 /usr/share/fonts/DTM-Mono.otf
+chmod 0444 /usr/share/fonts/DTM-Sans.otf
+fc-cache
 #*rofi*
 #*Help/shortcuts*
 
