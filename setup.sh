@@ -138,7 +138,7 @@ pacman -S nvidia-prime --noconfirm
 #*Lutris wiki*
 #*CTT ultimate gaming guide*
 #*Input drivers*
-#*SweetFX*
+#*vkBasalt*
 
 #Other
 yay -S openssh freetube --noconfirm
