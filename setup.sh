@@ -116,7 +116,7 @@ pacman -S alacritty --noconfirm
 mkdir -p /home/sebastien/.config/alacritty
 #mv alacritty.yml /home/sebastien/.config/alacritty/alacritty.yml
 #*Shell*
-#*Vim*
+#*Text editor*
 #*Help command (for terminal utilities)*
 
 #Setup file manager
@@ -131,6 +131,7 @@ pacman -S firefox --noconfirm
 #*CTT ultimate gaming guide*
 #*Input drivers*
 #*vkBasalt*
+#*Arch wiki everything*
 
 #Other
 yay -S openssh freetube --noconfirm
