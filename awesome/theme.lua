@@ -11,28 +11,27 @@ local themes_path = gfs.get_themes_dir()
 
 local theme = {}
 
-theme.font          = "sans 8"
+theme.font          = "Determination Mono 10"
 
-theme.bg_normal     = "#222222"
-theme.bg_focus      = "#535d6c"
-theme.bg_urgent     = "#ff0000"
-theme.bg_minimize   = "#444444"
+theme.bg_normal     = "#000000"
+theme.bg_focus      = theme.bg_normal
+theme.bg_urgent     = theme.bg_normal
+theme.bg_minimize   = theme.bg_normal
 theme.bg_systray    = theme.bg_normal
 
-theme.fg_normal     = "#aaaaaa"
-theme.fg_focus      = "#ffffff"
-theme.fg_urgent     = "#ffffff"
-theme.fg_minimize   = "#ffffff"
+theme.fg_normal     = "#FFFFFF"
+theme.fg_focus      = theme.fg_normal
+theme.fg_urgent     = theme.fg_normal
+theme.fg_minimize   = theme.fg_normal
 
 theme.useless_gap   = dpi(0)
 theme.border_width  = dpi(1)
-theme.border_normal = "#000000"
-theme.border_focus  = "#535d6c"
-theme.border_marked = "#91231c"
+theme.border_normal = "#FFFFFF"
+theme.border_focus  = theme.border_normal
+theme.border_marked = theme.border_normal
 
-theme.wallpaper = "/home/sebastien/background.png"
+theme.wallpaper = "/home/sebastien/wallpaper.jpg"
 
--- You can use your own layout icons like this:
 --theme.layout_floating  = themes_path.."default/layouts/floatingw.png"
 --theme.layout_max = themes_path.."default/layouts/maxw.png"
 --theme.layout_fullscreen = themes_path.."default/layouts/fullscreenw.png"
