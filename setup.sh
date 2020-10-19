@@ -50,6 +50,10 @@ pacman -S xorg xorg-drivers lib32-mesa lib32-vulkan-icd-loader vulkan-intel lib3
 mv 10-monitor.conf /etc/X11/xorg.conf.d/10-monitor.conf
 #*Multi-monitor*
 
+#Setup nvidia drivers
+pacman -S nvidia-prime --noconfirm
+#*prime-run*
+
 #Setup login manager
 yay -S lightdm lightdm-webkit2-greeter lightdm-webkit2-theme-glorious --noconfirm
 mv lightdm.conf /etc/lightdm/lightdm.conf
@@ -129,10 +133,6 @@ mkdir -p /home/sebastien/.config/alacritty
 #Setup web browser
 pacman -S firefox --noconfirm
 #*Read arch wiki page*
-
-#Setup nvidia drivers
-pacman -S nvidia-prime --noconfirm
-#*prime-run*
 
 #Setup gaming
 #*Lutris wiki*
