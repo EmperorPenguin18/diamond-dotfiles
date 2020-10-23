@@ -10,7 +10,7 @@ echo '%wheel ALL=(ALL) NOPASSWD: /usr/bin/pacman' >> /etc/sudoers
 echo '%wheel ALL=(ALL) NOPASSWD: /usr/bin/yay' >> /etc/sudoers
 echo '%wheel ALL=(ALL) NOPASSWD: /usr/bin/makepkg' >> /etc/sudoers
 pacman -Sy --needed base-devel --noconfirm
-#*Optimize compiling*
+sed -i '/MAKEFLAGS/c\MAKEFLAGS="-j$(nproc)"' /etc/makepkg.conf
 cd ../
 su sebastien -c "git clone https://aur.archlinux.org/yay.git"
 cd yay
@@ -86,9 +86,10 @@ sed -i "s/Theme=.*/Theme=powered-plymouth-theme/g" /etc/plymouth/plymouthd.conf
 mkinitcpio -P
 
 #Setup window manager
-yay -S spectrwm picom all-repository-fonts rofi unclutter --noconfirm --needed
+yay -S spectrwm feh picom all-repository-fonts rofi unclutter --noconfirm --needed
 mv windowmanager/spectrwm.conf /home/sebastien/.spectrwm.conf
 mv windowmanager/wallpaper.jpg /home/sebastien/wallpaper.jpg
+feh -bg-scale /home/sebastien/wallpaper.jpg
 mv windowmanager/picom.conf /home/sebastien/.config/picom.conf
 cd ../
 git clone https://github.com/EmperorPenguin18/SkyrimCursor
