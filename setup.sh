@@ -5,7 +5,7 @@ if [ "$(whoami)" != "root" ]; then
 fi
 
 #Setup pacman
-mv pacman.conf /etc/pacman.conf
+mv pacman/pacman.conf /etc/pacman.conf
 echo '%wheel ALL=(ALL) NOPASSWD: /usr/bin/pacman' >> /etc/sudoers
 echo '%wheel ALL=(ALL) NOPASSWD: /usr/bin/yay' >> /etc/sudoers
 echo '%wheel ALL=(ALL) NOPASSWD: /usr/bin/makepkg' >> /etc/sudoers
@@ -23,11 +23,11 @@ cd LinuxConfigs
 pacman -S fuse rclone --noconfirm
 echo "user_allow_other" >> /etc/fuse.conf
 mkdir -p /home/sebastien/.config/rclone
-mv rclone.conf /home/sebastien/.config/rclone/rclone.conf
+mv rclone/rclone.conf /home/sebastien/.config/rclone/rclone.conf
 chown sebastien:sebastien /home/sebastien/.config/rclone/rclone.conf
-mv rclone1.service /etc/systemd/system/rclone1.service
-mv rclone2.service /etc/systemd/system/rclone2.service
-mv rclone3.service /etc/systemd/system/rclone3.service
+mv rclone/rclone1.service /etc/systemd/system/rclone1.service
+mv rclone/rclone2.service /etc/systemd/system/rclone2.service
+mv rclone/rclone3.service /etc/systemd/system/rclone3.service
 mkdir /mnt/Personal
 mkdir /mnt/School
 mkdir /mnt/Media
@@ -47,7 +47,7 @@ echo "0 4 * * 1 sebastien /home/sebastien/update.sh" >> /etc/crontab
 #Setup X Server
 pacman -S xorg xorg-drivers lib32-mesa lib32-vulkan-icd-loader vulkan-intel lib32-vulkan-intel intel-media-driver libva-intel-driver libva-mesa-driver lib32-libva-mesa-driver mesa-vdpau lib32-mesa-vdpau vulkan-radeon lib32-vulkan-radeon amdvlk lib32-amdvlk --noconfirm
 #*Enable vsync, freesync/gsync, hardware acceleration, vulkan etc
-mv 10-monitor.conf /etc/X11/xorg.conf.d/10-monitor.conf
+mv xorg/10-monitor.conf /etc/X11/xorg.conf.d/10-monitor.conf
 #*Multi-monitor*
 
 #Setup nvidia drivers
@@ -56,13 +56,13 @@ pacman -S nvidia-prime --noconfirm
 
 #Setup login manager
 yay -S lightdm lightdm-webkit2-greeter lightdm-webkit2-theme-glorious --noconfirm
-mv lightdm.conf /etc/lightdm/lightdm.conf
-mv lightdm-webkit2-greeter.conf /etc/lightdm/lightdm-webkit2-greeter.conf
-mv index.html /usr/share/lightdm-webkit/themes/glorious/
+mv login/lightdm.conf /etc/lightdm/lightdm.conf
+mv login/lightdm-webkit2-greeter.conf /etc/lightdm/lightdm-webkit2-greeter.conf
+mv login/index.html /usr/share/lightdm-webkit/themes/glorious/
 rm /usr/share/backgrounds/*
-mv background.png /usr/share/backgrounds/
-mv steam-big-picture.desktop /usr/share/xsessions/
-mv jellyfin.desktop /usr/share/xsessions/
+mv login/background.png /usr/share/backgrounds/
+mv login/steam-big-picture.desktop /usr/share/xsessions/
+mv login/jellyfin.desktop /usr/share/xsessions/
 #*Theme*
 #*Sessions*
 #*On-screen keyboard*
@@ -73,7 +73,7 @@ echo "MODULES=()" > /etc/mkinitcpio.conf
 echo "BINARIES=()" >> /etc/mkinitcpio.conf
 echo "FILES=()" >> /etc/mkinitcpio.conf
 echo "HOOKS=(base udev plymouth autodetect modconf block btrfs filesystems keyboard fsck)" >> /etc/mkinitcpio.conf
-mv grub /etc/default/grub
+mv plymouth/grub /etc/default/grub
 grub-mkconfig -o /boot/grub/grub.cfg
 systemctl disable lightdm
 systemctl enable lightdm-plymouth
@@ -87,25 +87,25 @@ mkinitcpio -P
 
 #Setup window manager
 yay -S spectrwm picom all-repository-fonts rofi unclutter --noconfirm --needed
-mv spectrwm.conf /home/sebastien/.spectrwm.conf
-mv wallpaper.jpg /home/sebastien/wallpaper.jpg
-mv picom.conf /home/sebastien/.config/picom.conf
+mv windowmanager/spectrwm.conf /home/sebastien/.spectrwm.conf
+mv windowmanager/wallpaper.jpg /home/sebastien/wallpaper.jpg
+mv windowmanager/picom.conf /home/sebastien/.config/picom.conf
 cd ../
 git clone https://github.com/EmperorPenguin18/SkyrimCursor
 mkdir /home/sebastien/.local/share/icons/skyrim/cursor
 cp SkyrimCursor/Small/Linux/x11/* /home/sebastien/.local/share/icons/skyrim/cursor/
 rm -r SkyrimCursor
 cd LinuxConfigs
-unzip DTM.ZIP
-rm DTM.ZIP
+unzip windowmanager/DTM.ZIP -d ./
+rm windowmanager/DTM.ZIP
 mv *.otf /usr/share/fonts/
 chmod 0444 /usr/share/fonts/DTM-Mono.otf
 chmod 0444 /usr/share/fonts/DTM-Sans.otf
 fc-cache
 mkdir /home/sebastien/.config/rofi
-mv config.rasi /home/sebastien/.config/rofi/
-mv *.rasi /usr/share/rofi/themes/
-mv rofi-*.sh /home/sebastien/
+mv windowmanager/config.rasi /home/sebastien/.config/rofi/
+mv windowmanager/*.rasi /usr/share/rofi/themes/
+mv windowmanager/rofi-*.sh /home/sebastien/
 
 #Setup terminal emulator
 pacman -S alacritty --noconfirm
