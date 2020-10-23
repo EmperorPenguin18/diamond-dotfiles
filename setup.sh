@@ -139,7 +139,7 @@ pacman -S firefox --noconfirm
 #*Profiles*
 
 #Other
-yay -S openssh freetube --noconfirm
+yay -S openssh freetube discord --noconfirm
 #*Improving performance*
 #*Manjaro settings*
 #*Security*
