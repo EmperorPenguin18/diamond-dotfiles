@@ -85,13 +85,10 @@ rm -r powered-plymouth-theme
 sed -i "s/Theme=.*/Theme=powered-plymouth-theme/g" /etc/plymouth/plymouthd.conf
 mkinitcpio -P
 
-#Setup awesomewm
-yay -S awesome picom all-repository-fonts rofi unclutter --noconfirm --needed
-mkdir -p /home/sebastien/.config/awesome
-mv rc.lua /home/sebastien/.config/awesome/rc.lua
-mkdir -p /home/sebastien/.config/awesome/themes
-mv theme.lua /home/sebastien/.config/awesome/themes/theme.lua
-mv wallpaper.jpg /home/sebastien/.config/awesome/themes/wallpaper.jpg
+#Setup window manager
+yay -S spectrwm picom all-repository-fonts rofi unclutter --noconfirm --needed
+mv spectrwm.conf /home/sebastien/.spectrwm.conf
+mv wallpaper.jpg /home/sebastien/wallpaper.jpg
 mv picom.conf /home/sebastien/.config/picom.conf
 cd ../
 git clone https://github.com/EmperorPenguin18/SkyrimCursor
@@ -109,7 +106,6 @@ mkdir /home/sebastien/.config/rofi
 mv config.rasi /home/sebastien/.config/rofi/
 mv *.rasi /usr/share/rofi/themes/
 mv rofi-*.sh /home/sebastien/
-#*Help/shortcuts*
 
 #Setup terminal emulator
 pacman -S alacritty --noconfirm
