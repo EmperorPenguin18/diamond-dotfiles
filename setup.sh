@@ -129,14 +129,22 @@ pacman -S firefox --noconfirm
 #*vkBasalt*
 #*Arch wiki everything*
 
+#Setup power management
+#*Brightness*
+#*TLP*
+#*AUTO_CPUFREQ*
+#*Screensaver*
+#*Auto-hibernate*
+#*Profiles*
+
 #Other
 yay -S openssh freetube --noconfirm
 #*Improving performance*
 #*Manjaro settings*
 #*Security*
 #*Optional dependencies*
-#*Power management*
 #*Audio*
+#*Screen capture*
 
 #Finish
 cd ../
