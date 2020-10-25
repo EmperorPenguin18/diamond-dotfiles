@@ -40,4 +40,8 @@ configuration {
 	ml-row-down: "ScrollDown";
 	me-select-entry: "MousePrimary";
 	me-accept-entry: "MouseDPrimary";
+	
+	kb-remove-word-back: "";
+	kb-move-word-back: "";
+	kb-move-word-forward: "";
 }
