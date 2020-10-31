@@ -1,7 +1,7 @@
 configuration {
 	modi: "drun";
 	font: "Determination Mono 10";
-	show-icons: true;
+	//show-icons: true;
 	drun-match-fields: "name,generic,exec,categories,keywords";
 	drun-display-format: "{name} [<span weight='light' size='small'><i>({generic})</i></span>]";
 	drun-url-launcher: "xdg-open";
@@ -33,7 +33,7 @@ configuration {
 	kb-page-next: "Page_Down";
 	kb-row-first: "Home,KP_Home";
 	kb-row-last: "End,KP_End";
-	kb-cancel: "Escape";
+	kb-cancel: "Escape, Super_L";
 	ml-row-left: "ScrollLeft";
 	ml-row-right: "ScrollRight";
 	ml-row-up: "ScrollUp";
