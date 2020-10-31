@@ -106,6 +106,7 @@ fc-cache
 mkdir /home/sebastien/.config/rofi
 mv windowmanager/config.rasi /home/sebastien/.config/rofi/
 mv windowmanager/*.rasi /usr/share/rofi/themes/
+chmod +x rofi-*.sh
 mv windowmanager/rofi-*.sh /home/sebastien/
 
 #Setup terminal emulator
