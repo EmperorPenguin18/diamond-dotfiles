@@ -1,1 +1,1 @@
-rofi -show drun -theme center -p Applications
+rofi -show drun -theme center -display-drun Apps
