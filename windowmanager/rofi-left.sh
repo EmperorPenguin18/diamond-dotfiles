@@ -1,3 +1,4 @@
+#!/bin/bash
 #File manager
 cd $@
 output=$(ls -a | rofi -theme left -dmenu -p Files -i)
