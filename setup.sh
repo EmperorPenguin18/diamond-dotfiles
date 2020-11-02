@@ -152,3 +152,4 @@ yay -S openssh freetube discord --noconfirm
 cd ../
 rm -r LinuxConfigs
 reboot
+#*System configs*
