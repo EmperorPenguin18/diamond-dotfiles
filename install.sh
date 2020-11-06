@@ -57,6 +57,7 @@ reflector --country Canada --protocol https --sort rate --save /etc/pacman.d/mir
 pacman -Sy
 pacstrap /mnt base linux linux-firmware linux-headers sudo vim grub grub-btrfs efibootmgr dosfstools os-prober mtools parted reflector btrfs-progs amd-ucode intel-ucode dmidecode networkmanager git
 #*doas*
+#*VM support*
 
 #Generate FSTAB
 UUID1=$(blkid -s UUID -o value /dev/$(echo $DISKNAME)1)
