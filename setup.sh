@@ -130,6 +130,9 @@ pacman -S firefox --noconfirm
 #*Input drivers*
 #*vkBasalt*
 #*Arch wiki everything*
+#*Benchmarking*
+#*Overlock*
+#*RGB*
 
 #Setup power management
 #*Brightness*
