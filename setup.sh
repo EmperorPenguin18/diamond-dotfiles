@@ -133,6 +133,7 @@ pacman -S firefox --noconfirm
 #*Benchmarking*
 #*Overlock*
 #*RGB*
+#*Mangohud*
 
 #Setup power management
 #*Brightness*
