@@ -151,6 +151,7 @@ yay -S openssh freetube discord --noconfirm
 #*Optional dependencies*
 #*Audio*
 #*Screen capture*
+#*VMs*
 
 #Finish
 cd ../
