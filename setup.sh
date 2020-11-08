@@ -118,11 +118,15 @@ mkdir -p /home/sebastien/.config/alacritty
 #*Help command (for terminal utilities)*
 
 #Setup file manager
-
+pacman -S mtools --noconfirm
+#*GTK*
+#*Icons*
+#*Filesystems*
 
 #Setup web browser
 pacman -S firefox --noconfirm
 #*Read arch wiki page*
+#*Privacy*
 
 #Setup gaming
 #*Lutris wiki*
@@ -150,6 +154,7 @@ yay -S openssh freetube discord --noconfirm
 #*Security*
 #*Optional dependencies*
 #*Audio*
+#*Music*
 #*Screen capture*
 #*VMs*
 
