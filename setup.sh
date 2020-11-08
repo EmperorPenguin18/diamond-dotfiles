@@ -36,7 +36,7 @@ systemctl enable rclone2
 systemctl enable rclone3
 
 #Setup updates + backups
-pacman -S cron --noconfirm
+pacman -S cron reflector --noconfirm
 chmod +x update.sh
 mv update/update.sh /home/sebastien/update.sh
 chmod +x backup.sh
@@ -110,7 +110,7 @@ chmod +x rofi-*.sh
 mv windowmanager/rofi-*.sh /home/sebastien/
 
 #Setup terminal emulator
-pacman -S alacritty --noconfirm
+pacman -S alacritty parted --noconfirm
 mkdir -p /home/sebastien/.config/alacritty
 #mv terminal/alacritty.yml /home/sebastien/.config/alacritty/alacritty.yml
 #*Shell*
