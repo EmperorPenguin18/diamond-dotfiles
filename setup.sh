@@ -119,7 +119,7 @@ pacman -S alacritty parted --noconfirm
 mkdir -p /home/sebastien/.config/alacritty
 #mv terminal/alacritty.yml /home/sebastien/.config/alacritty/alacritty.yml
 #*Shell*
-#*Text editor*
+#*Text editor - Vim, Emacs, Sublime*
 #*Compiler*
 #*Help command (for terminal utilities)*
 
