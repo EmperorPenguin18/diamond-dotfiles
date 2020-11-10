@@ -144,6 +144,7 @@ pacman -S firefox --noconfirm
 #*Overlock*
 #*RGB*
 #*Mangohud*
+#*tkGlitch*
 
 #Setup power management
 #*Brightness*
