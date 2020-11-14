@@ -113,6 +113,8 @@ mv windowmanager/config.rasi /home/sebastien/.config/rofi/
 mv windowmanager/*.rasi /usr/share/rofi/themes/
 chmod +x rofi-*.sh
 mv windowmanager/rofi-*.sh /home/sebastien/
+#https://manpages.debian.org/testing/rofi/rofi-theme.5.en.html
+#https://github.com/adi1090x/rofi
 
 #Setup terminal emulator
 pacman -S alacritty parted --noconfirm
@@ -129,11 +131,15 @@ pacman -S mtools --noconfirm
 #*GTK*
 #*Icons*
 #*Filesystems*
+#https://github.com/deviantfero/wpgtk
+#https://github.com/Misterio77/flavours
 
 #Setup web browser
 pacman -S firefox --noconfirm
 #*Read arch wiki page*
 #*Privacy*
+#https://github.com/akshat46/FlyingFox
+#https://ffprofile.com/
 
 #Setup gaming
 #*Lutris wiki*
@@ -165,6 +171,8 @@ yay -S openssh freetube discord --noconfirm
 #*Music*
 #*Screen capture*
 #*VMs*
+#https://github.com/AryToNeX/Glasscord
+#https://unix.stackexchange.com/questions/53080/list-optional-dependencies-with-pacman-on-arch-linux
 
 #Finish
 cd ../
