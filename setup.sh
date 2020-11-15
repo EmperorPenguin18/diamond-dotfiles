@@ -9,7 +9,6 @@ mv pacman/pacman.conf /etc/pacman.conf
 echo "permit nopass /usr/bin/pacman" >> /etc/doas.conf
 echo "permit nopass /usr/bin/yay" >> /etc/doas.conf
 echo "permit nopass /usr/bin/makepkg" >> /etc/doas.conf
-pacman -Sy --needed base-devel --noconfirm
 sed -i '/MAKEFLAGS/c\MAKEFLAGS="-j$(nproc)"' /etc/makepkg.conf
 cd ../
 su sebastien -c "git clone https://aur.archlinux.org/opendoas-sudo.git"
@@ -17,6 +16,7 @@ cd opendoas-sudo
 su sebastien -c "makepkg -i --noconfirm"
 cd ../
 rm -r opendoas-sudo
+pacman -Sy --needed base-devel --noconfirm
 su sebastien -c "git clone https://aur.archlinux.org/yay.git"
 cd yay
 su sebastien -c "makepkg -si --noconfirm"
