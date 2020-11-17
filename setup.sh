@@ -122,6 +122,7 @@ mv windowmanager/rofi-*.sh /home/sebastien/
 pacman -S alacritty parted --noconfirm
 mkdir -p /home/sebastien/.config/alacritty
 #mv terminal/alacritty.yml /home/sebastien/.config/alacritty/alacritty.yml
+#*Core utilities
 #*Shell*
 #*Icons*
 #*Text editor - Vim, Emacs, Sublime*
