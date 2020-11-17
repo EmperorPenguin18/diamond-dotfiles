@@ -119,7 +119,7 @@ mv windowmanager/rofi-*.sh /home/sebastien/
 #https://github.com/adi1090x/rofi
 
 #Setup terminal emulator
-pacman -S alacritty parted --noconfirm
+pacman -S alacritty parted openssh --noconfirm
 mkdir -p /home/sebastien/.config/alacritty
 #mv terminal/alacritty.yml /home/sebastien/.config/alacritty/alacritty.yml
 #*Core utilities
@@ -165,7 +165,7 @@ pacman -S firefox --noconfirm
 #*Profiles*
 
 #Other
-yay -S openssh freetube discord --noconfirm
+yay -S freetube discord --noconfirm
 #*Improving performance*
 #*Manjaro settings*
 #*Security*
