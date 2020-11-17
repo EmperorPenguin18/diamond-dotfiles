@@ -1,3 +1,5 @@
+#!/bin/bash
+
 #Check if script has root privileges
 if [ "$(whoami)" != "root" ]; then
         echo "Script must be run as user: root"
