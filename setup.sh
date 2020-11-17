@@ -181,3 +181,4 @@ cd ../
 rm -r LinuxConfigs
 reboot
 #*System configs*
+#*Script performance*
