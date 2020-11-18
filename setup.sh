@@ -183,3 +183,4 @@ rm -r LinuxConfigs
 reboot
 #*System configs*
 #*Script performance*
+#https://wiki.archlinux.org/index.php/Dotfiles
