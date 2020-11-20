@@ -128,6 +128,7 @@ mkdir -p /home/sebastien/.config/alacritty
 #*Text editor - Vim, Emacs, Sublime*
 #*Compiler*
 #*Help command (for terminal utilities)*
+#https://github.com/manilarome/fishblocks
 
 #Setup file manager
 pacman -S mtools --noconfirm
@@ -143,6 +144,7 @@ pacman -S firefox --noconfirm
 #*Privacy*
 #https://github.com/akshat46/FlyingFox
 #https://ffprofile.com/
+#https://github.com/manilarome/blurredfox
 
 #Setup gaming
 #*Lutris wiki*
