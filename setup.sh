@@ -176,6 +176,7 @@ yay -S freetube discord --noconfirm
 #*Music*
 #*Screen capture*
 #*VMs*
+#*Video calling*
 #https://github.com/AryToNeX/Glasscord
 #https://unix.stackexchange.com/questions/53080/list-optional-dependencies-with-pacman-on-arch-linux
 
