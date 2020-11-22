@@ -50,6 +50,7 @@ chmod +x backup.sh
 mv update/backup.sh /home/sebastien/backup.sh
 echo "0 3 * * 1 root /home/sebastien/backup.sh" >> /etc/crontab
 echo "0 4 * * 1 sebastien /home/sebastien/update.sh" >> /etc/crontab
+#*Other system maintenance?*
 
 #Setup X Server
 pacman -S xorg xorg-drivers lib32-mesa lib32-vulkan-icd-loader vulkan-intel lib32-vulkan-intel intel-media-driver libva-intel-driver libva-mesa-driver lib32-libva-mesa-driver mesa-vdpau lib32-mesa-vdpau vulkan-radeon lib32-vulkan-radeon amdvlk lib32-amdvlk --noconfirm
