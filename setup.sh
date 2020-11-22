@@ -116,6 +116,7 @@ mv windowmanager/config.rasi /home/sebastien/.config/rofi/
 mv windowmanager/*.rasi /usr/share/rofi/themes/
 chmod +x rofi-*.sh
 mv windowmanager/rofi-*.sh /home/sebastien/
+#https://github.com/seebye/ueberzug
 #https://manpages.debian.org/testing/rofi/rofi-theme.5.en.html
 #https://github.com/adi1090x/rofi
 
