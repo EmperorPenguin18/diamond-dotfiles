@@ -188,5 +188,6 @@ rm -r LinuxConfigs
 reboot
 #*System configs*
 #*Script performance*
+#https://wiki.archlinux.org/index.php/Dash
 #https://wiki.archlinux.org/index.php/Dotfiles
 #https://wiki.archlinux.org/index.php/General_recommendations
