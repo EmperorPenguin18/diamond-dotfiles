@@ -147,6 +147,7 @@ pacman -S firefox --noconfirm
 #https://github.com/akshat46/FlyingFox
 #https://ffprofile.com/
 #https://github.com/manilarome/blurredfox
+#https://www.youtube.com/watch?v=NH4DdXC0RFw&ab_channel=SunKnudsen
 
 #Setup gaming
 #*Lutris wiki*
