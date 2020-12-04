@@ -160,6 +160,7 @@ pacman -S firefox --noconfirm
 #*RGB*
 #*Mangohud*
 #*tkGlitch*
+#https://github.com/gamer-os
 
 #Setup power management
 #*Brightness*
