@@ -169,6 +169,7 @@ pacman -S firefox --noconfirm
 #*Screensaver*
 #*Auto-hibernate*
 #*Profiles*
+#*powertop*
 
 #Other
 yay -S freetube discord --noconfirm
