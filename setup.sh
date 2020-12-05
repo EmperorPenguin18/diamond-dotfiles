@@ -182,6 +182,7 @@ yay -S freetube discord --noconfirm
 #*VMs*
 #*Video calling*
 #https://github.com/AryToNeX/Glasscord
+#https://github.com/Lightcord/Lightcord
 #https://unix.stackexchange.com/questions/53080/list-optional-dependencies-with-pacman-on-arch-linux
 #https://github.com/hakavlad/nohang
 #https://wiki.archlinux.org/index.php/Zswap
