@@ -79,8 +79,8 @@ mv login/jellyfin.desktop /usr/share/xsessions/
 su sebastien -c "yay -S plymouth --noconfirm"
 echo "MODULES=()" > /etc/mkinitcpio.conf
 echo "BINARIES=()" >> /etc/mkinitcpio.conf
-echo "FILES=()" >> /etc/mkinitcpio.conf
-echo "HOOKS=(base udev plymouth autodetect modconf block btrfs filesystems keyboard fsck)" >> /etc/mkinitcpio.conf
+echo "FILES=(/crypto_keyfile.bin)" >> /etc/mkinitcpio.conf
+echo "HOOKS=(base udev plymouth plymouth-encrypt autodetect modconf block btrfs filesystems keyboard fsck)" >> /etc/mkinitcpio.conf
 mv plymouth/grub /etc/default/grub
 grub-mkconfig -o /boot/grub/grub.cfg
 systemctl disable lightdm
@@ -140,6 +140,11 @@ pacman -S mtools --noconfirm
 #https://github.com/deviantfero/wpgtk
 #https://github.com/Misterio77/flavours
 
+#Setup music and audio
+#*ALSA*
+#*PulseAudio*
+#*Spotify*
+
 #Setup web browser
 pacman -S firefox --noconfirm
 #*Read arch wiki page*
@@ -159,6 +164,7 @@ pacman -S firefox --noconfirm
 #*Overlock*
 #*RGB*
 #*Mangohud*
+#*GloriousEggroll*
 #*tkGlitch*
 #https://github.com/gamer-os
 
@@ -171,16 +177,20 @@ pacman -S firefox --noconfirm
 #*Profiles*
 #*powertop*
 
+#Setup virtualization
+#*KVM*
+#*QEMU*
+#*Virt-manager*
+#*Extras*
+#https://github.com/Fmstrat/winapps
+
 #Other
 yay -S freetube discord --noconfirm
 #*Improving performance*
 #*Manjaro settings*
 #*Security*
 #*Optional dependencies*
-#*Audio*
-#*Music*
 #*Screen capture*
-#*VMs*
 #*Video calling*
 #https://github.com/AryToNeX/Glasscord
 #https://github.com/Lightcord/Lightcord
