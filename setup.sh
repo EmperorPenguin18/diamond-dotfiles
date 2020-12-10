@@ -131,6 +131,7 @@ mkdir -p /home/sebastien/.config/alacritty
 #*Compiler*
 #*Help command (for terminal utilities)*
 #https://github.com/manilarome/fishblocks
+#*Fetch*
 
 #Setup file manager
 pacman -S mtools --noconfirm
