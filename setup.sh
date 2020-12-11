@@ -77,6 +77,7 @@ echo "BINARIES=()" >> /etc/mkinitcpio.conf
 echo "FILES=(/crypto_keyfile.bin)" >> /etc/mkinitcpio.conf
 echo "HOOKS=(base udev plymouth plymouth-encrypt autodetect modconf block btrfs filesystems keyboard fsck)" >> /etc/mkinitcpio.conf
 mv plymouth/grub /etc/default/grub
+sed -i "s/GRUB_CMDLINE_LINUX=\"\"/GRUB_CMDLINE_LINUX=\"cryptdevice=UUID=$(blkid -s UUID -o value /dev/$(lsblk -l | grep part | grep / | awk '{print $1}' | sed -n '2p')):cryptroot\"/g" /etc/default/grub
 grub-mkconfig -o /boot/grub/grub.cfg
 systemctl disable lightdm
 systemctl enable lightdm-plymouth
