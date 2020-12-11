@@ -13,6 +13,7 @@ GRUB_GFXPAYLOAD_LINUX=keep
 GRUB_DISABLE_RECOVERY=true
 GRUB_DISABLE_OS_PROBER=true
 GRUB_RECORDFAIL_TIMEOUT=0
+GRUB_ENABLE_CRYPTODISK=y
 
 # Uncomment and set to the desired menu colors.  Used by normal and wallpaper
 # modes only.  Entries specified as foreground/background.
