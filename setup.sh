@@ -115,6 +115,7 @@ mv windowmanager/rofi-*.sh /home/sebastien/
 #https://github.com/seebye/ueberzug
 #https://manpages.debian.org/testing/rofi/rofi-theme.5.en.html
 #https://github.com/adi1090x/rofi
+#https://www.youtube.com/watch?v=kw2mnwhptjw&ab_channel=meribold
 
 #Setup terminal emulator
 pacman -S alacritty parted openssh --noconfirm
