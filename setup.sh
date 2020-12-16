@@ -121,7 +121,9 @@ mv windowmanager/rofi-*.sh /home/sebastien/
 #Setup terminal emulator
 pacman -S alacritty parted openssh --noconfirm
 mkdir -p /home/sebastien/.config/alacritty
-#mv terminal/alacritty.yml /home/sebastien/.config/alacritty/alacritty.yml
+mv terminal/alacritty.yml /home/sebastien/.config/alacritty/alacritty.yml
+mv terminal/config.fish /home/sebastien/.config/fish/config.fish
+mv terminal/fish_variables /home/sebastien/.config/fish/fish_variables
 #*Core utilities
 #*Shell*
 #*Icons*
