@@ -69,6 +69,7 @@ mv login/jellyfin.desktop /usr/share/xsessions/
 #*Theme*
 #*Sessions*
 #*On-screen keyboard*
+#*http://www.mattfischer.com/blog/archives/5*
 
 #Setup Plymouth
 su sebastien -c "yay -S plymouth --noconfirm"
