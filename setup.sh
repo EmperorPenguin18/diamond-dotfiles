@@ -133,10 +133,11 @@ mv terminal/fish_variables /home/sebastien/.config/fish/fish_variables
 #*Fetch*
 
 #Setup file manager
-pacman -S mtools --noconfirm
+pacman -S pcmanfm-gtk3 mtools --noconfirm
 #*GTK*
 #*Icons*
 #*Filesystems*
+#*File types*
 #https://github.com/deviantfero/wpgtk
 #https://github.com/Misterio77/flavours
 
