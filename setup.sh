@@ -119,14 +119,13 @@ mv windowmanager/rofi-*.sh /home/sebastien/
 #https://www.youtube.com/watch?v=kw2mnwhptjw&ab_channel=meribold
 
 #Setup terminal emulator
-pacman -S alacritty parted openssh --noconfirm
+pacman -S alacritty mlocate lsd parted openssh --noconfirm
 mkdir -p /home/sebastien/.config/alacritty
 mv terminal/alacritty.yml /home/sebastien/.config/alacritty/alacritty.yml
+mkdir -p /home/sebastien/.config/fish
 mv terminal/config.fish /home/sebastien/.config/fish/config.fish
 mv terminal/fish_variables /home/sebastien/.config/fish/fish_variables
-#*Core utilities
 #*Shell*
-#*Icons*
 #*Text editor - Vim, Emacs, Sublime*
 #*Compiler*
 #*Help command (for terminal utilities)*
