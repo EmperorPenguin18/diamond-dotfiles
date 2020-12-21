@@ -128,9 +128,7 @@ mv terminal/fish_variables /home/sebastien/.config/fish/fish_variables
 systemctl enable pkgfile-update.timer
 mkdir -p /home/sebastien/.config/nvim
 mv terminal/init.vim /home/sebastien/.config/nvim/init.vim
-#*Compiler*
 #*Help command (for terminal utilities)*
-#https://github.com/manilarome/fishblocks
 #*Fetch*
 
 #Setup file manager
