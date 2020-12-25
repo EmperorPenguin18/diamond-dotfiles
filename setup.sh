@@ -1,14 +1,17 @@
 #!/bin/sh
 
-#Check if script is being run as root user
-if [ "$(whoami)" != "root" ]; then
-    echo "Script must be run as user: root"
-    exit 255
-fi
+pre_checks ()
+{
+    if [ "$(whoami)" != "root" ]; then
+        echo "Script must be run as user: root"
+        exit 255
+    fi
+    USER="$(ls /home)"
+}
 
 packagemanager ()
 {
-    cd /home/sebastien
+    cd /home/$USER
     mv pacman/pacman.conf /etc/pacman.conf
     echo "permit nopass /usr/bin/pacman" >> /etc/doas.conf
     echo "permit nopass /usr/bin/pikaur" >> /etc/doas.conf
@@ -16,9 +19,9 @@ packagemanager ()
     sed -i '/MAKEFLAGS/c\MAKEFLAGS="-j$(nproc)"' /etc/makepkg.conf
     cd ../
     pacman -Sy autoconf automake bison flex groff m4 pkgconf pyalpm python-commonmark --noconfirm
-    su sebastien -c "git clone https://aur.archlinux.org/pikaur.git"
+    su $USER -c "git clone https://aur.archlinux.org/pikaur.git"
     cd pikaur
-    su sebastien -c "makepkg --noconfirm"
+    su $USER -c "makepkg --noconfirm"
     pacman -U *.pkg* --noconfirm
     cd ../
     rm -r pikaur
@@ -29,9 +32,9 @@ cloud ()
 {
     pacman -S fuse rclone --noconfirm
     echo "user_allow_other" >> /etc/fuse.conf
-    mkdir -p /home/sebastien/.config/rclone
-    mv rclone/rclone.conf /home/sebastien/.config/rclone/rclone.conf
-    chown sebastien:sebastien /home/sebastien/.config/rclone/rclone.conf
+    mkdir -p /home/$USER/.config/rclone
+    mv rclone/rclone.conf /home/$USER/.config/rclone/rclone.conf
+    chown $USER:$USER /home/$USER/.config/rclone/rclone.conf
     mv rclone/rclone1.service /etc/systemd/system/rclone1.service
     mv rclone/rclone2.service /etc/systemd/system/rclone2.service
     mv rclone/rclone3.service /etc/systemd/system/rclone3.service
@@ -47,11 +50,11 @@ update ()
 {
     pacman -S cron reflector --noconfirm
     chmod +x update/update.sh
-    mv update/update.sh /home/sebastien/update.sh
+    mv update/update.sh /home/$USER/update.sh
     chmod +x update/backup.sh
-    mv update/backup.sh /home/sebastien/backup.sh
-    echo "0 3 * * 1 root /home/sebastien/backup.sh" >> /etc/crontab
-    echo "0 4 * * 1 sebastien /home/sebastien/update.sh" >> /etc/crontab
+    mv update/backup.sh /home/$USER/backup.sh
+    echo "0 3 * * 1 root /home/$USER/backup.sh" >> /etc/crontab
+    echo "0 4 * * 1 $USER /home/$USER/update.sh" >> /etc/crontab
     #*Other system maintenance?*
 }
 
@@ -108,14 +111,14 @@ plymouth ()
 windowmanager ()
 {
     pikaur -S spectrwm feh picom all-repository-fonts rofi unclutter --noconfirm --needed
-    mv windowmanager/spectrwm.conf /home/sebastien/.spectrwm.conf
-    mv windowmanager/wallpaper.jpg /home/sebastien/wallpaper.jpg
-    feh -bg-scale /home/sebastien/wallpaper.jpg
-    mv windowmanager/picom.conf /home/sebastien/.config/picom.conf
+    mv windowmanager/spectrwm.conf /home/$USER/.spectrwm.conf
+    mv windowmanager/wallpaper.jpg /home/$USER/wallpaper.jpg
+    feh -bg-scale /home/$USER/wallpaper.jpg
+    mv windowmanager/picom.conf /home/$USER/.config/picom.conf
     cd ../
     git clone https://github.com/EmperorPenguin18/SkyrimCursor
-    mkdir /home/sebastien/.local/share/icons/skyrim/cursor
-    cp SkyrimCursor/Small/Linux/x11/* /home/sebastien/.local/share/icons/skyrim/cursor/
+    mkdir /home/$USER/.local/share/icons/skyrim/cursor
+    cp SkyrimCursor/Small/Linux/x11/* /home/$USER/.local/share/icons/skyrim/cursor/
     rm -r SkyrimCursor
     cd LinuxConfigs
     unzip windowmanager/DTM.ZIP -d ./
@@ -124,11 +127,11 @@ windowmanager ()
     chmod 0444 /usr/share/fonts/DTM-Mono.otf
     chmod 0444 /usr/share/fonts/DTM-Sans.otf
     fc-cache
-    mkdir /home/sebastien/.config/rofi
-    mv windowmanager/config.rasi /home/sebastien/.config/rofi/
+    mkdir /home/$USER/.config/rofi
+    mv windowmanager/config.rasi /home/$USER/.config/rofi/
     mv windowmanager/*.rasi /usr/share/rofi/themes/
     chmod +x rofi-*.sh
-    mv windowmanager/rofi-*.sh /home/sebastien/
+    mv windowmanager/rofi-*.sh /home/$USER/
     #https://github.com/seebye/ueberzug
     #https://manpages.debian.org/testing/rofi/rofi-theme.5.en.html
     #https://github.com/adi1090x/rofi
@@ -138,14 +141,14 @@ windowmanager ()
 terminal ()
 {
     pacman -S alacritty mlocate lsd pkgfile neovim parted openssh --noconfirm
-    mkdir -p /home/sebastien/.config/alacritty
-    mv terminal/alacritty.yml /home/sebastien/.config/alacritty/alacritty.yml
-    mkdir -p /home/sebastien/.config/fish
-    mv terminal/config.fish /home/sebastien/.config/fish/config.fish
-    mv terminal/fish_variables /home/sebastien/.config/fish/fish_variables
+    mkdir -p /home/$USER/.config/alacritty
+    mv terminal/alacritty.yml /home/$USER/.config/alacritty/alacritty.yml
+    mkdir -p /home/$USER/.config/fish
+    mv terminal/config.fish /home/$USER/.config/fish/config.fish
+    mv terminal/fish_variables /home/$USER/.config/fish/fish_variables
     systemctl enable pkgfile-update.timer
-    mkdir -p /home/sebastien/.config/nvim
-    mv terminal/init.vim /home/sebastien/.config/nvim/init.vim
+    mkdir -p /home/$USER/.config/nvim
+    mv terminal/init.vim /home/$USER/.config/nvim/init.vim
     #*Help command (for terminal utilities)*
     #*Fetch*
 }
@@ -239,6 +242,7 @@ clean_up ()
     reboot
 }
 
+pre_checks
 packagemanager
 cloud
 update
