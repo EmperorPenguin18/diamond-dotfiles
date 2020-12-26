@@ -12,7 +12,7 @@ pre_checks ()
 packagemanager ()
 {
     cd /home/$USER
-    mv pacman/pacman.conf /etc/pacman.conf
+    mv packagemanager/pacman.conf /etc/pacman.conf
     echo "permit nopass /usr/bin/pacman" >> /etc/doas.conf
     echo "permit nopass /usr/bin/pikaur" >> /etc/doas.conf
     echo "permit nopass /usr/bin/makepkg" >> /etc/doas.conf
@@ -33,11 +33,11 @@ cloud ()
     pacman -S fuse rclone --noconfirm
     echo "user_allow_other" >> /etc/fuse.conf
     mkdir -p /home/$USER/.config/rclone
-    mv rclone/rclone.conf /home/$USER/.config/rclone/rclone.conf
+    mv cloud/rclone.conf /home/$USER/.config/rclone/rclone.conf
     chown $USER:$USER /home/$USER/.config/rclone/rclone.conf
-    mv rclone/rclone1.service /etc/systemd/system/rclone1.service
-    mv rclone/rclone2.service /etc/systemd/system/rclone2.service
-    mv rclone/rclone3.service /etc/systemd/system/rclone3.service
+    mv cloud/rclone1.service /etc/systemd/system/rclone1.service
+    mv cloud/rclone2.service /etc/systemd/system/rclone2.service
+    mv cloud/rclone3.service /etc/systemd/system/rclone3.service
     mkdir /mnt/Personal
     mkdir /mnt/School
     mkdir /mnt/Media
@@ -164,12 +164,12 @@ filemanager ()
     #https://github.com/Misterio77/flavours
 }
 
-audio ()
-{
+#audio ()
+#{
     #*ALSA*
     #*PulseAudio*
     #*Spotify*
-}
+#}
 
 browser ()
 {
@@ -182,8 +182,8 @@ browser ()
     #https://www.youtube.com/watch?v=NH4DdXC0RFw&ab_channel=SunKnudsen
 }
 
-gaming ()
-{
+#gaming ()
+#{
     #*Lutris wiki*
     #*CTT ultimate gaming guide*
     #*Input drivers*
@@ -196,10 +196,10 @@ gaming ()
     #*GloriousEggroll*
     #*tkGlitch*
     #https://github.com/gamer-os
-}
+#}
 
-power ()
-{
+#power ()
+#{
     #*Brightness*
     #*TLP*
     #*AUTO_CPUFREQ*
@@ -207,16 +207,16 @@ power ()
     #*Auto-hibernate*
     #*Profiles*
     #*powertop*
-}
+#}
 
-virtualization ()
-{
+#virtualization ()
+#{
     #*KVM*
     #*QEMU*
     #*Virt-manager*
     #*Extras*
     #https://github.com/Fmstrat/winapps
-}
+#}
 
 other ()
 {
@@ -244,7 +244,6 @@ clean_up ()
 
 pre_checks
 packagemanager
-cloud
 update
 xorg
 login
