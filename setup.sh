@@ -7,25 +7,27 @@ pre_checks ()
         exit 255
     fi
     USER="$(ls /home)"
+    cd /home/$USER/ArchConfigs
+    DIR="$(pwd)"
+    pacman -Sy unzip --noconfirm
 }
 
 packagemanager ()
 {
-    cd /home/$USER
     mv packagemanager/pacman.conf /etc/pacman.conf
     echo "permit nopass /usr/bin/pacman" >> /etc/doas.conf
     echo "permit nopass /usr/bin/pikaur" >> /etc/doas.conf
     echo "permit nopass /usr/bin/makepkg" >> /etc/doas.conf
     sed -i '/MAKEFLAGS/c\MAKEFLAGS="-j$(nproc)"' /etc/makepkg.conf
     cd ../
-    pacman -Sy autoconf automake bison flex groff m4 pkgconf pyalpm python-commonmark --noconfirm
+    pacman -S autoconf automake bison flex groff m4 pkgconf pyalpm python-commonmark --noconfirm
     su $USER -c "git clone https://aur.archlinux.org/pikaur.git"
     cd pikaur
     su $USER -c "makepkg --noconfirm"
     pacman -U *.pkg* --noconfirm
     cd ../
     rm -r pikaur
-    cd ArchConfigs
+    cd $DIR
 }
 
 cloud ()
@@ -62,7 +64,7 @@ xorg ()
 {
     pacman -S xorg xorg-drivers lib32-mesa lib32-vulkan-icd-loader vulkan-intel lib32-vulkan-intel intel-media-driver libva-intel-driver libva-mesa-driver lib32-libva-mesa-driver mesa-vdpau lib32-mesa-vdpau vulkan-radeon lib32-vulkan-radeon amdvlk lib32-amdvlk --noconfirm
     #*Enable vsync, freesync/gsync, hardware acceleration, vulkan etc
-    mv xorg/10-monitor.conf /etc/X11/xorg.conf.d/10-monitor.conf
+    #mv xorg/10-monitor.conf /etc/X11/xorg.conf.d/10-monitor.conf
     #*Multi-monitor*
 }
 
@@ -113,14 +115,15 @@ windowmanager ()
     pikaur -S spectrwm feh picom all-repository-fonts rofi unclutter --noconfirm --needed
     mv windowmanager/spectrwm.conf /home/$USER/.spectrwm.conf
     mv windowmanager/wallpaper.jpg /home/$USER/wallpaper.jpg
-    feh -bg-scale /home/$USER/wallpaper.jpg
+    echo "feh --bg-scale /home/$USER/wallpaper.jpg" > /home/$USER/.fehbg
+    chmod +x /home/$USER/.fehbg
     mv windowmanager/picom.conf /home/$USER/.config/picom.conf
     cd ../
     git clone https://github.com/EmperorPenguin18/SkyrimCursor
-    mkdir /home/$USER/.local/share/icons/skyrim/cursor
+    mkdir -p /home/$USER/.local/share/icons/skyrim/cursor
     cp SkyrimCursor/Small/Linux/x11/* /home/$USER/.local/share/icons/skyrim/cursor/
     rm -r SkyrimCursor
-    cd LinuxConfigs
+    cd $DIR
     unzip windowmanager/DTM.ZIP -d ./
     rm windowmanager/DTM.ZIP
     mv *.otf /usr/share/fonts/
@@ -130,7 +133,7 @@ windowmanager ()
     mkdir /home/$USER/.config/rofi
     mv windowmanager/config.rasi /home/$USER/.config/rofi/
     mv windowmanager/*.rasi /usr/share/rofi/themes/
-    chmod +x rofi-*.sh
+    chmod +x windowmanager/rofi-*.sh
     mv windowmanager/rofi-*.sh /home/$USER/
     #https://github.com/seebye/ueberzug
     #https://manpages.debian.org/testing/rofi/rofi-theme.5.en.html
