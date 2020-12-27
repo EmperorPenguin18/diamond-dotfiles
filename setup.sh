@@ -87,6 +87,7 @@ login ()
     mkdir -p /usr/share/xsessions
     mv login/steam-big-picture.desktop /usr/share/xsessions/
     mv login/jellyfin.desktop /usr/share/xsessions/
+    systemctl enable lightdm
     #*Theme*
     #*Sessions*
     #*On-screen keyboard*
@@ -118,6 +119,7 @@ windowmanager ()
     mv windowmanager/spectrwm.conf /home/$USER/.spectrwm.conf
     mv windowmanager/wallpaper.jpg /home/$USER/wallpaper.jpg
     echo "feh --bg-scale /home/$USER/wallpaper.jpg" > /home/$USER/.fehbg
+    chown sebastien:sebastien /home/$USER/.fehbg
     chmod +x /home/$USER/.fehbg
     mv windowmanager/picom.conf /home/$USER/.config/picom.conf
     cd ../
@@ -151,7 +153,8 @@ terminal ()
     mkdir -p /home/$USER/.config/fish
     mv terminal/config.fish /home/$USER/.config/fish/config.fish
     mv terminal/fish_variables /home/$USER/.config/fish/fish_variables
-    rm /home/$USER/bash*
+    rm /home/$USER/.bash*
+    updatedb
     systemctl enable pkgfile-update.timer
     mkdir -p /home/$USER/.config/nvim
     mv terminal/init.vim /home/$USER/.config/nvim/init.vim
@@ -253,7 +256,6 @@ packagemanager
 update
 xorg
 login
-plymouth
 windowmanager
 terminal
 
