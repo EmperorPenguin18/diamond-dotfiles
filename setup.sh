@@ -10,6 +10,7 @@ pre_checks ()
     cd /home/$USER/ArchConfigs
     DIR="$(pwd)"
     pacman -Sy unzip --noconfirm
+    TIME="$(ls -l /etc/localtime | sed 's|.*zoneinfo/||')"
 }
 
 packagemanager ()
@@ -57,6 +58,7 @@ update ()
     mv update/backup.sh /home/$USER/backup.sh
     echo "0 3 * * 1 root /home/$USER/backup.sh" >> /etc/crontab
     echo "0 4 * * 1 $USER /home/$USER/update.sh" >> /etc/crontab
+    reflector --country $(curl -sL https://raw.github.com/eggert/tz/master/zone1970.tab | grep $TIME | awk '{print $1}') --protocol https --sort rate --save /etc/pacman.d/mirrorlist
     #*Other system maintenance?*
 }
 
@@ -149,6 +151,7 @@ terminal ()
     mkdir -p /home/$USER/.config/fish
     mv terminal/config.fish /home/$USER/.config/fish/config.fish
     mv terminal/fish_variables /home/$USER/.config/fish/fish_variables
+    rm /home/$USER/bash*
     systemctl enable pkgfile-update.timer
     mkdir -p /home/$USER/.config/nvim
     mv terminal/init.vim /home/$USER/.config/nvim/init.vim
