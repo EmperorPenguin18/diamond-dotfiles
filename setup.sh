@@ -20,7 +20,7 @@ packagemanager ()
     echo "permit nopass /usr/bin/makepkg" >> /etc/doas.conf
     sed -i '/MAKEFLAGS/c\MAKEFLAGS="-j$(nproc)"' /etc/makepkg.conf
     cd ../
-    pacman -S autoconf automake bison flex groff m4 pkgconf pyalpm python-commonmark --noconfirm
+    pacman -Sy autoconf automake bison flex groff m4 pkgconf pyalpm python-commonmark --noconfirm
     su $USER -c "git clone https://aur.archlinux.org/pikaur.git"
     cd pikaur
     su $USER -c "makepkg --noconfirm"
