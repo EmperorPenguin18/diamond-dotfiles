@@ -56,8 +56,8 @@ update ()
     mv update/update.sh /home/$USER/update.sh
     chmod +x update/backup.sh
     mv update/backup.sh /home/$USER/backup.sh
-    echo "0 3 * * 1 root /home/$USER/backup.sh" >> /etc/crontab
-    echo "0 4 * * 1 $USER /home/$USER/update.sh" >> /etc/crontab
+    #echo "0 3 * * 1 root /home/$USER/backup.sh" >> /etc/crontab
+    #echo "0 4 * * 1 $USER /home/$USER/update.sh" >> /etc/crontab
     reflector --country $(curl -sL https://raw.github.com/eggert/tz/master/zone1970.tab | grep $TIME | awk '{print $1}') --protocol https --sort rate --save /etc/pacman.d/mirrorlist
     #*Other system maintenance?*
 }
@@ -78,16 +78,18 @@ nvidia ()
 
 login ()
 {
-    pikaur -S lightdm lightdm-webkit2-greeter lightdm-webkit2-theme-glorious --noconfirm
-    mv login/lightdm.conf /etc/lightdm/lightdm.conf
-    mv login/lightdm-webkit2-greeter.conf /etc/lightdm/lightdm-webkit2-greeter.conf
-    mv login/index.html /usr/share/lightdm-webkit/themes/glorious/
-    rm -r /usr/share/backgrounds/*
-    mv login/background.png /usr/share/backgrounds/
+    #pikaur -S lightdm lightdm-webkit2-greeter lightdm-webkit2-theme-glorious --noconfirm
+    pacman -S lxdm-gtk3 --noconfirm
+    #mv login/lightdm.conf /etc/lightdm/lightdm.conf
+    #mv login/lightdm-webkit2-greeter.conf /etc/lightdm/lightdm-webkit2-greeter.conf
+    #mv login/index.html /usr/share/lightdm-webkit/themes/glorious/
+    #rm -r /usr/share/backgrounds/*
+    #mv login/background.png /usr/share/backgrounds/
     mkdir -p /usr/share/xsessions
     mv login/steam-big-picture.desktop /usr/share/xsessions/
     mv login/jellyfin.desktop /usr/share/xsessions/
-    systemctl enable lightdm
+    #systemctl enable lightdm
+    systemctl enable lxdm
     #*Theme*
     #*Sessions*
     #*On-screen keyboard*
