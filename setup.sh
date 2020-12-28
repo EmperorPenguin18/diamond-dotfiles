@@ -263,6 +263,7 @@ login
 windowmanager
 terminal
 filemanager
+audio
 
 #*System configs*
 #*Script performance*
