@@ -166,7 +166,7 @@ terminal ()
 
 filemanager ()
 {
-    pikaur -S pcmanfm-gtk3 gvfs arc-gtk-theme mtools exfatprogs e2fsprogs hfsprogs ntfs-3g xfsprogs apfsprogs-git zfs-utils mpv libreoffice-fresh --noconfirm --needed
+    pikaur -S pcmanfm-gtk3 gvfs arc-gtk-theme mtools exfatprogs e2fsprogs hfsprogs ntfs-3g xfsprogs apfsprogs-git zfs-utils mpv onlyoffice-bin --noconfirm --needed
     mv filemanager/settings.ini /etc/gtk-3.0/settings.ini
     mv filemanager/mpv.conf /home/$USER/.config/mpv/mpv.conf
     mv filemanager/input.conf /home/$USER/.config/mpv/input.conf
@@ -176,12 +176,13 @@ filemanager ()
     #*mpv OSC*
 }
 
-#audio ()
-#{
-    #*ALSA*
-    #*PulseAudio*
-    #*Spotify*
-#}
+audio ()
+{
+    pacman -S pulseaudio pulseaudio-alsa pulseaudio-bluetooth lib32-libpulse lib32-alsa-plugins spotifyd dunst --noconfirm #alsa-utils
+    mkdir -p /home/$USER/.config/dunst
+    mv audio/dunstrc /home/$USER/.config/dunst/dunstrc
+    #https://github.com/Spotifyd/spotifyd
+}
 
 browser ()
 {
