@@ -98,7 +98,7 @@ plymouth ()
 {
     pikaur -S plymouth --noconfirm
     sed -i '4d' /etc/mkinitcpio.conf
-    echo "HOOKS=(base udev plymouth plymouth-encrypt autodetect modconf block btrfs filesystems keyboard fsck)" >> /etc/mkinitcpio.conf
+    echo "HOOKS=(base udev plymouth plymouth-encrypt autodetect modconf block filesystems keyboard fsck)" >> /etc/mkinitcpio.conf
     mv plymouth/grub /etc/default/grub
     sed -i "s/GRUB_CMDLINE_LINUX=\"\"/GRUB_CMDLINE_LINUX=\"cryptdevice=UUID=$(blkid -o device | xargs -L1 cryptsetup luksUUID):cryptroot\"/g" /etc/default/grub
     grub-mkconfig -o /boot/grub/grub.cfg
@@ -115,7 +115,7 @@ plymouth ()
 
 windowmanager ()
 {
-    pikaur -S spectrwm feh picom all-repository-fonts rofi unclutter --noconfirm --needed
+    pikaur -S spectrwm feh picom rofi unclutter --noconfirm --needed #all-repository-fonts
     mv windowmanager/spectrwm.conf /home/$USER/.spectrwm.conf
     mv windowmanager/wallpaper.jpg /home/$USER/wallpaper.jpg
     echo "feh --bg-scale /home/$USER/wallpaper.jpg" > /home/$USER/.fehbg
@@ -164,13 +164,14 @@ terminal ()
 
 filemanager ()
 {
-    pacman -S pcmanfm-gtk3 mtools --noconfirm
-    #*GTK*
-    #*Icons*
-    #*Filesystems*
-    #*File types*
+    pikaur -S pcmanfm-gtk3 gvfs arc-gtk-theme mtools exfatprogs e2fsprogs hfsprogs ntfs-3g xfsprogs apfsprogs-git zfs-utils mpv libreoffice-fresh --noconfirm --needed
+    mv filemanager/settings.ini /etc/gtk-3.0/settings.ini
+    mv filemanager/mpv.conf /home/$USER/.config/mpv/mpv.conf
+    mv filemanager/input.conf /home/$USER/.config/mpv/input.conf
     #https://github.com/deviantfero/wpgtk
     #https://github.com/Misterio77/flavours
+    #*mpv addons / MPRIS*
+    #*mpv OSC*
 }
 
 #audio ()
@@ -258,6 +259,7 @@ xorg
 login
 windowmanager
 terminal
+filemanager
 
 #*System configs*
 #*Script performance*
