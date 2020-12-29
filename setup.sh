@@ -88,6 +88,7 @@ login ()
     mkdir -p /usr/share/xsessions
     mv login/steam-big-picture.desktop /usr/share/xsessions/
     mv login/jellyfin.desktop /usr/share/xsessions/
+    mv login/alacritty.desktop /usr/share/xsessions/
     #systemctl enable lightdm
     systemctl enable lxdm
     #*Theme*
@@ -166,8 +167,9 @@ terminal ()
 
 filemanager ()
 {
-    pikaur -S pcmanfm-gtk3 gvfs arc-gtk-theme mtools exfatprogs e2fsprogs hfsprogs ntfs-3g xfsprogs apfsprogs-git zfs-utils mpv onlyoffice-bin --noconfirm --needed
+    pikaur -S pcmanfm-gtk3 gvfs arc-gtk-theme mtools exfatprogs e2fsprogs hfsprogs ntfs-3g xfsprogs apfsprogs-git mpv onlyoffice-bin --noconfirm --needed
     mv filemanager/settings.ini /etc/gtk-3.0/settings.ini
+    mkdir -p /home/$USER/.config/mpv
     mv filemanager/mpv.conf /home/$USER/.config/mpv/mpv.conf
     mv filemanager/input.conf /home/$USER/.config/mpv/input.conf
     #https://github.com/deviantfero/wpgtk
