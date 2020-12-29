@@ -1,17 +1,5 @@
 [Desktop Entry]
-Type=Application
-TryExec=alacritty
-Exec=alacritty
-Icon=Alacritty
-Terminal=false
-Categories=System;TerminalEmulator;
-
 Name=Terminal
-GenericName=Terminal
-Actions=New;
-
-X-Desktop-File-Install-Version=0.26
-
-[Desktop Action New]
-Name=New Terminal
+Comment=Alacritty terminal for debugging
 Exec=alacritty
+Type=Application
