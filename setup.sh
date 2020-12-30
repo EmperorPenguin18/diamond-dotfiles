@@ -7,7 +7,6 @@ pre_checks ()
         exit 255
     fi
     USER="$(ls /home)"
-    cd /home/$USER/ArchConfigs
     DIR="$(pwd)"
     pacman -Sy unzip --noconfirm
     TIME="$(ls -l /etc/localtime | sed 's|.*zoneinfo/||')"
@@ -121,16 +120,11 @@ windowmanager ()
     pikaur -S spectrwm feh picom rofi unclutter --noconfirm --needed #all-repository-fonts
     mv windowmanager/spectrwm.conf /home/$USER/.spectrwm.conf
     mv windowmanager/wallpaper.jpg /home/$USER/wallpaper.jpg
-    echo "feh --bg-scale /home/$USER/wallpaper.jpg" > /home/$USER/.fehbg
-    chown sebastien:sebastien /home/$USER/.fehbg
-    chmod +x /home/$USER/.fehbg
     mv windowmanager/picom.conf /home/$USER/.config/picom.conf
-    cd ../
     git clone https://github.com/EmperorPenguin18/SkyrimCursor
     mkdir -p /home/$USER/.local/share/icons/skyrim/cursor
     cp SkyrimCursor/Small/Linux/x11/* /home/$USER/.local/share/icons/skyrim/cursor/
     rm -r SkyrimCursor
-    cd $DIR
     unzip windowmanager/DTM.ZIP -d ./
     rm windowmanager/DTM.ZIP
     mv *.otf /usr/share/fonts/
@@ -189,8 +183,8 @@ audio ()
 browser ()
 {
     pacman -S firefox --noconfirm
-    #*Read arch wiki page*
     #*Privacy*
+    #*Hardware acceleration*
     #https://github.com/akshat46/FlyingFox
     #https://ffprofile.com/
     #https://github.com/manilarome/blurredfox
