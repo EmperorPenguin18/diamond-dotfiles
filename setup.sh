@@ -258,6 +258,9 @@ terminal
 filemanager
 audio
 browser
+echo "-------------------------------------------------"
+echo "          All done! You can reboot now.          "
+echo "-------------------------------------------------"
 
 #*System configs*
 #*Script performance*
