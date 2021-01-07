@@ -183,10 +183,12 @@ audio ()
 browser ()
 {
     pacman -S firefox --noconfirm
-    #*Privacy*
+    mkdir -p /home/$USER/.mozilla/firefox/default
+    unzip browser/profile.zip -d /home/$USER/.mozilla/firefox/default/
+    rm profile.zip
+    mv browser/profiles.ini /home/$USER/.mozilla/firefox/
     #*Hardware acceleration*
     #https://github.com/akshat46/FlyingFox
-    #https://ffprofile.com/
     #https://github.com/manilarome/blurredfox
     #https://www.youtube.com/watch?v=NH4DdXC0RFw&ab_channel=SunKnudsen
 }
@@ -260,6 +262,7 @@ windowmanager
 terminal
 filemanager
 audio
+browser
 
 #*System configs*
 #*Script performance*
