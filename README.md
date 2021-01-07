@@ -13,7 +13,7 @@ Designed to completely automate setting up the computer, so that it can be deplo
 - Privacy focused Firefox setup
 
 ### How to use:
-1. Must be run on Arch.
+1. Must be run on a fresh Arch install.
 2. Run this command as root user:
 ```
 curl -sL https://raw.github.com/EmperorPenguin18/diamond-dotfiles/main/setup.sh | sh
