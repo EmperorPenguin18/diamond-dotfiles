@@ -165,7 +165,7 @@ terminal ()
 
 filemanager ()
 {
-    pikaur -S pcmanfm-gtk3 gvfs arc-gtk-theme hicolor-icon-theme arc-icon-theme moka-icon-theme-git mtools exfatprogs e2fsprogs ntfs-3g xfsprogs mpv --noconfirm --needed #hfsprogs apfsprogs-git onlyoffice-bin
+    pikaur -S pcmanfm-gtk3 gvfs arc-gtk-theme hicolor-icon-theme arc-icon-theme moka-icon-theme-git lxsession-gtk3 mtools exfatprogs e2fsprogs ntfs-3g xfsprogs mpv --noconfirm --needed #hfsprogs apfsprogs-git onlyoffice-bin
     cp -f $DIR/filemanager/settings.ini /etc/gtk-3.0/settings.ini
     mkdir -p /home/$USER/.config/mpv
     cp -f $DIR/filemanager/mpv.conf /home/$USER/.config/mpv/mpv.conf
