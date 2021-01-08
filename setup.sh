@@ -120,6 +120,7 @@ windowmanager ()
 {
     pacman -S spectrwm feh picom rofi unclutter --noconfirm --needed #all-repository-fonts
     cp -f $DIR/windowmanager/spectrwm.conf /home/$USER/.spectrwm.conf
+    sed -i "s/USER/$USER/g" /home/$USER/.spectrwm.conf
     cp -f $DIR/windowmanager/wallpaper.jpg /home/$USER/wallpaper.jpg
     cp -f $DIR/windowmanager/picom.conf /home/$USER/.config/picom.conf
     #git clone https://github.com/EmperorPenguin18/SkyrimCursor
