@@ -23,7 +23,7 @@ packagemanager ()
     echo "permit nopass /usr/bin/pikaur" >> /etc/doas.conf
     echo "permit nopass /usr/bin/makepkg" >> /etc/doas.conf
     sed -i '/MAKEFLAGS.*/c\MAKEFLAGS="-j$(nproc)"' /etc/makepkg.conf
-    pacman -Sy autoconf automake bison flex groff m4 pkgconf pyalpm python-commonmark --noconfirm --needed
+    pacman -Sy autoconf automake bison flex groff m4 pkgconf pyalpm python-commonmark make --noconfirm --needed
     su $USER -c "git clone https://aur.archlinux.org/pikaur.git"
     cd pikaur
     su $USER -c "makepkg --noconfirm"
@@ -165,7 +165,7 @@ terminal ()
 
 filemanager ()
 {
-    pacman -S pcmanfm-gtk3 gvfs arc-gtk-theme mtools exfatprogs e2fsprogs ntfs-3g xfsprogs mpv --noconfirm --needed #hfsprogs apfsprogs-git onlyoffice-bin
+    pikaur -S pcmanfm-gtk3 gvfs arc-gtk-theme hicolor-icon-theme arc-icon-theme moka-icon-theme-git mtools exfatprogs e2fsprogs ntfs-3g xfsprogs mpv --noconfirm --needed #hfsprogs apfsprogs-git onlyoffice-bin
     cp -f $DIR/filemanager/settings.ini /etc/gtk-3.0/settings.ini
     mkdir -p /home/$USER/.config/mpv
     cp -f $DIR/filemanager/mpv.conf /home/$USER/.config/mpv/mpv.conf
@@ -179,7 +179,7 @@ filemanager ()
 audio ()
 {
     pacman -S pulseaudio pulseaudio-alsa pulseaudio-bluetooth lib32-libpulse lib32-alsa-plugins spotifyd dunst --noconfirm --needed #alsa-utils
-    pactl set-sink-mute 0 toggle
+    pactl set-sink-mute 0 false
     pactl set-sink-volume 0 100%
     mkdir -p /home/$USER/.config/dunst
     cp -f $DIR/audio/dunstrc /home/$USER/.config/dunst/dunstrc
