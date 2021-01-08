@@ -19,7 +19,7 @@ Designed to completely automate setting up the computer, so that it can be deplo
 1. Must be run on a fresh Arch install.
 2. Run this command as root user:
 ```
-curl -sL https://raw.github.com/EmperorPenguin18/diamond-dotfiles/main/setup.sh | sh
+curl -sL https://raw.github.com/EmperorPenguin18/diamond-dotfiles/master/setup.sh | sh
 ```
 4. Answer prompts. Not designed to be user friendly.
 5. Wait for installation to complete.
