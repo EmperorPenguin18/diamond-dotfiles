@@ -189,9 +189,10 @@ audio ()
 browser ()
 {
     pacman -S firefox --noconfirm --needed
-    mkdir -p /home/$USER/.mozilla/firefox/default
-    unzip $DIR/browser/profile.zip -d /home/$USER/.mozilla/firefox/default/
-    cp -f $DIR/browser/profiles.ini /home/$USER/.mozilla/firefox/profiles.ini
+    mkdir -p /home/$USER/.mozilla/firefox
+    firefox -headless -CreateProfile default
+    killall firefox
+    unzip $DIR/browser/profile.zip -d /home/$USER/.mozilla/firefox/"$(ls /home/$USER/.mozilla/firefox | grep default)"/
     #*Hardware acceleration*
     #https://github.com/akshat46/FlyingFox
     #https://github.com/manilarome/blurredfox
