@@ -148,7 +148,7 @@ windowmanager ()
 
 terminal ()
 {
-    pacman -S alacritty mlocate lsd pkgfile neovim parted openssh --noconfirm --needed
+    pacman -S alacritty mlocate lsd pkgfile neovim parted openssh bashtop --noconfirm --needed
     mkdir -p /home/$USER/.config/alacritty
     cp -f $DIR/terminal/alacritty.yml /home/$USER/.config/alacritty/alacritty.yml
     mkdir -p /home/$USER/.config/fish
