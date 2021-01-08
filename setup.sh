@@ -190,9 +190,9 @@ browser ()
 {
     pacman -S firefox --noconfirm --needed
     mkdir -p /home/$USER/.mozilla/firefox
-    firefox -headless -CreateProfile default
+    firefox -headless &
     killall firefox
-    unzip $DIR/browser/profile.zip -d /home/$USER/.mozilla/firefox/"$(ls /home/$USER/.mozilla/firefox | grep default)"/
+    unzip -o $DIR/browser/profile.zip -d /home/$USER/.mozilla/firefox/"$(ls /home/$USER/.mozilla/firefox | grep default-release)"/
     #*Hardware acceleration*
     #https://github.com/akshat46/FlyingFox
     #https://github.com/manilarome/blurredfox
