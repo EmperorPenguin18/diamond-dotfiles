@@ -33,7 +33,7 @@ configuration {
 	kb-page-next: "Page_Down";
 	kb-row-first: "Home,KP_Home";
 	kb-row-last: "End,KP_End";
-	kb-cancel: "Escape, Super_L";
+	kb-cancel: "Escape,Super_L";
 	ml-row-left: "ScrollLeft";
 	ml-row-right: "ScrollRight";
 	ml-row-up: "ScrollUp";
