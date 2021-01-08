@@ -1,6 +1,6 @@
 # diamond-dotfiles
 
-## NOT READY FOR USE
+**NOT READY FOR USE**
 
 Desktop dotfiles plus script to set it up
 
