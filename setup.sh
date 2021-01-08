@@ -7,7 +7,7 @@ pre_checks ()
         exit 255
     fi
     USER="$(ls /home)"
-    git clone https://github.com/EmperorPenguin18/diamond-dotfiles /home/$USER/dotfiles
+    su $USER -c "git clone https://github.com/EmperorPenguin18/diamond-dotfiles /home/$USER/dotfiles"
     cd /home/$USER/dotfiles
     DIR="$(pwd)"
     pacman -Sy unzip --noconfirm --needed
@@ -241,9 +241,10 @@ other ()
     #https://github.com/Nefelim4ag/Ananicy
 }
 
-#clean_up ()
-#{
-#}
+clean_up ()
+{
+    chown -R $USER:$USER /home/$USER
+}
 
 pre_checks
 packagemanager
@@ -255,6 +256,7 @@ terminal
 filemanager
 audio
 browser
+clean_up
 echo "-------------------------------------------------"
 echo "          All done! You can reboot now.          "
 echo "-------------------------------------------------"
