@@ -16,7 +16,7 @@ pre_checks ()
 
 packagemanager ()
 {
-    ln -sf packagemanager/pacman.conf /etc/pacman.conf
+    ln -sf $DIR/packagemanager/pacman.conf /etc/pacman.conf
     echo "permit nopass /usr/bin/pacman" >> /etc/doas.conf
     echo "permit nopass /usr/bin/pikaur" >> /etc/doas.conf
     echo "permit nopass /usr/bin/makepkg" >> /etc/doas.conf
@@ -35,11 +35,11 @@ cloud ()
     pacman -S fuse rclone --noconfirm --needed
     echo "user_allow_other" >> /etc/fuse.conf
     mkdir -p /home/$USER/.config/rclone
-    ln -sf cloud/rclone.conf /home/$USER/.config/rclone/rclone.conf
+    ln -sf $DIR/cloud/rclone.conf /home/$USER/.config/rclone/rclone.conf
     chown $USER:$USER /home/$USER/.config/rclone/rclone.conf
-    ln -sf cloud/rclone1.service /etc/systemd/system/rclone1.service
-    ln -sf cloud/rclone2.service /etc/systemd/system/rclone2.service
-    ln -sf cloud/rclone3.service /etc/systemd/system/rclone3.service
+    ln -sf $DIR/cloud/rclone1.service /etc/systemd/system/rclone1.service
+    ln -sf $DIR/cloud/rclone2.service /etc/systemd/system/rclone2.service
+    ln -sf $DIR/cloud/rclone3.service /etc/systemd/system/rclone3.service
     mkdir /mnt/Personal
     mkdir /mnt/School
     mkdir /mnt/Media
@@ -51,10 +51,8 @@ cloud ()
 update ()
 {
     pacman -S cron reflector --noconfirm --needed
-    ln -sf update/update.sh /home/$USER/update.sh
-    chmod +x /home/$USER/update.sh
-    ln -sf update/backup.sh /home/$USER/backup.sh
-    chmod +x /home/$USER/backup.sh
+    ln -sf $DIR/update/update.sh /home/$USER/update.sh
+    ln -sf $DIR/update/backup.sh /home/$USER/backup.sh
     #echo "0 3 * * 1 root /home/$USER/backup.sh" >> /etc/crontab
     #echo "0 4 * * 1 $USER /home/$USER/update.sh" >> /etc/crontab
     reflector --country $(curl -sL https://raw.github.com/eggert/tz/master/zone1970.tab | grep $TIME | awk '{print $1}') --protocol https --sort rate --save /etc/pacman.d/mirrorlist
@@ -85,9 +83,9 @@ login ()
     #rm -r /usr/share/backgrounds/*
     #mv login/background.png /usr/share/backgrounds/
     mkdir -p /usr/share/xsessions
-    ln -sf login/steam-big-picture.desktop /usr/share/xsessions/steam-big-picture.desktop
-    ln -sf login/jellyfin.desktop /usr/share/xsessions/jellyfin.desktop
-    ln -sf login/alacritty.desktop /usr/share/xsessions/alacritty.desktop
+    ln -sf $DIR/login/steam-big-picture.desktop /usr/share/xsessions/steam-big-picture.desktop
+    ln -sf $DIR/login/jellyfin.desktop /usr/share/xsessions/jellyfin.desktop
+    ln -sf $DIR/login/alacritty.desktop /usr/share/xsessions/alacritty.desktop
     #systemctl enable lightdm
     systemctl enable lxdm
     #*Theme*
@@ -101,7 +99,7 @@ plymouth ()
     pikaur -S plymouth --noconfirm --needed
     sed -i '4d' /etc/mkinitcpio.conf
     echo "HOOKS=(base udev plymouth plymouth-encrypt autodetect modconf block filesystems keyboard fsck)" >> /etc/mkinitcpio.conf
-    ln -sf plymouth/grub /etc/default/grub
+    ln -sf $DIR/plymouth/grub /etc/default/grub
     sed -i "s/GRUB_CMDLINE_LINUX=\"\"/GRUB_CMDLINE_LINUX=\"cryptdevice=UUID=$(blkid -o device | xargs -L1 cryptsetup luksUUID):cryptroot\"/g" /etc/default/grub
     grub-mkconfig -o /boot/grub/grub.cfg
     systemctl disable lightdm
@@ -118,23 +116,22 @@ plymouth ()
 windowmanager ()
 {
     pacman -S spectrwm feh picom rofi unclutter --noconfirm --needed #all-repository-fonts
-    ln -sf windowmanager/spectrwm.conf /home/$USER/.spectrwm.conf
-    ln -sf windowmanager/wallpaper.jpg /home/$USER/wallpaper.jpg
-    ln -sf windowmanager/picom.conf /home/$USER/.config/picom.conf
+    ln -sf $DIR/windowmanager/spectrwm.conf /home/$USER/.spectrwm.conf
+    ln -sf $DIR/windowmanager/wallpaper.jpg /home/$USER/wallpaper.jpg
+    ln -sf $DIR/windowmanager/picom.conf /home/$USER/.config/picom.conf
     git clone https://github.com/EmperorPenguin18/SkyrimCursor
     mkdir -p /home/$USER/.local/share/icons/skyrim/cursor
     cp SkyrimCursor/Small/Linux/x11/* /home/$USER/.local/share/icons/skyrim/cursor/
     rm -r SkyrimCursor
-    unzip windowmanager/DTM.ZIP -d ./
+    unzip $DIR/windowmanager/DTM.ZIP -d ./
     mv *.otf /usr/share/fonts/
     chmod 0444 /usr/share/fonts/DTM-Mono.otf
     chmod 0444 /usr/share/fonts/DTM-Sans.otf
     fc-cache
     mkdir /home/$USER/.config/rofi
-    ln -sf windowmanager/config.rasi /home/$USER/.config/rofi/config.rasi
-    ln -sf windowmanager/*.rasi /usr/share/rofi/themes/*.rasi
-    ln -sf windowmanager/rofi-*.sh /home/$USER/rofi-*.sh
-    chmod +x /home/$USER/rofi-*.sh
+    ln -sf $DIR/windowmanager/config.rasi /home/$USER/.config/rofi/config.rasi
+    ln -sf $DIR/windowmanager/*.rasi /usr/share/rofi/themes/*.rasi
+    ln -sf $DIR/windowmanager/rofi-*.sh /home/$USER/rofi-*.sh
     #https://github.com/seebye/ueberzug
     #https://manpages.debian.org/testing/rofi/rofi-theme.5.en.html
     #https://github.com/adi1090x/rofi
@@ -145,15 +142,15 @@ terminal ()
 {
     pacman -S alacritty mlocate lsd pkgfile neovim parted openssh --noconfirm --needed
     mkdir -p /home/$USER/.config/alacritty
-    ln -sf terminal/alacritty.yml /home/$USER/.config/alacritty/alacritty.yml
+    ln -sf $DIR/terminal/alacritty.yml /home/$USER/.config/alacritty/alacritty.yml
     mkdir -p /home/$USER/.config/fish
-    ln -sf terminal/config.fish /home/$USER/.config/fish/config.fish
-    ln -sf terminal/fish_variables /home/$USER/.config/fish/fish_variables
+    ln -sf $DIR/terminal/config.fish /home/$USER/.config/fish/config.fish
+    ln -sf $DIR/terminal/fish_variables /home/$USER/.config/fish/fish_variables
     rm /home/$USER/.bash*
     updatedb
     systemctl enable pkgfile-update.timer
     mkdir -p /home/$USER/.config/nvim
-    ln -sf terminal/init.vim /home/$USER/.config/nvim/init.vim
+    ln -sf $DIR/terminal/init.vim /home/$USER/.config/nvim/init.vim
     #*Help command (for terminal utilities)*
     #*Fetch*
 }
@@ -161,10 +158,10 @@ terminal ()
 filemanager ()
 {
     pikaur -S pcmanfm-gtk3 gvfs arc-gtk-theme mtools exfatprogs e2fsprogs hfsprogs ntfs-3g xfsprogs apfsprogs-git mpv onlyoffice-bin --noconfirm --needed
-    ln -sf filemanager/settings.ini /etc/gtk-3.0/settings.ini
+    ln -sf $DIR/filemanager/settings.ini /etc/gtk-3.0/settings.ini
     mkdir -p /home/$USER/.config/mpv
-    ln -sf filemanager/mpv.conf /home/$USER/.config/mpv/mpv.conf
-    ln -sf filemanager/input.conf /home/$USER/.config/mpv/input.conf
+    ln -sf $DIR/filemanager/mpv.conf /home/$USER/.config/mpv/mpv.conf
+    ln -sf $DIR/filemanager/input.conf /home/$USER/.config/mpv/input.conf
     #https://github.com/deviantfero/wpgtk
     #https://github.com/Misterio77/flavours
     #*mpv addons / MPRIS*
@@ -175,7 +172,7 @@ audio ()
 {
     pacman -S pulseaudio pulseaudio-alsa pulseaudio-bluetooth lib32-libpulse lib32-alsa-plugins spotifyd dunst --noconfirm --needed #alsa-utils
     mkdir -p /home/$USER/.config/dunst
-    ln -sf audio/dunstrc /home/$USER/.config/dunst/dunstrc
+    ln -sf $DIR/audio/dunstrc /home/$USER/.config/dunst/dunstrc
     #https://github.com/Spotifyd/spotifyd
 }
 
@@ -183,8 +180,8 @@ browser ()
 {
     pacman -S firefox --noconfirm --needed
     mkdir -p /home/$USER/.mozilla/firefox/default
-    unzip browser/profile.zip -d /home/$USER/.mozilla/firefox/default/
-    ln -sf browser/profiles.ini /home/$USER/.mozilla/firefox/profiles.ini
+    unzip $DIR/browser/profile.zip -d /home/$USER/.mozilla/firefox/default/
+    ln -sf $DIR/browser/profiles.ini /home/$USER/.mozilla/firefox/profiles.ini
     #*Hardware acceleration*
     #https://github.com/akshat46/FlyingFox
     #https://github.com/manilarome/blurredfox
