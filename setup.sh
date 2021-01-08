@@ -177,6 +177,8 @@ filemanager ()
 audio ()
 {
     pacman -S pulseaudio pulseaudio-alsa pulseaudio-bluetooth lib32-libpulse lib32-alsa-plugins spotifyd dunst --noconfirm --needed #alsa-utils
+    pactl set-sink-mute 0 toggle
+    pactl set-sink-volume 0 100%
     mkdir -p /home/$USER/.config/dunst
     cp -f $DIR/audio/dunstrc /home/$USER/.config/dunst/dunstrc
     #https://github.com/Spotifyd/spotifyd
