@@ -233,6 +233,7 @@ browser ()
 other ()
 {
     pikaur -S freetube discord --noconfirm
+    #*VPN*
     #*Improving performance*
     #*Manjaro settings*
     #*Security*
