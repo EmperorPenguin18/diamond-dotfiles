@@ -130,8 +130,8 @@ windowmanager ()
     fc-cache
     mkdir /home/$USER/.config/rofi
     ln -sf $DIR/windowmanager/config.rasi /home/$USER/.config/rofi/config.rasi
-    ln -sf $DIR/windowmanager/*.rasi /usr/share/rofi/themes/*.rasi
-    ln -sf $DIR/windowmanager/rofi-*.sh /home/$USER/rofi-*.sh
+    ls *.rasi | xargs -L1 -i{} ln -sf $DIR/windowmanager/{} /usr/share/rofi/themes/{}
+    ls rofi-*.sh | xargs -L1 -i{} ln -sf $DIR/windowmanager/{} /home/$USER/{}
     #https://github.com/seebye/ueberzug
     #https://manpages.debian.org/testing/rofi/rofi-theme.5.en.html
     #https://github.com/adi1090x/rofi
