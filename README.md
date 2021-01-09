@@ -24,6 +24,7 @@ curl -sL https://raw.github.com/EmperorPenguin18/diamond-dotfiles/master/setup.s
 4. Answer prompts. Not designed to be user friendly.
 5. Wait for installation to complete.
 6. Make sure to reboot when the script finishes so everything is set properly.
+7. Press Super+s once in spectrwm to see all shortcuts
 
 ### Future:
 - Support more distros
