@@ -53,8 +53,10 @@ cloud ()
 update ()
 {
     pacman -S cron reflector --noconfirm --needed
-    cp -f $DIR/update/update.sh /home/$USER/update.sh
-    cp -f $DIR/update/backup.sh /home/$USER/backup.sh
+    #cp -f $DIR/update/update.sh /home/$USER/.config/scripts/update
+    #chmod +x /home/$USER/.config/scripts/update
+    #cp -f $DIR/update/backup.sh /home/$USER/.config/scripts/backup
+    #chmod +x /home/$USER/.config/scripts/backup
     #echo "0 3 * * 1 root /home/$USER/backup.sh" >> /etc/crontab
     #echo "0 4 * * 1 $USER /home/$USER/update.sh" >> /etc/crontab
     reflector --country $(curl -sL https://raw.github.com/eggert/tz/master/zone1970.tab | grep $TIME | awk '{print $1}') --protocol https --sort rate --save /etc/pacman.d/mirrorlist
@@ -115,8 +117,6 @@ windowmanager ()
     pacman -S spectrwm feh picom rofi xdotool unclutter --noconfirm --needed #all-repository-fonts
     cp -f $DIR/windowmanager/spectrwm.conf /home/$USER/.spectrwm.conf
     sed -i "s/USER/$USER/g" /home/$USER/.spectrwm.conf
-    cp -f $DIR/windowmanager/kb.sh /home/$USER/kb.sh
-    chmod +x /home/$USER/kb.sh
     cp -f $DIR/windowmanager/wallpaper.jpg /home/$USER/wallpaper.jpg
     cp -f $DIR/windowmanager/picom.conf /home/$USER/.config/picom.conf
     #git clone https://github.com/EmperorPenguin18/SkyrimCursor
@@ -130,10 +130,10 @@ windowmanager ()
     mkdir /home/$USER/.config/rofi
     cp -f $DIR/windowmanager/config.rasi /home/$USER/.config/rofi/config.rasi
     cd windowmanager
-    ls *.rasi | xargs -L1 -i{} cp -f $DIR/windowmanager/{} /usr/share/rofi/themes/{}
-    ls rofi-*.sh | xargs -L1 -i{} cp -f $DIR/windowmanager/{} /home/$USER/{}
+    cp -f $DIR/windowmanager/*.rasi /usr/share/rofi/themes/
+    cp -f $DIR/windowmanager/rofi-* /home/$USER/.config/scripts/
     cd ../
-    chmod +x /home/$USER/rofi-*.sh
+    chmod +x /home/$USER/rofi-*
     #https://github.com/seebye/ueberzug
     #https://manpages.debian.org/testing/rofi/rofi-theme.5.en.html
     #https://github.com/adi1090x/rofi
