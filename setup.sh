@@ -77,20 +77,14 @@ nvidia ()
 
 login ()
 {
-    #pikaur -S lightdm lightdm-webkit2-greeter lightdm-webkit2-theme-glorious --noconfirm
-    pacman -S lxdm-gtk3 --noconfirm --needed
-    #mv login/lightdm.conf /etc/lightdm/lightdm.conf
-    #mv login/lightdm-webkit2-greeter.conf /etc/lightdm/lightdm-webkit2-greeter.conf
-    #mv login/index.html /usr/share/lightdm-webkit/themes/glorious/
-    #rm -r /usr/share/backgrounds/*
-    #mv login/background.png /usr/share/backgrounds/
+    pacman -S lightdm lightdm-gtk-greeter --noconfirm --needed
+    cp -f $DIR/login/lightdm.conf /etc/lightdm/lightdm.conf
+    cp -f $DIR/login/background.png /usr/share/backgrounds/
     mkdir -p /usr/share/xsessions
     cp -f $DIR/login/steam-big-picture.desktop /usr/share/xsessions/steam-big-picture.desktop
     cp -f $DIR/login/jellyfin.desktop /usr/share/xsessions/jellyfin.desktop
     cp -f $DIR/login/alacritty.desktop /usr/share/xsessions/alacritty.desktop
-    chmod +x /usr/share/xsessions/*
-    #systemctl enable lightdm
-    systemctl enable lxdm
+    systemctl enable lightdm
     #*Theme*
     #*Sessions*
     #*On-screen keyboard*
