@@ -10,7 +10,7 @@ pre_checks ()
     su $USER -c "git clone https://github.com/EmperorPenguin18/diamond-dotfiles /home/$USER/dotfiles"
     cd /home/$USER/dotfiles
     DIR="$(pwd)"
-    pacman -Sy unzip --noconfirm --needed
+    pacman -Sy unzip dialog --noconfirm --needed
     TIME="$(ls -l /etc/localtime | sed 's|.*zoneinfo/||')"
     timedatectl set-timezone $TIME
     hwclock --systohc
