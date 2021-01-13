@@ -18,7 +18,7 @@ pre_checks ()
 
 user_prompts ()
 {
-    VIDEO=$(dialog --stdout --checklist "What video drivers do you need?" 0 0 0 intel "" off amd "" off nvidia "" off)
+    VIDEO=$(dialog --stdout --checklist "What video drivers do you need?" 0 0 0 intel "" off amd "" off nvidia "" off | sed 's/ /\n/g')
     if dialog --yesno "Will this device be used for gaming?" 0 0; then
         GAMING=y
     else
