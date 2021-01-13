@@ -79,7 +79,7 @@ update ()
     #chmod +x /home/$USER/.config/scripts/update
     cp -f $DIR/update/backup.sh /home/$USER/.config/scripts/backup
     chmod +x /home/$USER/.config/scripts/backup
-    echo "0 3 * * 1 root /home/$USER/backup.sh" >> /etc/crontab
+    echo "0 3 * * 1 root /home/$USER/.config/scripts/backup" >> /etc/crontab
     #echo "0 4 * * 1 $USER /home/$USER/update.sh" >> /etc/crontab
     reflector --country $(curl -sL https://raw.github.com/eggert/tz/master/zone1970.tab | grep $TIME | awk '{print $1}') --protocol https --sort rate --save /etc/pacman.d/mirrorlist
     #*Other system maintenance?*
@@ -105,7 +105,8 @@ login ()
     sed -i "s/USER/$USER/g" /etc/lightdm/lightdm.conf
     cp -f $DIR/login/displaysetup.sh /home/$USER/.config/scripts/displaysetup
     chmod +x /home/$USER/.config/scripts/displaysetup
-    cp -f $DIR/login/background.png /usr/share/backgrounds/
+    cp -f $DIR/login/lightdm-gtk-greeter.conf /etc/lightdm/lightdm-gtk-greeter.conf
+    cp -f $DIR/login/background.png /home/$USER/.config/background.png
     mkdir -p /usr/share/xsessions
     cp -f $DIR/login/steam-big-picture.desktop /usr/share/xsessions/steam-big-picture.desktop
     cp -f $DIR/login/jellyfin.desktop /usr/share/xsessions/jellyfin.desktop
