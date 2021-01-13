@@ -106,7 +106,7 @@ login ()
     cp -f $DIR/login/displaysetup.sh /home/$USER/.config/scripts/displaysetup
     chmod +x /home/$USER/.config/scripts/displaysetup
     cp -f $DIR/login/lightdm-gtk-greeter.conf /etc/lightdm/lightdm-gtk-greeter.conf
-    sed -i "s/USER/$USER/g" /etc/lightdm/lightdm.conf
+    sed -i "s/USER/$USER/g" /etc/lightdm/lightdm-gtk-greeter.conf
     cp -f $DIR/login/background.png /home/$USER/.config/background.png
     mkdir -p /usr/share/xsessions
     cp -f $DIR/login/steam-big-picture.desktop /usr/share/xsessions/steam-big-picture.desktop
