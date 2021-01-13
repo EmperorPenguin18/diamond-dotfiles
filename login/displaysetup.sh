@@ -7,6 +7,6 @@ REFRESH="$(xrandr | sed "1,/$(echo $NAME | awk '{print $(NF)}')/d" | grep + | se
 
 for i in $COLUMNS
 do
-	xrandr --output $(echo $NAME | awk "{print \$$i") --off
+	xrandr --output $(echo $NAME | awk "{print \$$i}") --off
 done
 xrandr --output $(echo $NAME | awk '{print $(NF)}') --mode $RESOLUTION --refresh $REFRESH --primary
