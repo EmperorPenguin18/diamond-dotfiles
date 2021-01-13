@@ -116,10 +116,8 @@ login ()
     cp -f $DIR/login/grub /etc/default/grub
     sed -i "s/GRUB_CMDLINE_LINUX=\"\"/GRUB_CMDLINE_LINUX=\"cryptdevice=UUID=$(blkid -o device | xargs -L1 cryptsetup luksUUID):cryptroot\"/g" /etc/default/grub
     grub-mkconfig -o /boot/grub/grub.cfg
-    #*Theme*
     #*Sessions*
     #*On-screen keyboard*
-    #*http://www.mattfischer.com/blog/archives/5*
 }
 
 windowmanager ()
