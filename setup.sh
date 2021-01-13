@@ -54,23 +54,23 @@ packagemanager ()
     rm -r pikaur
 }
 
-cloud ()
-{
-    pacman -S fuse rclone --noconfirm --needed
-    echo "user_allow_other" >> /etc/fuse.conf
-    mkdir -p /home/$USER/.config/rclone
-    cp -f $DIR/cloud/rclone.conf /home/$USER/.config/rclone/rclone.conf
-    chown $USER:$USER /home/$USER/.config/rclone/rclone.conf
-    cp -f $DIR/cloud/rclone1.service /etc/systemd/system/rclone1.service
-    cp -f $DIR/cloud/rclone2.service /etc/systemd/system/rclone2.service
-    cp -f $DIR/cloud/rclone3.service /etc/systemd/system/rclone3.service
-    mkdir /mnt/Personal
-    mkdir /mnt/School
-    mkdir /mnt/Media
-    systemctl enable rclone1
-    systemctl enable rclone2
-    systemctl enable rclone3
-}
+#cloud ()
+#{
+    #pacman -S fuse rclone --noconfirm --needed
+    #echo "user_allow_other" >> /etc/fuse.conf
+    #mkdir -p /home/$USER/.config/rclone
+    #cp -f $DIR/cloud/rclone.conf /home/$USER/.config/rclone/rclone.conf
+    #chown $USER:$USER /home/$USER/.config/rclone/rclone.conf
+    #cp -f $DIR/cloud/rclone1.service /etc/systemd/system/rclone1.service
+    #cp -f $DIR/cloud/rclone2.service /etc/systemd/system/rclone2.service
+    #cp -f $DIR/cloud/rclone3.service /etc/systemd/system/rclone3.service
+    #mkdir /mnt/Personal
+    #mkdir /mnt/School
+    #mkdir /mnt/Media
+    #systemctl enable rclone1
+    #systemctl enable rclone2
+    #systemctl enable rclone3
+#}
 
 update ()
 {
@@ -90,16 +90,13 @@ xorg ()
     pacman -S xorg xorg-drivers lib32-mesa lib32-vulkan-icd-loader libva-mesa-driver lib32-libva-mesa-driver mesa-vdpau lib32-mesa-vdpau --noconfirm --needed
     [ "$(echo $VIDEO | grep 'intel' | wc -l)" -gt 0 ] && pacman -S vulkan-intel lib32-vulkan-intel intel-media-driver libva-intel-driver --noconfirm --needed
     [ "$(echo $VIDEO | grep 'amd' | wc -l)" -gt 0 ] && pacman -S vulkan-radeon lib32-vulkan-radeon amdvlk lib32-amdvlk --noconfirm --needed
+    #[ "$(echo $VIDEO | grep 'nvidia' | wc -l)" -gt 0 ] && pacman -S --noconfirm --needed
     #*Enable vsync + freesync/gsync*
     #*Multi-monitor*
-}
-
-#nvidia ()
-#{
     #https://wiki.archlinux.org/index.php/NVIDIA
     #*Optimus manager*
     #https://wiki.archlinux.org/index.php/PRIME
-#}
+}
 
 login ()
 {
@@ -114,29 +111,13 @@ login ()
     cp -f $DIR/login/jellyfin.desktop /usr/share/xsessions/jellyfin.desktop
     cp -f $DIR/login/alacritty.desktop /usr/share/xsessions/alacritty.desktop
     systemctl enable lightdm
+    cp -f $DIR/login/grub /etc/default/grub
+    sed -i "s/GRUB_CMDLINE_LINUX=\"\"/GRUB_CMDLINE_LINUX=\"cryptdevice=UUID=$(blkid -o device | xargs -L1 cryptsetup luksUUID):cryptroot\"/g" /etc/default/grub
+    grub-mkconfig -o /boot/grub/grub.cfg
     #*Theme*
     #*Sessions*
     #*On-screen keyboard*
     #*http://www.mattfischer.com/blog/archives/5*
-}
-
-plymouth ()
-{
-    pikaur -S plymouth --noconfirm --needed
-    sed -i '4d' /etc/mkinitcpio.conf
-    echo "HOOKS=(base udev plymouth plymouth-encrypt autodetect modconf block filesystems keyboard fsck)" >> /etc/mkinitcpio.conf
-    cp -f $DIR/plymouth/grub /etc/default/grub
-    sed -i "s/GRUB_CMDLINE_LINUX=\"\"/GRUB_CMDLINE_LINUX=\"cryptdevice=UUID=$(blkid -o device | xargs -L1 cryptsetup luksUUID):cryptroot\"/g" /etc/default/grub
-    grub-mkconfig -o /boot/grub/grub.cfg
-    systemctl disable lightdm
-    systemctl enable lightdm-plymouth
-    git clone https://github.com/garak92/powered-plymouth-theme/
-    cd powered-plymouth-theme/
-    mv powered-plymouth-theme/ /usr/share/plymouth/themes/
-    cd ../
-    rm -r powered-plymouth-theme
-    sed -i "s/Theme=.*/Theme=powered-plymouth-theme/g" /etc/plymouth/plymouthd.conf
-    mkinitcpio -P
 }
 
 windowmanager ()
@@ -285,9 +266,9 @@ clean_up ()
 pre_checks
 user_prompts
 packagemanager
+#cloud
 update
 xorg
-#[ "$(echo $VIDEO | grep 'nvidia' | wc -l)" -gt 0 ] && nvidia
 login
 windowmanager
 terminal
