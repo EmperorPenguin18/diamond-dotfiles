@@ -16,6 +16,26 @@ pre_checks ()
     hwclock --systohc
 }
 
+user_prompts ()
+{
+    VIDEO=$(dialog --stdout --checklist "What video drivers do you need?" 0 0 0 intel "" off amd "" off nvidia "" off)
+    if dialog --yesno "Will this device be used for gaming?" 0 0; then
+        GAMING=y
+    else
+        GAMING=n
+    fi
+    if dialog --default-button "no" --yesno "Is this device a laptop?" 0 0; then
+        LAPTOP=y
+    else
+        LAPTOP=y
+    fi
+    if dialog --yesno "Will this device be used for virtualization?" 0 0; then
+        VIRTUALIZATION=y
+    else
+        VIRTUALIZATION=y
+    fi
+}
+
 packagemanager ()
 {
     cp -f $DIR/packagemanager/pacman.conf /etc/pacman.conf
@@ -67,16 +87,19 @@ update ()
 
 xorg ()
 {
-    pacman -S xorg xorg-drivers lib32-mesa lib32-vulkan-icd-loader vulkan-intel lib32-vulkan-intel intel-media-driver libva-intel-driver libva-mesa-driver lib32-libva-mesa-driver mesa-vdpau lib32-mesa-vdpau vulkan-radeon lib32-vulkan-radeon amdvlk lib32-amdvlk --noconfirm --needed
-    #*Enable vsync, freesync/gsync, hardware acceleration, vulkan etc
+    pacman -S xorg xorg-drivers lib32-mesa lib32-vulkan-icd-loader libva-mesa-driver lib32-libva-mesa-driver mesa-vdpau lib32-mesa-vdpau --noconfirm --needed
+    [ "$(echo $VIDEO | grep 'intel' | wc -l)" -gt 0 ] && pacman -S vulkan-intel lib32-vulkan-intel intel-media-driver libva-intel-driver --noconfirm --needed
+    [ "$(echo $VIDEO | grep 'amd' | wc -l)" -gt 0 ] && pacman -S vulkan-radeon lib32-vulkan-radeon amdvlk lib32-amdvlk --noconfirm --needed
+    #*Enable vsync + freesync/gsync*
     #*Multi-monitor*
 }
 
-nvidia ()
-{
-    pacman -S nvidia-prime --noconfirm --needed
-    #*prime-run*
-}
+#nvidia ()
+#{
+    #https://wiki.archlinux.org/index.php/NVIDIA
+    #*Optimus manager*
+    #https://wiki.archlinux.org/index.php/PRIME
+#}
 
 login ()
 {
@@ -258,15 +281,21 @@ clean_up ()
 }
 
 pre_checks
+user_prompts
 packagemanager
 update
 xorg
+#[ "$(echo $VIDEO | grep 'nvidia' | wc -l)" -gt 0 ] && nvidia
 login
 windowmanager
 terminal
 filemanager
 audio
 browser
+#[ "${GAMING}" = "y" ] && gaming
+#[ "${LAPTOP}" = "y" ] && power
+#[ "${VIRTUALIZATION}" = "y" ] && virtualization
+#other
 clean_up
 echo "-------------------------------------------------"
 echo "          All done! You can reboot now.          "
