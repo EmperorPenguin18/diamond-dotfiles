@@ -69,7 +69,6 @@ xorg ()
 {
     pacman -S xorg xorg-drivers lib32-mesa lib32-vulkan-icd-loader vulkan-intel lib32-vulkan-intel intel-media-driver libva-intel-driver libva-mesa-driver lib32-libva-mesa-driver mesa-vdpau lib32-mesa-vdpau vulkan-radeon lib32-vulkan-radeon amdvlk lib32-amdvlk --noconfirm --needed
     #*Enable vsync, freesync/gsync, hardware acceleration, vulkan etc
-    #mv xorg/10-monitor.conf /etc/X11/xorg.conf.d/10-monitor.conf
     #*Multi-monitor*
 }
 
@@ -83,6 +82,9 @@ login ()
 {
     pacman -S lightdm lightdm-gtk-greeter --noconfirm --needed
     cp -f $DIR/login/lightdm.conf /etc/lightdm/lightdm.conf
+    sed -i "s/USER/$USER/g" /etc/lightdm/lightdm.conf
+    cp -f $DIR/login/displaysetup.sh /home/$USER/displaysetup.sh
+    chmod +x /home/$USER/displaysetup.sh
     cp -f $DIR/login/background.png /usr/share/backgrounds/
     mkdir -p /usr/share/xsessions
     cp -f $DIR/login/steam-big-picture.desktop /usr/share/xsessions/steam-big-picture.desktop
