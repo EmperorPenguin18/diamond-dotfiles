@@ -144,7 +144,7 @@ windowmanager ()
     pacman -S spectrwm feh picom xscreensaver rofi xdotool unclutter --noconfirm --needed #all-repository-fonts
     cp -f $DIR/windowmanager/spectrwm.conf /home/$USER/.spectrwm.conf
     sed -i "s/USER/$USER/g" /home/$USER/.spectrwm.conf
-    cp -f $DIR/windowmanager/wallpaper.jpg /home/$USER/wallpaper.jpg
+    cp -f $DIR/windowmanager/wallpaper.jpg /home/$USER/.config/wallpaper.jpg
     cp -f $DIR/windowmanager/picom.conf /home/$USER/.config/picom.conf
     cp -f $DIR/windowmanager/xscreensaver /home/$USER/.xscreensaver
     #git clone https://github.com/EmperorPenguin18/SkyrimCursor
@@ -203,6 +203,8 @@ audio ()
     pacman -S pulseaudio pulseaudio-alsa pulseaudio-bluetooth lib32-libpulse lib32-alsa-plugins spotifyd dunst --noconfirm --needed #alsa-utils
     pactl set-sink-mute 0 false
     pactl set-sink-volume 0 100%
+    cp -f $DIR/audio/audiocontrol.sh /home/$USER/.config/scripts/audiocontrol
+    chmod +x /home/$USER/.config/scripts/audiocontrol
     mkdir -p /home/$USER/.config/dunst
     cp -f $DIR/audio/dunstrc /home/$USER/.config/dunst/dunstrc
     #https://github.com/Spotifyd/spotifyd
