@@ -12,6 +12,8 @@ pre_checks ()
     DIR="$(pwd)"
     pacman -Sy unzip --noconfirm --needed
     TIME="$(ls -l /etc/localtime | sed 's|.*zoneinfo/||')"
+    timedatectl set-timezone $TIME
+    hwclock --systohc
 }
 
 packagemanager ()
