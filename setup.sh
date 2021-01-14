@@ -34,6 +34,7 @@ user_prompts ()
     else
         VIRTUALIZATION=y
     fi
+    MULLVAD=$(dialog --stdout --inputbox "What is your Mullvad VPN account number?" 0 0)
 }
 
 packagemanager ()
@@ -246,13 +247,12 @@ browser ()
 
 other ()
 {
-    pikaur -S freetube discord --noconfirm
-    #*VPN*
-    #*Improving performance*
+    pikaur -S freetube discord mullvad-vpn-cli --noconfirm
+    mullvad account set $MULLVAD
+    #https://wiki.archlinux.org/index.php/Improving_performance
     #*Manjaro settings*
     #*Security*
     #*Optional dependencies*
-    #*Screen capture*
     #*Video calling*
     #https://github.com/AryToNeX/Glasscord
     #https://github.com/Lightcord/Lightcord
