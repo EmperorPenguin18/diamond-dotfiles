@@ -82,7 +82,6 @@ update ()
     echo "0 3 * * 1 root /home/$USER/.config/scripts/backup" >> /etc/crontab
     #echo "0 4 * * 1 $USER /home/$USER/update.sh" >> /etc/crontab
     reflector --country $(curl -sL https://raw.github.com/eggert/tz/master/zone1970.tab | grep $TIME | awk '{print $1}') --protocol https --sort rate --save /etc/pacman.d/mirrorlist
-    #*Other system maintenance?*
 }
 
 xorg ()
@@ -183,13 +182,14 @@ filemanager ()
 
 audio ()
 {
-    pacman -S pulseaudio pulseaudio-alsa pulseaudio-bluetooth lib32-libpulse lib32-alsa-plugins spotifyd dunst --noconfirm --needed #alsa-utils
+    pacman -S pulseaudio pulseaudio-alsa pulseaudio-bluetooth lib32-libpulse lib32-alsa-plugins spotifyd dunst --noconfirm --needed
     pactl set-sink-mute 0 false
     pactl set-sink-volume 0 100%
     cp -f $DIR/audio/audiocontrol.sh /home/$USER/.config/scripts/audiocontrol
     chmod +x /home/$USER/.config/scripts/audiocontrol
     mkdir -p /home/$USER/.config/dunst
     cp -f $DIR/audio/dunstrc /home/$USER/.config/dunst/dunstrc
+    #Mic
     #https://github.com/Spotifyd/spotifyd
 }
 
@@ -200,6 +200,8 @@ browser ()
     firefox -headless &
     killall firefox
     unzip -o $DIR/browser/profile.zip -d /home/$USER/.mozilla/firefox/"$(ls /home/$USER/.mozilla/firefox | grep default-release)"/
+    #*Bookmarks*
+    #*Passwords*
     #*Hardware acceleration*
     #https://github.com/akshat46/FlyingFox
     #https://github.com/manilarome/blurredfox
