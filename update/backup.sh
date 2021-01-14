@@ -1,6 +1,8 @@
 #!/bin/sh
 
-DISKNAME="$(lsblk | grep disk | awk '{print $1;}')"
+NUM="$(lsblk | grep -n /boot | cut -f 1 -d ':')"
+NUM="$(expr $NUM - 1)"
+DISKNAME="$(lsblk | sed -n "$NUM p" | cut -f 1 -d ' ')"
 USER="$(ls /home)"
 TIME="$(ls -l /etc/localtime | sed 's|.*zoneinfo/||')"
 
