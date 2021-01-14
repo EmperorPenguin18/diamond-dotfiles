@@ -1,7 +1,8 @@
 #!/bin/sh
 
 #Update system
-yay -Syyuuq --combinedupgrade --noconfirm > output.txt
+pikaur -Syyuuq --noconfirm >output.txt 2>&1
+#*Password*
 #*Send output*
 rm output.txt
 
