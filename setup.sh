@@ -125,6 +125,8 @@ windowmanager ()
     pacman -S spectrwm feh picom xscreensaver rofi xdotool unclutter --noconfirm --needed #all-repository-fonts
     cp -f $DIR/windowmanager/spectrwm.conf /home/$USER/.spectrwm.conf
     sed -i "s/USER/$USER/g" /home/$USER/.spectrwm.conf
+    cp -f $DIR/windowmanager/screenshot.sh /home/$USER/.config/scripts/screenshot
+    chmod +x /home/$USER/.config/scripts/screenshot
     cp -f $DIR/windowmanager/wallpaper.jpg /home/$USER/.config/wallpaper.jpg
     cp -f $DIR/windowmanager/picom.conf /home/$USER/.config/picom.conf
     cp -f $DIR/windowmanager/xscreensaver /home/$USER/.xscreensaver
