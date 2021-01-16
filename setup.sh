@@ -93,7 +93,6 @@ xorg ()
     [ "$(echo $VIDEO | grep 'nvidia' | wc -l)" -gt 0 ] && pacman -S nvidia-dkms lib32-nvidia-utils nvidia-prime --noconfirm --needed
     #*Enable vsync + freesync/gsync*
     #*Multi-monitor*
-    #*Optimus manager*
 }
 
 login ()
