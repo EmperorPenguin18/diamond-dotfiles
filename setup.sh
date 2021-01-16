@@ -142,6 +142,7 @@ windowmanager ()
     cp -f $DIR/windowmanager/rofi-* /home/$USER/.config/scripts/
     cd ../
     chmod +x /home/$USER/rofi-*
+    #*Clipboard*
     #https://github.com/seebye/ueberzug
     #https://manpages.debian.org/testing/rofi/rofi-theme.5.en.html
     #https://github.com/adi1090x/rofi
