@@ -143,6 +143,7 @@ windowmanager ()
     cd ../
     chmod +x /home/$USER/rofi-*
     #*Clipboard*
+    #*Function keys*
     #https://github.com/seebye/ueberzug
     #https://manpages.debian.org/testing/rofi/rofi-theme.5.en.html
     #https://github.com/adi1090x/rofi
@@ -184,11 +185,12 @@ audio ()
     pacman -S pulseaudio pulseaudio-alsa pulseaudio-bluetooth lib32-libpulse lib32-alsa-plugins spotifyd dunst --noconfirm --needed
     pactl set-sink-mute 0 false
     pactl set-sink-volume 0 100%
+    pactl set-source-mute 1 false
+    pactl set-source-volume 1 30%
     cp -f $DIR/audio/audiocontrol.sh /home/$USER/.config/scripts/audiocontrol
     chmod +x /home/$USER/.config/scripts/audiocontrol
     mkdir -p /home/$USER/.config/dunst
     cp -f $DIR/audio/dunstrc /home/$USER/.config/dunst/dunstrc
-    #Mic
     #https://github.com/Spotifyd/spotifyd
 }
 
