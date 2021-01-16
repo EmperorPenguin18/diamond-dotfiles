@@ -90,12 +90,10 @@ xorg ()
     pacman -S xorg xorg-drivers lib32-mesa lib32-vulkan-icd-loader libva-mesa-driver lib32-libva-mesa-driver mesa-vdpau lib32-mesa-vdpau --noconfirm --needed
     [ "$(echo $VIDEO | grep 'intel' | wc -l)" -gt 0 ] && pacman -S vulkan-intel lib32-vulkan-intel intel-media-driver libva-intel-driver --noconfirm --needed
     [ "$(echo $VIDEO | grep 'amd' | wc -l)" -gt 0 ] && pacman -S vulkan-radeon lib32-vulkan-radeon amdvlk lib32-amdvlk --noconfirm --needed
-    #[ "$(echo $VIDEO | grep 'nvidia' | wc -l)" -gt 0 ] && pacman -S --noconfirm --needed
+    [ "$(echo $VIDEO | grep 'nvidia' | wc -l)" -gt 0 ] && pacman -S nvidia-dkms lib32-nvidia-utils nvidia-prime --noconfirm --needed
     #*Enable vsync + freesync/gsync*
     #*Multi-monitor*
-    #https://wiki.archlinux.org/index.php/NVIDIA
     #*Optimus manager*
-    #https://wiki.archlinux.org/index.php/PRIME
 }
 
 login ()
