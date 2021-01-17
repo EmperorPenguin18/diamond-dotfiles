@@ -223,6 +223,7 @@ browser ()
     #*GloriousEggroll*
     #*tkGlitch*
     #https://github.com/gamer-os
+    #https://github.com/lucasassislar/nucleuscoop/
 #}
 
 #power ()
