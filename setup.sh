@@ -139,11 +139,9 @@ windowmanager ()
     fc-cache
     mkdir /home/$USER/.config/rofi
     cp -f $DIR/windowmanager/config.rasi /home/$USER/.config/rofi/config.rasi
-    cd windowmanager
     cp -f $DIR/windowmanager/*.rasi /usr/share/rofi/themes/
     cp -f $DIR/windowmanager/rofi-* /home/$USER/.config/scripts/
-    cd ../
-    chmod +x /home/$USER/rofi-*
+    chmod +x /home/$USER/.config/scripts/rofi-*
     #*Clipboard*
     #*Function keys*
     #https://github.com/seebye/ueberzug
