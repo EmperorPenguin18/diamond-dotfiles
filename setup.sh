@@ -14,6 +14,7 @@ pre_checks ()
     TIME="$(ls -l /etc/localtime | sed 's|.*zoneinfo/||')"
     timedatectl set-timezone $TIME
     hwclock --systohc
+    mkdir -p /home/$USER/.config/scripts
 }
 
 user_prompts ()
