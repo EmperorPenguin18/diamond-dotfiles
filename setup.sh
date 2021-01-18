@@ -9,7 +9,7 @@ pre_checks ()
     USER="$(ls /home)"
     su $USER -c "git clone https://github.com/EmperorPenguin18/diamond-dotfiles /home/$USER/dotfiles"
     cd /home/$USER/dotfiles
-    DIR="$(pwd)"
+    DIR="$(pwd)/dotfiles"
     pacman -Sy unzip dialog --noconfirm --needed
     TIME="$(ls -l /etc/localtime | sed 's|.*zoneinfo/||')"
     timedatectl set-timezone $TIME
