@@ -78,9 +78,7 @@ update ()
 {
     pacman -S cron reflector --noconfirm --needed
     cp -f $DIR/update/update.sh /home/$USER/.config/scripts/update
-    chmod +x /home/$USER/.config/scripts/update
     cp -f $DIR/update/backup.sh /home/$USER/.config/scripts/backup
-    chmod +x /home/$USER/.config/scripts/backup
     echo "0 3 * * 1 root /home/$USER/.config/scripts/backup" >> /etc/crontab
     echo "0 4 * * 1 $USER /home/$USER/update.sh" >> /etc/crontab
     reflector --country $(curl -sL https://raw.github.com/eggert/tz/master/zone1970.tab | grep $TIME | awk '{print $1}') --protocol https --sort rate --save /etc/pacman.d/mirrorlist
@@ -102,7 +100,6 @@ login ()
     cp -f $DIR/login/lightdm.conf /etc/lightdm/lightdm.conf
     sed -i "s/USER/$USER/g" /etc/lightdm/lightdm.conf
     cp -f $DIR/login/displaysetup.sh /home/$USER/.config/scripts/displaysetup
-    chmod +x /home/$USER/.config/scripts/displaysetup
     cp -f $DIR/login/lightdm-gtk-greeter.conf /etc/lightdm/lightdm-gtk-greeter.conf
     sed -i "s/USER/$USER/g" /etc/lightdm/lightdm-gtk-greeter.conf
     cp -f $DIR/login/background.png /home/$USER/.config/background.png
@@ -121,11 +118,10 @@ login ()
 
 windowmanager ()
 {
-    pacman -S spectrwm feh picom xscreensaver rofi xdotool unclutter --noconfirm --needed #all-repository-fonts
+    pacman -S spectrwm feh picom xscreensaver rofi xdotool xclip unclutter --noconfirm --needed #all-repository-fonts
     cp -f $DIR/windowmanager/spectrwm.conf /home/$USER/.spectrwm.conf
     sed -i "s/USER/$USER/g" /home/$USER/.spectrwm.conf
     cp -f $DIR/windowmanager/screenshot.sh /home/$USER/.config/scripts/screenshot
-    chmod +x /home/$USER/.config/scripts/screenshot
     cp -f $DIR/windowmanager/wallpaper.jpg /home/$USER/.config/wallpaper.jpg
     cp -f $DIR/windowmanager/picom.conf /home/$USER/.config/picom.conf
     cp -f $DIR/windowmanager/xscreensaver /home/$USER/.xscreensaver
@@ -141,8 +137,6 @@ windowmanager ()
     cp -f $DIR/windowmanager/config.rasi /home/$USER/.config/rofi/config.rasi
     cp -f $DIR/windowmanager/*.rasi /usr/share/rofi/themes/
     cp -f $DIR/windowmanager/rofi-* /home/$USER/.config/scripts/
-    chmod +x /home/$USER/.config/scripts/rofi-*
-    #*Clipboard*
     #*Function keys*
     #https://github.com/seebye/ueberzug
     #https://manpages.debian.org/testing/rofi/rofi-theme.5.en.html
@@ -183,12 +177,13 @@ filemanager ()
 audio ()
 {
     pacman -S pulseaudio pulseaudio-alsa pulseaudio-bluetooth lib32-libpulse lib32-alsa-plugins spotifyd dunst --noconfirm --needed
+    systemctl --user start pulseaudio.socket
+    systemctl --user start pulseaudio.service
     pactl set-sink-mute 0 false
     pactl set-sink-volume 0 100%
     pactl set-source-mute 1 false
     pactl set-source-volume 1 30%
     cp -f $DIR/audio/audiocontrol.sh /home/$USER/.config/scripts/audiocontrol
-    chmod +x /home/$USER/.config/scripts/audiocontrol
     mkdir -p /home/$USER/.config/dunst
     cp -f $DIR/audio/dunstrc /home/$USER/.config/dunst/dunstrc
     #https://github.com/Spotifyd/spotifyd
@@ -196,17 +191,22 @@ audio ()
 
 browser ()
 {
-    pacman -S firefox --noconfirm --needed
+    pacman -S firefox pass pass-otp --noconfirm --needed
     mkdir -p /home/$USER/.mozilla/firefox
     firefox -headless &
     killall firefox
-    unzip -o $DIR/browser/profile.zip -d /home/$USER/.mozilla/firefox/"$(ls /home/$USER/.mozilla/firefox | grep default-release)"/
-    #*Bookmarks*
+    PROFILE="$(ls /home/$USER/.mozilla/firefox | grep default-release)"
+    cp -f $DIR/browser/prefs.js /home/$USER/.mozilla/firefox/$PROFILE/prefs.js
+    mkdir -p /home/$USER/.mozilla/firefox/$PROFILE/extensions
+    cp -f $DIR/browser/*.xpi /home/$USER/.mozilla/firefox/$PROFILE/extensions/
+    cp -f $DIR/browser/homepage.html /home/$USER/.config/homepage.html
+    sed -i "s/USER/$USER/g" /home/$USER/.config/homepage.html
+    sed -i 's/dmenu/rofi -theme center -dmenu -p Passwords -i/g' /usr/bin/passmenu
     #*Passwords*
-    #*Hardware acceleration*
     #https://github.com/akshat46/FlyingFox
     #https://github.com/manilarome/blurredfox
     #https://www.youtube.com/watch?v=NH4DdXC0RFw&ab_channel=SunKnudsen
+    #https://gitlab.com/librewolf-community
 }
 
 #gaming ()
@@ -248,12 +248,14 @@ browser ()
 
 other ()
 {
-    pikaur -S freetube discord mullvad-vpn-cli --noconfirm
+    pikaur -S freetube discord mullvad-vpn-cli networkmanager-openvpn --noconfirm
     mullvad account set $MULLVAD
+    mullvad auto-connect set on
+    mullvad lan set allow
+    mullvad relay set tunnel-protocol openvpn
     #https://wiki.archlinux.org/index.php/Improving_performance
     #*Manjaro settings*
     #*Security*
-    #*Optional dependencies*
     #*Video calling*
     #https://github.com/AryToNeX/Glasscord
     #https://github.com/Lightcord/Lightcord
@@ -265,6 +267,7 @@ other ()
 
 clean_up ()
 {
+    chmod +x /home/$USER/.config/scripts/*
     chown -R $USER:$USER /home/$USER
 }
 
