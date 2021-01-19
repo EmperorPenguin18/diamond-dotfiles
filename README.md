@@ -9,7 +9,6 @@ Designed to completely automate setting up the computer, so that it can be deplo
 ### Features:
 - Automated updates and backups
 - Supports all three GPU brands (Nvidia, AMD, Intel)
-- Useable from the couch
 - Multiple rices to choose from
 - Keyboard-centric workflow
 - Spotifyd controlled with media keys
@@ -27,6 +26,7 @@ curl -sL https://raw.github.com/EmperorPenguin18/diamond-dotfiles/master/setup.s
 7. Press Super+s once in spectrwm to see all shortcuts
 
 ### Future:
+- Useable from the couch
 - Support more distros
 - More minimal
 
