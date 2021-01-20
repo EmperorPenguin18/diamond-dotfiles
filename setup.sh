@@ -228,6 +228,7 @@ browser ()
     #*tkGlitch*
     #https://github.com/gamer-os
     #https://github.com/lucasassislar/nucleuscoop/
+    #https://wiki.archlinux.org/index.php/List_of_games
 #}
 
 #power ()
