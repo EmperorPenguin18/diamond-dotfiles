@@ -36,6 +36,8 @@ user_prompts ()
         VIRTUALIZATION=y
     fi
     MULLVAD=$(dialog --stdout --inputbox "What is your Mullvad VPN account number?" 0 0)
+    SNAME=$(dialog --stdout --inputbox "What is your Spotify username?" 0 0)
+    SPASS=$(dialog --stdout --inputbox "What is your Spotify password?" 0 0)
 }
 
 packagemanager ()
@@ -137,7 +139,6 @@ windowmanager ()
     cp -f $DIR/windowmanager/config.rasi /home/$USER/.config/rofi/config.rasi
     cp -f $DIR/windowmanager/*.rasi /usr/share/rofi/themes/
     cp -f $DIR/windowmanager/rofi-* /home/$USER/.config/scripts/
-    #*Function keys*
     #https://github.com/seebye/ueberzug
     #https://manpages.debian.org/testing/rofi/rofi-theme.5.en.html
     #https://github.com/adi1090x/rofi
@@ -163,20 +164,19 @@ terminal ()
 
 filemanager ()
 {
-    pikaur -S pcmanfm-gtk3 gvfs arc-gtk-theme hicolor-icon-theme arc-icon-theme moka-icon-theme-git lxsession-gtk3 mtools exfatprogs e2fsprogs ntfs-3g xfsprogs mpv --noconfirm --needed #hfsprogs apfsprogs-git onlyoffice-bin
+    pikaur -S pcmanfm-gtk3 gvfs arc-gtk-theme hicolor-icon-theme arc-icon-theme moka-icon-theme-git lxsession-gtk3 mtools exfatprogs e2fsprogs ntfs-3g xfsprogs mpv mpv-mpris --noconfirm --needed #hfsprogs apfsprogs-git onlyoffice-bin
     cp -f $DIR/filemanager/settings.ini /etc/gtk-3.0/settings.ini
     mkdir -p /home/$USER/.config/mpv
     cp -f $DIR/filemanager/mpv.conf /home/$USER/.config/mpv/mpv.conf
     cp -f $DIR/filemanager/input.conf /home/$USER/.config/mpv/input.conf
     #https://github.com/deviantfero/wpgtk
     #https://github.com/Misterio77/flavours
-    #*mpv addons / MPRIS*
     #*mpv OSC*
 }
 
 audio ()
 {
-    pacman -S pulseaudio pulseaudio-alsa pulseaudio-bluetooth lib32-libpulse lib32-alsa-plugins spotifyd dunst --noconfirm --needed
+    pacman -S pulseaudio pulseaudio-alsa pulseaudio-bluetooth lib32-libpulse lib32-alsa-plugins spotifyd playerctl dunst --noconfirm --needed
     systemctl --user start pulseaudio.socket
     systemctl --user start pulseaudio.service
     pactl set-sink-mute 0 false
@@ -184,6 +184,12 @@ audio ()
     pactl set-source-mute 1 false
     pactl set-source-volume 1 30%
     cp -f $DIR/audio/audiocontrol.sh /home/$USER/.config/scripts/audiocontrol
+    cp -f $DIR/audio/spotifyd.conf /home/$USER/.config/spotifyd/spotifyd.conf
+    sed -i "s/USER/$USER/g" /home/$USER/.config/spotifyd/spotifyd.conf
+    sed -i "s/SNAME/$SNAME/g" /home/$USER/.config/spotifyd/spotifyd.conf
+    sed -i "s/SPASS/$SPASS/g" /home/$USER/.config/spotifyd/spotifyd.conf
+    cp /usr/lib/systemd/user/spotifyd.service /etc/systemd/user/
+    systemctl --user enable spotifyd.service
     mkdir -p /home/$USER/.config/dunst
     cp -f $DIR/audio/dunstrc /home/$USER/.config/dunst/dunstrc
     #https://github.com/Spotifyd/spotifyd
@@ -286,7 +292,7 @@ browser
 #[ "${GAMING}" = "y" ] && gaming
 #[ "${LAPTOP}" = "y" ] && power
 #[ "${VIRTUALIZATION}" = "y" ] && virtualization
-#other
+other
 clean_up
 echo "-------------------------------------------------"
 echo "          All done! You can reboot now.          "
@@ -294,6 +300,7 @@ echo "-------------------------------------------------"
 
 #*System configs*
 #*Script performance*
+#*Unify passwords*
 #https://wiki.archlinux.org/index.php/Dash
 #https://wiki.archlinux.org/index.php/Dotfiles
 #https://wiki.archlinux.org/index.php/General_recommendations
