@@ -192,6 +192,7 @@ audio ()
     systemctl --user enable spotifyd.service
     mkdir -p /home/$USER/.config/dunst
     cp -f $DIR/audio/dunstrc /home/$USER/.config/dunst/dunstrc
+    #*Playlist*
 }
 
 browser ()
