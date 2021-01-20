@@ -106,16 +106,14 @@ login ()
     sed -i "s/USER/$USER/g" /etc/lightdm/lightdm-gtk-greeter.conf
     cp -f $DIR/login/background.png /home/$USER/.config/background.png
     mkdir -p /usr/share/xsessions
-    cp -f $DIR/login/steam-big-picture.desktop /usr/share/xsessions/steam-big-picture.desktop
-    cp -f $DIR/login/jellyfin.desktop /usr/share/xsessions/jellyfin.desktop
+    #cp -f $DIR/login/steam-big-picture.desktop /usr/share/xsessions/steam-big-picture.desktop
+    #cp -f $DIR/login/jellyfin.desktop /usr/share/xsessions/jellyfin.desktop
     cp -f $DIR/login/alacritty.desktop /usr/share/xsessions/alacritty.desktop
     systemctl enable lightdm
     cp -f $DIR/login/grub /etc/default/grub
     UUID=$(blkid -o device | xargs -L1 cryptsetup luksUUID)
     sed -i "s/GRUB_CMDLINE_LINUX=\"\"/GRUB_CMDLINE_LINUX=\"cryptdevice=UUID=$(echo $UUID):cryptroot\"/g" /etc/default/grub
     grub-mkconfig -o /boot/grub/grub.cfg
-    #*Sessions*
-    #*On-screen keyboard*
 }
 
 windowmanager ()
