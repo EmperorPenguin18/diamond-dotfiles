@@ -45,9 +45,9 @@ packagemanager ()
     cp -f $DIR/packagemanager/pacman.conf /etc/pacman.conf
     echo "#This system uses doas instead of sudo" > /etc/doas.conf
     echo "permit persist $USER" >> /etc/doas.conf
-    echo "permit nopass /usr/bin/pacman" >> /etc/doas.conf
-    echo "permit nopass /usr/bin/pikaur" >> /etc/doas.conf
-    echo "permit nopass /usr/bin/makepkg" >> /etc/doas.conf
+    echo "permit nopass $USER cmd pacman" >> /etc/doas.conf
+    echo "permit nopass $USER cmd pikaur" >> /etc/doas.conf
+    echo "permit nopass $USER cmd makepkg" >> /etc/doas.conf
     sed -i '/MAKEFLAGS.*/c\MAKEFLAGS="-j$(nproc)"' /etc/makepkg.conf
     pacman -Sy autoconf automake bison flex groff m4 pkgconf pyalpm python-commonmark make --noconfirm --needed
     su $USER -c "git clone https://aur.archlinux.org/pikaur.git"
@@ -125,13 +125,13 @@ windowmanager ()
     cp -f $DIR/windowmanager/wallpaper.jpg /home/$USER/.config/wallpaper.jpg
     cp -f $DIR/windowmanager/picom.conf /home/$USER/.config/picom.conf
     cp -f $DIR/windowmanager/xscreensaver /home/$USER/.xscreensaver
-    #git clone https://github.com/EmperorPenguin18/SkyrimCursor
-    #mkdir -p /home/$USER/.local/share/icons/skyrim/cursors
-    #cp SkyrimCursor/Small/Linux/x11/* /home/$USER/.local/share/icons/skyrim/cursors/
-    #rm -r SkyrimCursor
-    #mkdir -p /home/$USER/.icons/default
-    #echo "[icon theme]" > /home/$USER/.icons/default/index.theme
-    #echo "Inherits=skyrim" >> /home/$USER/.icons/default/index.theme
+    git clone https://github.com/EmperorPenguin18/SkyrimCursor
+    mkdir -p /home/$USER/.local/share/icons/skyrim/cursors
+    cp SkyrimCursor/Small/Linux/x11/* /home/$USER/.local/share/icons/skyrim/cursors/
+    rm -r SkyrimCursor
+    mkdir -p /home/$USER/.icons/default
+    echo "[icon theme]" > /home/$USER/.icons/default/index.theme
+    echo "Inherits=skyrim" >> /home/$USER/.icons/default/index.theme
     cp -f $DIR/windowmanager/DTM-Mono.otf /usr/share/fonts/DTM-Mono.otf
     cp -f $DIR/windowmanager/DTM-Sans.otf /usr/share/fonts/DTM-Sans.otf
     chmod 0444 /usr/share/fonts/DTM-Mono.otf
@@ -248,14 +248,12 @@ browser ()
     #*powertop*
 #}
 
-#virtualization ()
-#{
-    #*KVM*
-    #*QEMU*
-    #*Virt-manager*
-    #*Extras*
+virtualization ()
+{
+    pacman -S qemu qemu-arch-extra libvirt ebtables dnsmasq virt-manager libguestfs edk2-ovmf --noconfirm --needed
+    systemctl enable libvirtd
     #https://github.com/Fmstrat/winapps
-#}
+}
 
 other ()
 {
@@ -296,7 +294,7 @@ audio
 browser
 #[ "${GAMING}" = "y" ] && gaming
 #[ "${LAPTOP}" = "y" ] && power
-#[ "${VIRTUALIZATION}" = "y" ] && virtualization
+[ "${VIRTUALIZATION}" = "y" ] && virtualization
 other
 clean_up
 echo "-------------------------------------------------"
