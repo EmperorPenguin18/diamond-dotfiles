@@ -10,7 +10,7 @@ pre_checks ()
     su $USER -c "git clone https://github.com/EmperorPenguin18/diamond-dotfiles /home/$USER/dotfiles"
     cd /home/$USER/dotfiles
     DIR="$(pwd)"
-    pacman -Sy unzip dialog --noconfirm --needed
+    pacman -Sy dialog --noconfirm --needed
     TIME="$(ls -l /etc/localtime | sed 's|.*zoneinfo/||')"
     timedatectl set-timezone $TIME
     hwclock --systohc
@@ -118,7 +118,7 @@ login ()
 
 windowmanager ()
 {
-    pacman -S spectrwm feh picom xscreensaver rofi xdotool xclip unclutter --noconfirm --needed #all-repository-fonts
+    pikaur -S spectrwm feh picom xscreensaver rofi xdotool xclip unclutter all-repository-fonts --noconfirm --needed
     cp -f $DIR/windowmanager/spectrwm.conf /home/$USER/.spectrwm.conf
     sed -i "s/USER/$USER/g" /home/$USER/.spectrwm.conf
     cp -f $DIR/windowmanager/screenshot.sh /home/$USER/.config/scripts/screenshot
@@ -126,10 +126,14 @@ windowmanager ()
     cp -f $DIR/windowmanager/picom.conf /home/$USER/.config/picom.conf
     cp -f $DIR/windowmanager/xscreensaver /home/$USER/.xscreensaver
     #git clone https://github.com/EmperorPenguin18/SkyrimCursor
-    #mkdir -p /home/$USER/.local/share/icons/skyrim/cursor
-    #cp SkyrimCursor/Small/Linux/x11/* /home/$USER/.local/share/icons/skyrim/cursor/
+    #mkdir -p /home/$USER/.local/share/icons/skyrim/cursors
+    #cp SkyrimCursor/Small/Linux/x11/* /home/$USER/.local/share/icons/skyrim/cursors/
     #rm -r SkyrimCursor
-    unzip $DIR/windowmanager/DTM.ZIP -d /usr/share/fonts/
+    #mkdir -p /home/$USER/.icons/default
+    #echo "[icon theme]" > /home/$USER/.icons/default/index.theme
+    #echo "Inherits=skyrim" >> /home/$USER/.icons/default/index.theme
+    cp -f $DIR/windowmanager/DTM-Mono.otf /usr/share/fonts/DTM-Mono.otf
+    cp -f $DIR/windowmanager/DTM-Sans.otf /usr/share/fonts/DTM-Sans.otf
     chmod 0444 /usr/share/fonts/DTM-Mono.otf
     chmod 0444 /usr/share/fonts/DTM-Sans.otf
     fc-cache
@@ -145,7 +149,7 @@ windowmanager ()
 
 terminal ()
 {
-    pacman -S alacritty wget mlocate lsd pkgfile neovim parted openssh bashtop --noconfirm --needed
+    pacman -S alacritty wget mlocate lsd pkgfile neovim parted openssh unzip zip --noconfirm --needed
     mkdir -p /home/$USER/.config/alacritty
     cp -f $DIR/terminal/alacritty.yml /home/$USER/.config/alacritty/alacritty.yml
     mkdir -p /home/$USER/.config/fish
@@ -190,6 +194,8 @@ audio ()
     systemctl --user enable spotifyd.service
     mkdir -p /home/$USER/.config/dunst
     cp -f $DIR/audio/dunstrc /home/$USER/.config/dunst/dunstrc
+    echo "ja_JP.UTF-8 UTF-8" >> /etc/locale.gen
+    locale-gen
     #*Playlist*
 }
 
