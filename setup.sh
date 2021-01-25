@@ -37,7 +37,7 @@ user_prompts ()
     fi
     MULLVAD=$(dialog --stdout --inputbox "What is your Mullvad VPN account number?" 0 0)
     SNAME=$(dialog --stdout --inputbox "What is your Spotify username?" 0 0)
-    SPASS=$(dialog --stdout --inputbox "What is your Spotify password?" 0 0)
+    SPASS=$(dialog --stdout --passwordbox "What is your Spotify password?" 0 0)
 }
 
 packagemanager ()
@@ -50,12 +50,12 @@ packagemanager ()
     echo "permit nopass $USER cmd makepkg" >> /etc/doas.conf
     sed -i '/MAKEFLAGS.*/c\MAKEFLAGS="-j$(nproc)"' /etc/makepkg.conf
     pacman -Sy autoconf automake bison flex groff m4 pkgconf pyalpm python-commonmark make --noconfirm --needed
-    su $USER -c "git clone https://aur.archlinux.org/pikaur.git"
-    cd pikaur
+    su $USER -c "git clone https://aur.archlinux.org/pikaur-bin.git"
+    cd pikaur-bin
     su $USER -c "makepkg --noconfirm"
     pacman -U *.pkg* --noconfirm --needed
     cd ../
-    rm -r pikaur
+    rm -r pikaur-bin
 }
 
 #cloud ()
@@ -88,10 +88,10 @@ update ()
 
 xorg ()
 {
-    pacman -S xorg xorg-drivers lib32-mesa lib32-vulkan-icd-loader libva-mesa-driver lib32-libva-mesa-driver mesa-vdpau lib32-mesa-vdpau --noconfirm --needed
-    [ "$(echo $VIDEO | grep 'intel' | wc -l)" -gt 0 ] && pacman -S vulkan-intel lib32-vulkan-intel intel-media-driver libva-intel-driver --noconfirm --needed
-    [ "$(echo $VIDEO | grep 'amd' | wc -l)" -gt 0 ] && pacman -S vulkan-radeon lib32-vulkan-radeon amdvlk lib32-amdvlk --noconfirm --needed
-    [ "$(echo $VIDEO | grep 'nvidia' | wc -l)" -gt 0 ] && pacman -S nvidia-dkms lib32-nvidia-utils nvidia-prime --noconfirm --needed
+    pacman -S xorg lib32-mesa lib32-vulkan-icd-loader libva-mesa-driver lib32-libva-mesa-driver mesa-vdpau lib32-mesa-vdpau --noconfirm --needed
+    [ "$(echo $VIDEO | grep 'intel' | wc -l)" -gt 0 ] && pacman -S xf86-video-intel vulkan-intel lib32-vulkan-intel intel-media-driver libva-intel-driver --noconfirm --needed
+    [ "$(echo $VIDEO | grep 'amd' | wc -l)" -gt 0 ] && pacman -S xf86-video-ati xf86-video-amdgpu vulkan-radeon lib32-vulkan-radeon amdvlk lib32-amdvlk --noconfirm --needed
+    [ "$(echo $VIDEO | grep 'nvidia' | wc -l)" -gt 0 ] && pacman -S xf86-video-nouveau nvidia-dkms lib32-nvidia-utils nvidia-prime --noconfirm --needed
     #*Enable vsync + freesync/gsync*
     #*Multi-monitor*
 }
@@ -111,7 +111,7 @@ login ()
     cp -f $DIR/login/alacritty.desktop /usr/share/xsessions/alacritty.desktop
     systemctl enable lightdm
     cp -f $DIR/login/grub /etc/default/grub
-    UUID=$(blkid -o device | xargs -L1 cryptsetup luksUUID)
+    UUID="$(blkid -o device | xargs -L1 cryptsetup luksUUID)"
     sed -i "s/GRUB_CMDLINE_LINUX=\"\"/GRUB_CMDLINE_LINUX=\"cryptdevice=UUID=$(echo $UUID):cryptroot\"/g" /etc/default/grub
     grub-mkconfig -o /boot/grub/grub.cfg
 }
@@ -179,19 +179,15 @@ filemanager ()
 audio ()
 {
     pacman -S pulseaudio pulseaudio-alsa pulseaudio-bluetooth lib32-libpulse lib32-alsa-plugins spotifyd playerctl dunst --noconfirm --needed
-    systemctl --user start pulseaudio.socket
-    systemctl --user start pulseaudio.service
-    pactl set-sink-mute 0 false
-    pactl set-sink-volume 0 100%
-    pactl set-source-mute 1 false
-    pactl set-source-volume 1 30%
+    mkdir -p /home/$USER/.config/pulse
+    cp -f $DIR/audio/default.pa /home/$USER/.config/pulse/default.pa
     cp -f $DIR/audio/audiocontrol.sh /home/$USER/.config/scripts/audiocontrol
     cp -f $DIR/audio/spotifyd.conf /home/$USER/.config/spotifyd/spotifyd.conf
     sed -i "s/USER/$USER/g" /home/$USER/.config/spotifyd/spotifyd.conf
     sed -i "s/SNAME/$SNAME/g" /home/$USER/.config/spotifyd/spotifyd.conf
     sed -i "s/SPASS/$SPASS/g" /home/$USER/.config/spotifyd/spotifyd.conf
     cp /usr/lib/systemd/user/spotifyd.service /etc/systemd/user/
-    systemctl --user enable spotifyd.service
+    su $USER -c "systemctl --user enable spotifyd.service"
     mkdir -p /home/$USER/.config/dunst
     cp -f $DIR/audio/dunstrc /home/$USER/.config/dunst/dunstrc
     echo "ja_JP.UTF-8 UTF-8" >> /etc/locale.gen
@@ -216,7 +212,6 @@ browser ()
     #https://github.com/akshat46/FlyingFox
     #https://github.com/manilarome/blurredfox
     #https://www.youtube.com/watch?v=NH4DdXC0RFw&ab_channel=SunKnudsen
-    #https://gitlab.com/librewolf-community
 }
 
 #gaming ()
