@@ -245,7 +245,7 @@ browser ()
 
 virtualization ()
 {
-    pacman -S qemu qemu-arch-extra libvirt ebtables dnsmasq virt-manager libguestfs edk2-ovmf --noconfirm --needed
+    pacman -S qemu qemu-arch-extra libvirt ebtables dnsmasq virt-manager libguestfs edk2-ovmf dmidecode --noconfirm --needed
     systemctl enable libvirtd
     #https://github.com/Fmstrat/winapps
 }
