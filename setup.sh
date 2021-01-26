@@ -90,8 +90,8 @@ xorg ()
 {
     pacman -S xorg lib32-mesa lib32-vulkan-icd-loader libva-mesa-driver lib32-libva-mesa-driver mesa-vdpau lib32-mesa-vdpau --noconfirm --needed
     [ "$(echo $VIDEO | grep 'intel' | wc -l)" -gt 0 ] && pacman -S xf86-video-intel vulkan-intel lib32-vulkan-intel intel-media-driver libva-intel-driver --noconfirm --needed
-    [ "$(echo $VIDEO | grep 'amd' | wc -l)" -gt 0 ] && pacman -S xf86-video-ati xf86-video-amdgpu vulkan-radeon lib32-vulkan-radeon amdvlk lib32-amdvlk --noconfirm --needed
-    [ "$(echo $VIDEO | grep 'nvidia' | wc -l)" -gt 0 ] && pacman -S xf86-video-nouveau nvidia-dkms lib32-nvidia-utils nvidia-prime --noconfirm --needed
+    [ "$(echo $VIDEO | grep 'amd' | wc -l)" -gt 0 ] && pacman -S xf86-video-amdgpu vulkan-radeon lib32-vulkan-radeon amdvlk lib32-amdvlk --noconfirm --needed
+    [ "$(echo $VIDEO | grep 'nvidia' | wc -l)" -gt 0 ] && pacman -S nvidia-dkms lib32-nvidia-utils nvidia-prime --noconfirm --needed
     #*Enable vsync + freesync/gsync*
     #*Multi-monitor*
 }
