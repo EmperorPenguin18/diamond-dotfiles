@@ -26,6 +26,7 @@ curl -sL https://raw.github.com/EmperorPenguin18/diamond-dotfiles/master/setup.s
 7. Press Super+s once in spectrwm to see all shortcuts
 
 ### Future:
+- Multi-monitor
 - Useable from the couch
 - Support more distros
 - More minimal
