@@ -49,7 +49,7 @@ packagemanager ()
     echo "permit nopass $USER cmd pikaur" >> /etc/doas.conf
     echo "permit nopass $USER cmd makepkg" >> /etc/doas.conf
     sed -i '/MAKEFLAGS.*/c\MAKEFLAGS="-j$(nproc)"' /etc/makepkg.conf
-    pacman -Sy autoconf automake bison flex groff m4 pkgconf pyalpm python-commonmark make --noconfirm --needed
+    pacman -Sy autoconf automake bison flex groff m4 pkgconf pyalpm python-commonmark make patch --noconfirm --needed
     su $USER -c "git clone https://aur.archlinux.org/pikaur.git"
     cd pikaur
     su $USER -c "makepkg --noconfirm"
@@ -186,6 +186,7 @@ audio ()
     mkdir -p /home/$USER/.config/pulse
     cp -f $DIR/audio/default.pa /home/$USER/.config/pulse/default.pa
     cp -f $DIR/audio/audiocontrol.sh /home/$USER/.config/scripts/audiocontrol
+    mkdir -p /home/$USER/.config/spotifyd
     cp -f $DIR/audio/spotifyd.conf /home/$USER/.config/spotifyd/spotifyd.conf
     sed -i "s/USER/$USER/g" /home/$USER/.config/spotifyd/spotifyd.conf
     sed -i "s/SNAME/$SNAME/g" /home/$USER/.config/spotifyd/spotifyd.conf
