@@ -86,14 +86,13 @@ update ()
     reflector --country $(curl -sL https://raw.github.com/eggert/tz/master/zone1970.tab | grep $TIME | awk '{print $1}') --protocol https --sort rate --save /etc/pacman.d/mirrorlist
 }
 
-xorg ()
+video ()
 {
-    pacman -S xorg lib32-mesa lib32-vulkan-icd-loader libva-mesa-driver lib32-libva-mesa-driver mesa-vdpau lib32-mesa-vdpau --noconfirm --needed
+    pacman -S xorg mesa lib32-mesa vulkan-icd-loader lib32-vulkan-icd-loader libva-mesa-driver lib32-libva-mesa-driver mesa-vdpau lib32-mesa-vdpau --noconfirm --needed
     [ "$(echo $VIDEO | grep 'intel' | wc -l)" -gt 0 ] && pacman -S xf86-video-intel vulkan-intel lib32-vulkan-intel intel-media-driver libva-intel-driver --noconfirm --needed
-    [ "$(echo $VIDEO | grep 'amd' | wc -l)" -gt 0 ] && pacman -S xf86-video-amdgpu vulkan-radeon lib32-vulkan-radeon amdvlk lib32-amdvlk --noconfirm --needed
+    [ "$(echo $VIDEO | grep 'amd' | wc -l)" -gt 0 ] && pacman -S xf86-video-amdgpu vulkan-radeon lib32-vulkan-radeon --noconfirm --needed
     [ "$(echo $VIDEO | grep 'nvidia' | wc -l)" -gt 0 ] && pacman -S nvidia-dkms lib32-nvidia-utils nvidia-prime --noconfirm --needed
     #*Enable vsync + freesync/gsync*
-    #*Multi-monitor*
 }
 
 login ()
@@ -116,15 +115,11 @@ login ()
     grub-mkconfig -o /boot/grub/grub.cfg
 }
 
-windowmanager ()
+xorg ()
 {
-    pikaur -S spectrwm feh picom xscreensaver rofi xdotool xclip unclutter all-repository-fonts --noconfirm --needed
-    cp -f $DIR/windowmanager/spectrwm.conf /home/$USER/.spectrwm.conf
-    sed -i "s/USER/$USER/g" /home/$USER/.spectrwm.conf
-    cp -f $DIR/windowmanager/screenshot.sh /home/$USER/.config/scripts/screenshot
-    cp -f $DIR/windowmanager/wallpaper.jpg /home/$USER/.config/wallpaper.jpg
-    cp -f $DIR/windowmanager/picom.conf /home/$USER/.config/picom.conf
+    pikaur -S xorg xscreensaver xdotool xclip picom all-repository-fonts --noconfirm --needed
     cp -f $DIR/windowmanager/xscreensaver /home/$USER/.xscreensaver
+    cp -f $DIR/windowmanager/picom.conf /home/$USER/.config/picom.conf
     git clone https://github.com/EmperorPenguin18/SkyrimCursor
     mkdir -p /home/$USER/.local/share/icons/skyrim/cursors
     cp SkyrimCursor/Small/Linux/x11/* /home/$USER/.local/share/icons/skyrim/cursors/
@@ -132,6 +127,15 @@ windowmanager ()
     mkdir -p /home/$USER/.icons/default
     echo "[icon theme]" > /home/$USER/.icons/default/index.theme
     echo "Inherits=skyrim" >> /home/$USER/.icons/default/index.theme
+}
+
+windowmanager ()
+{
+    pacman -S spectrwm feh rofi unclutter --noconfirm --needed
+    cp -f $DIR/windowmanager/spectrwm.conf /home/$USER/.spectrwm.conf
+    sed -i "s/USER/$USER/g" /home/$USER/.spectrwm.conf
+    cp -f $DIR/windowmanager/screenshot.sh /home/$USER/.config/scripts/screenshot
+    cp -f $DIR/windowmanager/wallpaper.jpg /home/$USER/.config/wallpaper.jpg
     cp -f $DIR/windowmanager/DTM-Mono.otf /usr/share/fonts/DTM-Mono.otf
     cp -f $DIR/windowmanager/DTM-Sans.otf /usr/share/fonts/DTM-Sans.otf
     chmod 0444 /usr/share/fonts/DTM-Mono.otf
@@ -280,8 +284,9 @@ user_prompts
 packagemanager
 #cloud
 update
-xorg
+video
 login
+xorg
 windowmanager
 terminal
 filemanager
