@@ -15,6 +15,7 @@ pre_checks ()
     timedatectl set-timezone $TIME
     hwclock --systohc
     mkdir -p /home/$USER/.config/scripts
+    return 0
 }
 
 user_prompts ()
@@ -38,6 +39,7 @@ user_prompts ()
     MULLVAD=$(dialog --stdout --inputbox "What is your Mullvad VPN account number?" 0 0)
     SNAME=$(dialog --stdout --inputbox "What is your Spotify username?" 0 0)
     SPASS=$(dialog --stdout --passwordbox "What is your Spotify password?" 0 0)
+    return 0
 }
 
 packagemanager ()
@@ -56,6 +58,7 @@ packagemanager ()
     pacman -U *.pkg* --noconfirm --needed
     cd ../
     rm -r pikaur
+    return 0
 }
 
 #cloud ()
@@ -74,6 +77,7 @@ packagemanager ()
     #systemctl enable rclone1
     #systemctl enable rclone2
     #systemctl enable rclone3
+    #return 0
 #}
 
 update ()
@@ -84,6 +88,7 @@ update ()
     echo "0 3 * * 1 root /home/$USER/.config/scripts/backup" >> /etc/crontab
     echo "0 4 * * 1 $USER /home/$USER/update.sh" >> /etc/crontab
     reflector --country $(curl -sL https://raw.github.com/eggert/tz/master/zone1970.tab | grep $TIME | awk '{print $1}') --protocol https --sort rate --save /etc/pacman.d/mirrorlist
+    return 0
 }
 
 video ()
@@ -92,6 +97,7 @@ video ()
     [ "$(echo $VIDEO | grep 'intel' | wc -l)" -gt 0 ] && pacman -S xf86-video-intel vulkan-intel lib32-vulkan-intel intel-media-driver libva-intel-driver --noconfirm --needed
     [ "$(echo $VIDEO | grep 'amd' | wc -l)" -gt 0 ] && pacman -S xf86-video-amdgpu vulkan-radeon lib32-vulkan-radeon --noconfirm --needed
     [ "$(echo $VIDEO | grep 'nvidia' | wc -l)" -gt 0 ] && pacman -S nvidia-dkms lib32-nvidia-utils nvidia-prime --noconfirm --needed
+    return 0
     #*Enable vsync + freesync/gsync*
 }
 
@@ -113,6 +119,7 @@ login ()
     UUID="$(blkid -o device | xargs -L1 cryptsetup luksUUID | grep -v WARNING)"
     sed -i "s/GRUB_CMDLINE_LINUX=\"\"/GRUB_CMDLINE_LINUX=\"cryptdevice=UUID=$(echo $UUID):cryptroot\"/g" /etc/default/grub
     grub-mkconfig -o /boot/grub/grub.cfg
+    return 0
 }
 
 xorg ()
@@ -127,6 +134,7 @@ xorg ()
     mkdir -p /home/$USER/.icons/default
     echo "[icon theme]" > /home/$USER/.icons/default/index.theme
     echo "Inherits=skyrim" >> /home/$USER/.icons/default/index.theme
+    return 0
 }
 
 windowmanager ()
@@ -145,6 +153,7 @@ windowmanager ()
     cp -f $DIR/windowmanager/config.rasi /home/$USER/.config/rofi/config.rasi
     cp -f $DIR/windowmanager/*.rasi /usr/share/rofi/themes/
     cp -f $DIR/windowmanager/rofi-* /home/$USER/.config/scripts/
+    return 0
     #https://github.com/seebye/ueberzug
     #https://manpages.debian.org/testing/rofi/rofi-theme.5.en.html
     #https://github.com/adi1090x/rofi
@@ -164,6 +173,7 @@ terminal ()
     systemctl enable pkgfile-update.timer
     mkdir -p /home/$USER/.config/nvim
     cp -f $DIR/terminal/init.vim /home/$USER/.config/nvim/init.vim
+    return 0
     #*Help command (for terminal utilities)*
     #*Fetch*
 }
@@ -175,6 +185,7 @@ filemanager ()
     mkdir -p /home/$USER/.config/mpv
     cp -f $DIR/filemanager/mpv.conf /home/$USER/.config/mpv/mpv.conf
     cp -f $DIR/filemanager/input.conf /home/$USER/.config/mpv/input.conf
+    return 0
     #https://github.com/deviantfero/wpgtk
     #https://github.com/Misterio77/flavours
     #*mpv OSC*
@@ -197,6 +208,7 @@ audio ()
     cp -f $DIR/audio/dunstrc /home/$USER/.config/dunst/dunstrc
     echo "ja_JP.UTF-8 UTF-8" >> /etc/locale.gen
     locale-gen
+    return 0
     #*Playlist*
 }
 
@@ -213,6 +225,7 @@ browser ()
     cp -f $DIR/browser/homepage.html /home/$USER/.config/homepage.html
     sed -i "s/USER/$USER/g" /home/$USER/.config/homepage.html
     sed -i 's/dmenu/rofi -theme center -dmenu -p Passwords -i/g' /usr/bin/passmenu
+    return 0
     #*Passwords*
     #https://github.com/akshat46/FlyingFox
     #https://github.com/manilarome/blurredfox
@@ -252,6 +265,7 @@ virtualization ()
 {
     pacman -S qemu qemu-arch-extra libvirt ebtables dnsmasq virt-manager libguestfs edk2-ovmf dmidecode --noconfirm --needed
     systemctl enable libvirtd
+    return 0
     #https://github.com/Fmstrat/winapps
 }
 
@@ -262,6 +276,7 @@ other ()
     mullvad auto-connect set on
     mullvad lan set allow
     mullvad relay set tunnel-protocol openvpn
+    return 0
     #https://wiki.archlinux.org/index.php/Improving_performance
     #*Manjaro settings*
     #*Security*
@@ -278,6 +293,7 @@ clean_up ()
 {
     chmod +x /home/$USER/.config/scripts/*
     chown -R $USER:$USER /home/$USER
+    return 0
 }
 
 pre_checks
