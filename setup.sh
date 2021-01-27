@@ -50,12 +50,12 @@ packagemanager ()
     echo "permit nopass $USER cmd makepkg" >> /etc/doas.conf
     sed -i '/MAKEFLAGS.*/c\MAKEFLAGS="-j$(nproc)"' /etc/makepkg.conf
     pacman -Sy autoconf automake bison flex groff m4 pkgconf pyalpm python-commonmark make --noconfirm --needed
-    su $USER -c "git clone https://aur.archlinux.org/pikaur-bin.git"
-    cd pikaur-bin
+    su $USER -c "git clone https://aur.archlinux.org/pikaur.git"
+    cd pikaur
     su $USER -c "makepkg --noconfirm"
     pacman -U *.pkg* --noconfirm --needed
     cd ../
-    rm -r pikaur-bin
+    rm -r pikaur
 }
 
 #cloud ()
@@ -88,7 +88,7 @@ update ()
 
 video ()
 {
-    pacman -S xorg mesa lib32-mesa vulkan-icd-loader lib32-vulkan-icd-loader libva-mesa-driver lib32-libva-mesa-driver mesa-vdpau lib32-mesa-vdpau --noconfirm --needed
+    pacman -S mesa lib32-mesa vulkan-icd-loader lib32-vulkan-icd-loader libva-mesa-driver lib32-libva-mesa-driver mesa-vdpau lib32-mesa-vdpau --noconfirm --needed
     [ "$(echo $VIDEO | grep 'intel' | wc -l)" -gt 0 ] && pacman -S xf86-video-intel vulkan-intel lib32-vulkan-intel intel-media-driver libva-intel-driver --noconfirm --needed
     [ "$(echo $VIDEO | grep 'amd' | wc -l)" -gt 0 ] && pacman -S xf86-video-amdgpu vulkan-radeon lib32-vulkan-radeon --noconfirm --needed
     [ "$(echo $VIDEO | grep 'nvidia' | wc -l)" -gt 0 ] && pacman -S nvidia-dkms lib32-nvidia-utils nvidia-prime --noconfirm --needed
@@ -110,7 +110,7 @@ login ()
     cp -f $DIR/login/alacritty.desktop /usr/share/xsessions/alacritty.desktop
     systemctl enable lightdm
     cp -f $DIR/login/grub /etc/default/grub
-    UUID="$(blkid -o device | xargs -L1 cryptsetup luksUUID)"
+    UUID="$(blkid -o device | xargs -L1 cryptsetup luksUUID | grep -v WARNING)"
     sed -i "s/GRUB_CMDLINE_LINUX=\"\"/GRUB_CMDLINE_LINUX=\"cryptdevice=UUID=$(echo $UUID):cryptroot\"/g" /etc/default/grub
     grub-mkconfig -o /boot/grub/grub.cfg
 }
@@ -118,8 +118,8 @@ login ()
 xorg ()
 {
     pikaur -S xorg xscreensaver xdotool xclip picom all-repository-fonts --noconfirm --needed
-    cp -f $DIR/windowmanager/xscreensaver /home/$USER/.xscreensaver
-    cp -f $DIR/windowmanager/picom.conf /home/$USER/.config/picom.conf
+    cp -f $DIR/xorg/xscreensaver /home/$USER/.xscreensaver
+    cp -f $DIR/xorg/picom.conf /home/$USER/.config/picom.conf
     git clone https://github.com/EmperorPenguin18/SkyrimCursor
     mkdir -p /home/$USER/.local/share/icons/skyrim/cursors
     cp SkyrimCursor/Small/Linux/x11/* /home/$USER/.local/share/icons/skyrim/cursors/
