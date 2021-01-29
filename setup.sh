@@ -144,6 +144,7 @@ windowmanager ()
     cp -f $DIR/windowmanager/spectrwm.conf /home/$USER/.spectrwm.conf
     sed -i "s/USER/$USER/g" /home/$USER/.spectrwm.conf
     cp -f $DIR/windowmanager/screenshot.sh /home/$USER/.config/scripts/screenshot
+    cp -f $DIR/windowmanager/monitor.sh /home/$USER/.config/scripts/monitor
     cp -f $DIR/windowmanager/wallpaper.jpg /home/$USER/.config/wallpaper.jpg
     cp -f $DIR/windowmanager/DTM-Mono.otf /usr/share/fonts/DTM-Mono.otf
     cp -f $DIR/windowmanager/DTM-Sans.otf /usr/share/fonts/DTM-Sans.otf
@@ -249,6 +250,7 @@ browser ()
     #https://github.com/gamer-os
     #https://github.com/lucasassislar/nucleuscoop/
     #https://wiki.archlinux.org/index.php/List_of_games
+    #https://github.com/dreamer
 #}
 
 #power ()
