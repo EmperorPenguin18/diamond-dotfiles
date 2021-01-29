@@ -1,5 +1,15 @@
 #!/bin/sh
 
+insert_binding ()
+{
+    NUM="$(grep -n 'keyboard_mapping' /home/$USER/.spectrwm.conf | cut -f 1 -d ':')"
+    NUM="$(expr $NUM - 2)"
+    sed -i "$NUM a program[$1] = $2" /home/$USER/.spectrwm.conf
+    NUM="$(grep -n 'QUIRKS' /home/$USER/.spectrwm.conf | cut -f 1 -d ':')"
+    NUM="$(expr $NUM - 2)"
+    sed -i "$NUM a bind[$1] = $3 #$4" /home/$USER/.spectrwm.conf
+}
+
 pre_checks ()
 {
     if [ "$(whoami)" != "root" ]; then
@@ -268,6 +278,7 @@ virtualization ()
 {
     pacman -S qemu qemu-arch-extra libvirt ebtables dnsmasq virt-manager libguestfs edk2-ovmf dmidecode --noconfirm --needed
     systemctl enable libvirtd
+    insert_binding virtual virt-manager MOD+m 'Open Virtual Machine Manager'
     return 0
     #https://github.com/Fmstrat/winapps
 }
