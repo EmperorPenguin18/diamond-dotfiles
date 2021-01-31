@@ -174,7 +174,7 @@ windowmanager ()
 
 terminal ()
 {
-    pacman -S alacritty wget mlocate lsd pkgfile neovim parted openssh unzip zip unrar --noconfirm --needed
+    pacman -S alacritty wget mlocate lsd pkgfile neovim parted openssh unzip zip unrar speedtest-cli --noconfirm --needed
     mkdir -p /home/$USER/.config/alacritty
     cp -f $DIR/terminal/alacritty.yml /home/$USER/.config/alacritty/alacritty.yml
     mkdir -p /home/$USER/.config/fish
