@@ -61,7 +61,7 @@ packagemanager ()
     echo "permit nopass $USER cmd pikaur" >> /etc/doas.conf
     echo "permit nopass $USER cmd makepkg" >> /etc/doas.conf
     sed -i '/MAKEFLAGS.*/c\MAKEFLAGS="-j$(nproc)"' /etc/makepkg.conf
-    pacman -Sy autoconf automake bison flex groff m4 pkgconf pyalpm python-commonmark make patch --noconfirm --needed
+    pacman -Sy autoconf automake bison flex groff m4 pkgconf pyalpm python-commonmark make patch gcc --noconfirm --needed
     su $USER -c "git clone https://aur.archlinux.org/pikaur.git"
     cd pikaur
     su $USER -c "makepkg --noconfirm"
@@ -285,7 +285,10 @@ virtualization ()
 
 other ()
 {
+    gpg --recv-key 78CEAA8CB72E4467
+    gpg --recv-key AEE9DECFD582E984
     pikaur -S freetube discord mullvad-vpn-cli networkmanager-openvpn --noconfirm
+    systemctl start mullvad-daemon
     mullvad account set $MULLVAD
     mullvad auto-connect set on
     mullvad lan set allow
