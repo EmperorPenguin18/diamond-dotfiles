@@ -110,6 +110,8 @@ video ()
     [ "$(echo $VIDEO | grep 'intel' | wc -l)" -gt 0 ] && [ "$(echo $VIDEO | grep 'nvidia' | wc -l)" -gt 0 ] && pikaur -S optimus-manager && cp -f $DIR/xorg/optimus-manager.conf /etc/optimus-manager/optimus-manager.conf
     return 0
     #*Enable vsync + freesync/gsync*
+    #*https://wiki.archlinux.org/index.php/NVIDIA#DRM_kernel_mode_setting*
+    #https://github.com/Askannz/optimus-manager/wiki/A-guide--to-power-management-options
 }
 
 login ()
@@ -146,6 +148,7 @@ xorg ()
     echo "[icon theme]" > /home/$USER/.icons/default/index.theme
     echo "Inherits=skyrim" >> /home/$USER/.icons/default/index.theme
     return 0
+    #xset s off -dpms
 }
 
 windowmanager ()
@@ -263,16 +266,25 @@ browser ()
     #https://github.com/dreamer
 #}
 
-#power ()
-#{
-    #*Brightness*
-    #*TLP*
-    #*AUTO_CPUFREQ*
-    #*Screensaver*
+power ()
+{
+    pacman -S tlp acpid --noconfirm --needed
+    cp -f $DIR/power/brightnesscontrol.sh /home/$USER/.config/scripts/brightnesscontrol
+    insert_binding brightup "/home/$USER/.config/scripts/brightnesscontrol up" XF86MonBrightnessUp 'Increase brightness'
+    insert_binding brightdown "/home/$USER/.config/scripts/brightnesscontrol down" XF86MonBrightnessDown 'Decrease brightness'
+    #https://wiki.archlinux.org/index.php/Backlight
+    systemctl enable tlp
+    systemctl enable NetworkManager-dispatcher
+    systemctl mask systemd-rfkill.service
+    systemctl mask systemd-rfkill.socket
+    cp -f $DIR/power/tlp.conf /etc/tlp.conf
+    #https://wiki.archlinux.org/index.php/TLP
+    systemctl enable acpid
+    #https://wiki.archlinux.org/index.php/CPU_frequency_scaling / AUTO_CPUFREQ
     #*Auto-hibernate*
-    #*Profiles*
     #*powertop*
-#}
+    #*Mute LED*
+}
 
 virtualization ()
 {
@@ -327,7 +339,7 @@ filemanager
 audio
 browser
 #[ "${GAMING}" = "y" ] && gaming
-#[ "${LAPTOP}" = "y" ] && power
+[ "${LAPTOP}" = "y" ] && power
 [ "${VIRTUALIZATION}" = "y" ] && virtualization
 other
 clean_up
