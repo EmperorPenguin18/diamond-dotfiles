@@ -137,8 +137,8 @@ login ()
 
 xorg ()
 {
-    pikaur -S xorg xscreensaver xdotool xclip picom all-repository-fonts --noconfirm --needed
-    cp -f $DIR/xorg/xscreensaver /home/$USER/.xscreensaver
+    pikaur -S xorg xdotool xclip picom all-repository-fonts --noconfirm --needed
+    xset s off -dpms
     cp -f $DIR/xorg/picom.conf /home/$USER/.config/picom.conf
     git clone https://github.com/EmperorPenguin18/SkyrimCursor
     mkdir -p /home/$USER/.local/share/icons/skyrim/cursors
@@ -148,7 +148,6 @@ xorg ()
     echo "[icon theme]" > /home/$USER/.icons/default/index.theme
     echo "Inherits=skyrim" >> /home/$USER/.icons/default/index.theme
     return 0
-    #xset s off -dpms
 }
 
 windowmanager ()
@@ -284,6 +283,7 @@ power ()
     #*Auto-hibernate*
     #*powertop*
     #*Mute LED*
+    #*Screen timeout*
 }
 
 virtualization ()
