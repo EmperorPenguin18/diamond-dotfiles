@@ -3,7 +3,7 @@ picom --experimental-backends -b
 unclutter &
 feh --bg-scale --no-fehbg /home/USER/.config/wallpaper.jpg
 pcmanfm -d
-lxsession &
+lxpolkit &
 playerctld daemon
 xset s off -dpms
 exec spectrwm
