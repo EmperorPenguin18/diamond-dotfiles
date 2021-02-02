@@ -174,6 +174,7 @@ windowmanager ()
     #https://manpages.debian.org/testing/rofi/rofi-theme.5.en.html
     #https://github.com/adi1090x/rofi
     #https://www.youtube.com/watch?v=kw2mnwhptjw&ab_channel=meribold
+    #*Workspace notification*
 }
 
 terminal ()
@@ -269,11 +270,10 @@ browser ()
 
 power ()
 {
-    pacman -S tlp acpid --noconfirm --needed
+    pacman -S light tlp acpid --noconfirm --needed
     cp -f $DIR/power/brightnesscontrol.sh /home/$USER/.config/scripts/brightnesscontrol
     insert_binding XF86MonBrightnessUp "/home/$USER/.config/scripts/brightnesscontrol up" 'Increase brightness'
     insert_binding XF86MonBrightnessDown "/home/$USER/.config/scripts/brightnesscontrol down" 'Decrease brightness'
-    #https://wiki.archlinux.org/index.php/Backlight
     systemctl enable tlp
     systemctl enable NetworkManager-dispatcher
     systemctl mask systemd-rfkill.service
@@ -282,10 +282,11 @@ power ()
     #https://wiki.archlinux.org/index.php/TLP
     systemctl enable acpid
     #https://wiki.archlinux.org/index.php/CPU_frequency_scaling / AUTO_CPUFREQ
-    #*Auto-hibernate*
+    #*Hibernate*
     #*powertop*
     #*Mute LED*
     #*Screen timeout*
+    #*Battery notification*
 }
 
 virtualization ()
