@@ -126,6 +126,7 @@ login ()
     cp -f $DIR/login/alacritty.desktop /usr/share/xsessions/alacritty.desktop
     cp -f $DIR/login/xinitrc /home/$USER/.xinitrc
     chmod +x /home/$USER/.xinitrc
+    rm /usr/share/xsessions/spectrwm.desktop
     systemctl enable lightdm
     cp -f $DIR/login/grub /etc/default/grub
     UUID="$(blkid -o device | xargs -L1 cryptsetup luksUUID | grep -v WARNING)"
