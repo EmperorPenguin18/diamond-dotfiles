@@ -1,2 +1,7 @@
 #!/bin/sh
 #Wifi
+
+nmcli -t d wifi rescan
+OUTPUT="$(nmcli -t -g SSID device wifi list | sed -r '/^\s*$/d' | uniq -u | rofi -theme top -dmenu -p Wifi -i)"
+[ "$OUTPUT" = "" ] && exit 1
+nmcli device wifi connect $OUTPUT
