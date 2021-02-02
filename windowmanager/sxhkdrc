@@ -1,95 +1,71 @@
 super + Return  #Open the terminal
   alacritty
 
-
 super + v #Open the text editor
   alacritty -e vim
-
 
 super + b #Open the browser
   firefox
 
-
 super + f #Open the file manager
   pcmanfm
-
 
 super + p #View the password helper
   passmenu
 
-
 super + y #Open youtube viewer
   freetube
-
 
 super + d #Open messenging software
   discord
 
-
 super + Up  #View the top rofi
   /home/USER/.config/scripts/rofi-top
-
 
 super + Right #View the right rofi
   /home/USER/.config/scripts/rofi-right
 
-
 super + Down  #View the bottom rofi
   /home/USER/.config/scripts/rofi-bottom
-
 
 super + Left  #View the left rofi
   /home/USER/.config/scripts/rofi-left
 
-
 super + space #View the center rofi
   /home/USER/.config/scripts/rofi-center
-
 
 super + s #View the shortcut helper
   /home/USER/.config/scripts/rofi-shortcuts
 
-
 XF86AudioMute #Mute audio
   /home/USER/.config/scripts/audiocontrol mute
-
 
 XF86AudioRaiseVolume  #Raise volume
   /home/USER/.config/scripts/audiocontrol up
 
-
 XF86AudioLowerVolume  #Lower volume
   /home/USER/.config/scripts/audiocontrol down
-
 
 Print #Take screenshot
   /home/USER/.config/scripts/screenshot
 
-
-XF86AudioPlay
+XF86AudioPlay #Play/Pause music
   /home/USER/.config/scripts/audiocontrol play
-#Play/Pause music
 
-XF86AudioStop
+XF86AudioStop #Stop music
   /home/USER/.config/scripts/audiocontrol stop
-#Stop music
 
-XF86AudioNext
+XF86AudioNext #Next track
   /home/USER/.config/scripts/audiocontrol next
-#Next track
 
-XF86AudioPrev
+XF86AudioPrev #Previous track
   /home/USER/.config/scripts/audiocontrol prev
-#Previous track
 
-super + n
+super + n #View memory information
   /home/USER/.config/scripts/monitor mem
-#View memory information
 
-super + c
+super + c #View cpu information
   /home/USER/.config/scripts/monitor cpu
-#View cpu information
 
-super + i
+super + i #View internet information
   /home/USER/.config/scripts/monitor int
-#View internet information
