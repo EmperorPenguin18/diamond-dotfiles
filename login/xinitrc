@@ -1,0 +1,9 @@
+sxhkd &
+picom --experimental-backends -b
+unclutter &
+feh --bg-scale --no-fehbg /home/USER/.config/wallpaper.jpg
+pcmanfm -d
+lxsession &
+playerctld daemon
+xset s off -dpms
+exec spectrwm
