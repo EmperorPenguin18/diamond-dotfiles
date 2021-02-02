@@ -2,12 +2,9 @@
 
 insert_binding ()
 {
-    NUM="$(grep -n 'keyboard_mapping' /home/$USER/.spectrwm.conf | cut -f 1 -d ':')"
-    NUM="$(expr $NUM - 2)"
-    sed -i "$NUM a program[$1] = $2" /home/$USER/.spectrwm.conf
-    NUM="$(grep -n 'QUIRKS' /home/$USER/.spectrwm.conf | cut -f 1 -d ':')"
-    NUM="$(expr $NUM - 2)"
-    sed -i "$NUM a bind[$1] = $3 #$4" /home/$USER/.spectrwm.conf
+    echo "$1" >> /home/$USER/.config/sxhkd/sxhkdrc
+    echo "  $2" >> /home/$USER/.config/sxhkd/sxhkdrc
+    echo "#$3" >> /home/$USER/.config/sxhkd/sxhkdrc
 }
 
 pre_checks ()
@@ -116,7 +113,7 @@ video ()
 
 login ()
 {
-    pacman -S lightdm lightdm-gtk-greeter --noconfirm --needed
+    pikaur -S lightdm lightdm-gtk-greeter xinit-xsession --noconfirm --needed
     cp -f $DIR/login/lightdm.conf /etc/lightdm/lightdm.conf
     sed -i "s/USER/$USER/g" /etc/lightdm/lightdm.conf
     cp -f $DIR/login/displaysetup.sh /home/$USER/.config/scripts/displaysetup
@@ -127,6 +124,8 @@ login ()
     #cp -f $DIR/login/steam-big-picture.desktop /usr/share/xsessions/steam-big-picture.desktop
     #cp -f $DIR/login/jellyfin.desktop /usr/share/xsessions/jellyfin.desktop
     cp -f $DIR/login/alacritty.desktop /usr/share/xsessions/alacritty.desktop
+    cp -f $DIR/login/xinitrc /home/$USER/.xinitrc
+    chmod +x /home/$USER/.xinitrc
     systemctl enable lightdm
     cp -f $DIR/login/grub /etc/default/grub
     UUID="$(blkid -o device | xargs -L1 cryptsetup luksUUID | grep -v WARNING)"
@@ -151,9 +150,12 @@ xorg ()
 
 windowmanager ()
 {
-    pacman -S spectrwm feh rofi unclutter --noconfirm --needed
+    pacman -S spectrwm sxhkd feh rofi unclutter --noconfirm --needed
     cp -f $DIR/windowmanager/spectrwm.conf /home/$USER/.spectrwm.conf
     sed -i "s/USER/$USER/g" /home/$USER/.spectrwm.conf
+    mkdir /home/$USER/.config/sxhkd
+    cp -f $DIR/windowmanager/sxhkdrc /home/$USER/.config/sxhkd/sxhkdrc
+    sed -i "s/USER/$USER/g" /home/$USER/.config/sxhkd/sxhkdrc
     cp -f $DIR/windowmanager/screenshot.sh /home/$USER/.config/scripts/screenshot
     cp -f $DIR/windowmanager/monitor.sh /home/$USER/.config/scripts/monitor
     cp -f $DIR/windowmanager/wallpaper.jpg /home/$USER/.config/wallpaper.jpg
@@ -268,8 +270,8 @@ power ()
 {
     pacman -S tlp acpid --noconfirm --needed
     cp -f $DIR/power/brightnesscontrol.sh /home/$USER/.config/scripts/brightnesscontrol
-    insert_binding brightup "/home/$USER/.config/scripts/brightnesscontrol up" XF86MonBrightnessUp 'Increase brightness'
-    insert_binding brightdown "/home/$USER/.config/scripts/brightnesscontrol down" XF86MonBrightnessDown 'Decrease brightness'
+    insert_binding XF86MonBrightnessUp "/home/$USER/.config/scripts/brightnesscontrol up" 'Increase brightness'
+    insert_binding XF86MonBrightnessDown "/home/$USER/.config/scripts/brightnesscontrol down" 'Decrease brightness'
     #https://wiki.archlinux.org/index.php/Backlight
     systemctl enable tlp
     systemctl enable NetworkManager-dispatcher
@@ -289,7 +291,7 @@ virtualization ()
 {
     pacman -S qemu qemu-arch-extra libvirt ebtables dnsmasq virt-manager libguestfs edk2-ovmf dmidecode --noconfirm --needed
     systemctl enable libvirtd
-    insert_binding virtual virt-manager MOD+m 'Open Virtual Machine Manager'
+    insert_binding 'super + m' virt-manager 'Open Virtual Machine Manager'
     return 0
     #https://github.com/Fmstrat/winapps
 }
