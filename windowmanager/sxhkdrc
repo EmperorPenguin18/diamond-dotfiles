@@ -1,70 +1,70 @@
-super + Return
+super + Return  #Open the terminal
   alacritty
-#Open the terminal
 
-super + v
+
+super + v #Open the text editor
   alacritty -e vim
-#Open the text editor
 
-super + b
+
+super + b #Open the browser
   firefox
-#Open the browser
 
-super + f
+
+super + f #Open the file manager
   pcmanfm
-#Open the file manager
 
-super + p
+
+super + p #View the password helper
   passmenu
-#View the password helper
 
-super + y
+
+super + y #Open youtube viewer
   freetube
-#Open youtube viewer
 
-super + d
+
+super + d #Open messenging software
   discord
-#Open messenging software
 
-super + Up
+
+super + Up  #View the top rofi
   /home/USER/.config/scripts/rofi-top
-#View the top rofi
 
-super + Right
+
+super + Right #View the right rofi
   /home/USER/.config/scripts/rofi-right
-#View the right rofi
 
-super + Down
+
+super + Down  #View the bottom rofi
   /home/USER/.config/scripts/rofi-bottom
-#View the bottom rofi
 
-super + Left
+
+super + Left  #View the left rofi
   /home/USER/.config/scripts/rofi-left
-#View the left rofi
 
-super + space
+
+super + space #View the center rofi
   /home/USER/.config/scripts/rofi-center
-#View the center rofi
 
-super + s
+
+super + s #View the shortcut helper
   /home/USER/.config/scripts/rofi-shortcuts
-#View the shortcut helper
 
-XF86AudioMute
+
+XF86AudioMute #Mute audio
   /home/USER/.config/scripts/audiocontrol mute
-#Mute audio
 
-XF86AudioRaiseVolume
+
+XF86AudioRaiseVolume  #Raise volume
   /home/USER/.config/scripts/audiocontrol up
-#Raise volume
 
-XF86AudioLowerVolume
+
+XF86AudioLowerVolume  #Lower volume
   /home/USER/.config/scripts/audiocontrol down
-#Lower volume
 
-Print
+
+Print #Take screenshot
   /home/USER/.config/scripts/screenshot
-#Take screenshot
+
 
 XF86AudioPlay
   /home/USER/.config/scripts/audiocontrol play
