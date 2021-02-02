@@ -1,7 +1,9 @@
-#!/bin/bash
+#!/bin/sh
 #Bar
 
-#*Wifi*
-#*Time*
-#*Workspaces*
-#*Battery*
+OUTPUT="$(printf 'Suspend\nHibernate\nReboot\nShutdown\n' | rofi -theme top -dmenu -p Power -i)"
+[ "$OUTPUT" = "" ] && exit 1
+[ "$OUTPUT" = "Suspend" ] && suspend
+[ "$OUTPUT" = "Hibernate" ] && hibernate
+[ "$OUTPUT" = "Reboot" ] && reboot
+[ "$OUTPUT" = "Shutdown" ] && poweroff
