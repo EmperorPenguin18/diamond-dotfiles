@@ -138,7 +138,6 @@ login ()
 xorg ()
 {
     pikaur -S xorg xdotool xclip picom-git all-repository-fonts --noconfirm --needed
-    xset s off -dpms
     cp -f $DIR/xorg/picom.conf /home/$USER/.config/picom.conf
     git clone https://github.com/EmperorPenguin18/SkyrimCursor
     mkdir -p /home/$USER/.local/share/icons/skyrim/cursors
