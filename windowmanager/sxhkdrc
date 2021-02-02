@@ -37,6 +37,9 @@ super + space #View the center rofi
 super + s #View the shortcut helper
   /home/USER/.config/scripts/rofi-shortcuts
 
+super + w #View the wifi helper
+  /home/USER/.config/scripts/rofi-wifi
+
 XF86AudioMute #Mute audio
   /home/USER/.config/scripts/audiocontrol mute
 
