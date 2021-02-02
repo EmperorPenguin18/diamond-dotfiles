@@ -2,9 +2,8 @@
 
 insert_binding ()
 {
-    echo "$1" >> /home/$USER/.config/sxhkd/sxhkdrc
+    echo "$1    #$3" >> /home/$USER/.config/sxhkd/sxhkdrc
     echo "  $2" >> /home/$USER/.config/sxhkd/sxhkdrc
-    echo "#$3" >> /home/$USER/.config/sxhkd/sxhkdrc
 }
 
 pre_checks ()
