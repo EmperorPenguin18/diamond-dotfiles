@@ -103,7 +103,7 @@ video ()
     [ "$(echo $VIDEO | grep 'intel' | wc -l)" -gt 0 ] && pacman -S xf86-video-intel vulkan-intel lib32-vulkan-intel intel-media-driver libva-intel-driver --noconfirm --needed
     [ "$(echo $VIDEO | grep 'amd' | wc -l)" -gt 0 ] && pacman -S xf86-video-amdgpu vulkan-radeon lib32-vulkan-radeon --noconfirm --needed
     [ "$(echo $VIDEO | grep 'nvidia' | wc -l)" -gt 0 ] && pacman -S nvidia-dkms lib32-nvidia-utils nvidia-prime --noconfirm --needed
-    [ "$(echo $VIDEO | grep 'intel' | wc -l)" -gt 0 ] && [ "$(echo $VIDEO | grep 'nvidia' | wc -l)" -gt 0 ] && pikaur -S optimus-manager && cp -f $DIR/xorg/optimus-manager.conf /etc/optimus-manager/optimus-manager.conf
+    #[ "$(echo $VIDEO | grep 'intel' | wc -l)" -gt 0 ] && [ "$(echo $VIDEO | grep 'nvidia' | wc -l)" -gt 0 ] && pikaur -S optimus-manager && cp -f $DIR/xorg/optimus-manager.conf /etc/optimus-manager/optimus-manager.conf
     return 0
     #*Enable vsync + freesync/gsync*
     #*https://wiki.archlinux.org/index.php/NVIDIA#DRM_kernel_mode_setting*
@@ -269,7 +269,7 @@ browser ()
 
 power ()
 {
-    pacman -S light tlp acpid --noconfirm --needed
+    pikaur -S light tlp acpid --noconfirm --needed
     cp -f $DIR/power/brightnesscontrol.sh /home/$USER/.config/scripts/brightnesscontrol
     insert_binding XF86MonBrightnessUp "/home/$USER/.config/scripts/brightnesscontrol up" 'Increase brightness'
     insert_binding XF86MonBrightnessDown "/home/$USER/.config/scripts/brightnesscontrol down" 'Decrease brightness'
@@ -280,6 +280,7 @@ power ()
     cp -f $DIR/power/tlp.conf /etc/tlp.conf
     #https://wiki.archlinux.org/index.php/TLP
     systemctl enable acpid
+    #https://wiki.archlinux.org/index.php/Laptop_Mode_Tools
     #https://wiki.archlinux.org/index.php/CPU_frequency_scaling / AUTO_CPUFREQ
     #*Hibernate*
     #*powertop*
