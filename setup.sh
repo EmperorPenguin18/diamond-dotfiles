@@ -4,6 +4,7 @@ insert_binding ()
 {
     echo "$1    #$3" >> /home/$USER/.config/sxhkd/sxhkdrc
     echo "  $2" >> /home/$USER/.config/sxhkd/sxhkdrc
+    echo "" >> /home/$USER/.config/sxhkd/sxhkdrc
 }
 
 pre_checks ()
@@ -169,10 +170,7 @@ windowmanager ()
     cp -f $DIR/windowmanager/*.rasi /usr/share/rofi/themes/
     cp -f $DIR/windowmanager/rofi-* /home/$USER/.config/scripts/
     return 0
-    #https://github.com/seebye/ueberzug
     #https://manpages.debian.org/testing/rofi/rofi-theme.5.en.html
-    #https://github.com/adi1090x/rofi
-    #https://www.youtube.com/watch?v=kw2mnwhptjw&ab_channel=meribold
     #*Workspace notification*
 }
 
@@ -204,7 +202,6 @@ filemanager ()
     return 0
     #https://github.com/deviantfero/wpgtk
     #https://github.com/Misterio77/flavours
-    #*mpv OSC*
 }
 
 audio ()
@@ -243,8 +240,6 @@ browser ()
     sed -i 's/dmenu/rofi -theme center -dmenu -p Passwords -i/g' /usr/bin/passmenu
     return 0
     #*Passwords*
-    #https://github.com/akshat46/FlyingFox
-    #https://github.com/manilarome/blurredfox
     #https://www.youtube.com/watch?v=NH4DdXC0RFw&ab_channel=SunKnudsen
 }
 
