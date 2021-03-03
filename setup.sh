@@ -202,6 +202,7 @@ filemanager ()
     return 0
     #https://github.com/deviantfero/wpgtk
     #https://github.com/Misterio77/flavours
+    #https://github.com/themix-project/oomox
 }
 
 audio ()
@@ -217,12 +218,12 @@ audio ()
     sed -i "s/SPASS/$SPASS/g" /home/$USER/.config/spotifyd/spotifyd.conf
     cp /usr/lib/systemd/user/spotifyd.service /etc/systemd/user/
     su $USER -c "systemctl --user enable spotifyd.service"
+    cp -f $DIR/audio/newsong.sh /home/$USER/.config/scripts/newsong
     mkdir -p /home/$USER/.config/dunst
     cp -f $DIR/audio/dunstrc /home/$USER/.config/dunst/dunstrc
     echo "ja_JP.UTF-8 UTF-8" >> /etc/locale.gen
     locale-gen
     return 0
-    #*Playlist*
 }
 
 browser ()
