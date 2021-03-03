@@ -2,7 +2,7 @@
 
 USER="$(ls /home)"
 
-DATA="$(playerctl --player=spotifyd metadata --format '{{ title }}|{{ album }}|{{ artist }}|{{ mpris:artUrl }}')"
+DATA="$(playerctl --player=spotifyd metadata --format '{{ title }}|{{ album }}|{{ artist }}|{{ mpris:artUrl }}|{{ mpris:trackid }}')"
 TITLE="$(echo $DATA | cut -f 1 -d '|')"
 ALBUM="$(echo $DATA | cut -f 2 -d '|')"
 ARTIST="$(echo $DATA | cut -f 3 -d '|')"
