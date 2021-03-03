@@ -1,0 +1,6 @@
+#!/bin/sh
+#Music
+
+OUTPUT="$(echo succ | rofi -theme right -dmenu -p Music -i)"
+[ "$OUTPUT" = "" ] && exit 1
+playerctl --player=spotifyd open "$OUTPUT"
