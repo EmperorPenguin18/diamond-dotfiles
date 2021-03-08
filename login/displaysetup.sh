@@ -8,4 +8,4 @@ for I in $NAME
 do
 	xrandr --output $I --off
 done
-xrandr --output $(echo $NAME | awk '{print $(NF)}') --mode $RESOLUTION --refresh $REFRESH --primary --set TearFree on
+xrandr --output $(echo $NAME | awk '{print $(NF)}') --mode $RESOLUTION --refresh $REFRESH --primary# --set TearFree on
