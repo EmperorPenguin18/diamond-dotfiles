@@ -1,0 +1,15 @@
+[Unit]
+Description=NAME (rclone)
+AssertPathIsDirectory=/mnt/NAME
+Wants=network-online.target
+After=network-online.target
+
+[Service]
+Type=simple
+ExecStart=/usr/bin/rclone mount --config=/home/USER/.config/rclone/rclone.conf --allow-other --dir-cache-time 1000h --log-level INFO --vfs-read-chunk-size 32M NAME:/ /mnt/NAME
+ExecStop=/bin/fusermount -uz /mnt/NAME
+Restart=on-failure
+RestartSec=5
+
+[Install]
+WantedBy=multi-user.target
