@@ -78,7 +78,7 @@ cloud ()
     rclone config
     cp -f $DIR/cloud/rcloneautomater.sh /home/$USER/.config/scripts/rcloneautomater
     chmod +x /home/$USER/.config/scripts/rcloneautomater
-    /home/$USER/.config/scripts/rcloneautomater
+    /home/$USER/.config/scripts/rcloneautomater $DIR
     return 0
 }
 
