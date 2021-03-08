@@ -108,7 +108,7 @@ video ()
 
 login ()
 {
-    pikaur -S lightdm lightdm-gtk-greeter xinit-xsession --noconfirm --needed
+    pacman -S lightdm lightdm-gtk-greeter --noconfirm --needed
     cp -f $DIR/login/lightdm.conf /etc/lightdm/lightdm.conf
     sed -i "s/USER/$USER/g" /etc/lightdm/lightdm.conf
     cp -f $DIR/login/displaysetup.sh /home/$USER/.config/scripts/displaysetup
@@ -116,9 +116,9 @@ login ()
     sed -i "s/USER/$USER/g" /etc/lightdm/lightdm-gtk-greeter.conf
     cp -f $DIR/login/background.png /home/$USER/.config/background.png
     mkdir -p /usr/share/xsessions
-    #cp -f $DIR/login/steam-big-picture.desktop /usr/share/xsessions/steam-big-picture.desktop
-    #cp -f $DIR/login/jellyfin.desktop /usr/share/xsessions/jellyfin.desktop
     cp -f $DIR/login/alacritty.desktop /usr/share/xsessions/alacritty.desktop
+    cp -f $DIR/login/xinitrc.desktop /usr/share/xsessions/xinitrc.desktop
+    sed -i "s/USER/$USER/g" /usr/share/xsessions/xinitrc.desktop
     cp -f $DIR/login/xinitrc /home/$USER/.xinitrc
     chmod +x /home/$USER/.xinitrc
     rm /usr/share/xsessions/spectrwm.desktop
