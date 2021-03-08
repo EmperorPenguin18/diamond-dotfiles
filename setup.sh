@@ -68,24 +68,19 @@ packagemanager ()
     return 0
 }
 
-#cloud ()
-#{
-    #pacman -S fuse rclone --noconfirm --needed
-    #echo "user_allow_other" >> /etc/fuse.conf
-    #mkdir -p /home/$USER/.config/rclone
-    #cp -f $DIR/cloud/rclone.conf /home/$USER/.config/rclone/rclone.conf
-    #chown $USER:$USER /home/$USER/.config/rclone/rclone.conf
-    #cp -f $DIR/cloud/rclone1.service /etc/systemd/system/rclone1.service
-    #cp -f $DIR/cloud/rclone2.service /etc/systemd/system/rclone2.service
-    #cp -f $DIR/cloud/rclone3.service /etc/systemd/system/rclone3.service
-    #mkdir /mnt/Personal
-    #mkdir /mnt/School
-    #mkdir /mnt/Media
-    #systemctl enable rclone1
-    #systemctl enable rclone2
-    #systemctl enable rclone3
-    #return 0
-#}
+cloud ()
+{
+    pacman -S fuse rclone --noconfirm --needed
+    echo "user_allow_other" >> /etc/fuse.conf
+    clear
+    echo "Setup any rclone remotes you want. If you don't want any just enter 'q'."
+    echo
+    rclone config
+    cp -f $DIR/cloud/rcloneautomater.sh /home/$USER/.config/scripts/rcloneautomater
+    chmod +x /home/$USER/.config/scripts/rcloneautomater
+    /home/$USER/.config/scripts/rcloneautomater
+    return 0
+}
 
 update ()
 {
@@ -327,7 +322,7 @@ clean_up ()
 pre_checks
 user_prompts
 packagemanager
-#cloud
+cloud
 update
 video
 login
