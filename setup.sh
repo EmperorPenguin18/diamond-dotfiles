@@ -104,6 +104,7 @@ video ()
     #*Enable vsync + freesync/gsync*
     #*https://wiki.archlinux.org/index.php/NVIDIA#DRM_kernel_mode_setting*
     #https://github.com/Askannz/optimus-manager/wiki/A-guide--to-power-management-options
+    #https://wiki.archlinux.org/index.php/PRIME#PRIME_synchronization
 }
 
 login ()
