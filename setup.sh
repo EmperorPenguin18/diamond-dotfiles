@@ -178,6 +178,7 @@ terminal ()
     mkdir -p /home/$USER/.config/fish
     cp -f $DIR/terminal/config.fish /home/$USER/.config/fish/config.fish
     cp -f $DIR/terminal/fish_variables /home/$USER/.config/fish/fish_variables
+    sed -i "s/USER/$USER/g" /home/$USER/.config/fish/fish_variables
     rm /home/$USER/.bash*
     updatedb
     systemctl enable pkgfile-update.timer
