@@ -294,6 +294,4 @@ for file in $__fish_config_dir/conf.d/*.fish $__fish_sysconf_dir/conf.d/*.fish $
     and source $file
 end
 
-set PATH /home/sebastien/.config/scripts $PATH
 alias vim='nvim'
-
