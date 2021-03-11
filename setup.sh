@@ -129,6 +129,7 @@ login ()
     sed -i "s/GRUB_CMDLINE_LINUX=\"\"/GRUB_CMDLINE_LINUX=\"cryptdevice=UUID=$(echo $UUID):cryptroot\"/g" /etc/default/grub
     grub-mkconfig -o /boot/grub/grub.cfg
     return 0
+    #https://github.com/phillipberndt/autorandr
 }
 
 xorg ()
