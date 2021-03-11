@@ -222,6 +222,7 @@ audio ()
     echo "ja_JP.UTF-8 UTF-8" >> /etc/locale.gen
     locale-gen
     return 0
+    #Output auto-selection
 }
 
 browser ()
@@ -296,12 +297,13 @@ other ()
 {
     gpg --recv-key 78CEAA8CB72E4467
     gpg --recv-key AEE9DECFD582E984
-    pikaur -S freetube discord mullvad-vpn-cli networkmanager-openvpn --noconfirm
+    pikaur -S freetube discord mullvad-vpn-cli networkmanager-openvpn aic94xx-firmware wd719x-firmware upd72020x-fw --noconfirm
     systemctl start mullvad-daemon
     mullvad account set $MULLVAD
     mullvad auto-connect set on
     mullvad lan set allow
     mullvad relay set tunnel-protocol openvpn
+    mkinitcpio -P
     return 0
     #https://wiki.archlinux.org/index.php/Improving_performance
     #*Manjaro settings*
