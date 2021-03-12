@@ -1,5 +1,19 @@
 #!/bin/sh
 
+dotfile ()
+{
+    echo $2 | grep -o '/' > /dev/null && mkdir -p (echo $2 | cut -f -(echo $2 | grep -o '/' | wc -l) -d '/')
+    cp -f $DIR/$1 $2
+    if file -i $2 | grep shellscript; then
+        chmod +x $2
+    elif file $2 | grep font; then
+        chmod 0444 $2
+    else
+        sed -i "s/USER/$USER/g" $2
+    fi
+}
+export -f dotfile
+
 insert_binding ()
 {
     echo "$1    #$3" >> /home/$USER/.config/sxhkd/sxhkdrc
@@ -21,7 +35,6 @@ pre_checks ()
     TIME="$(ls -l /etc/localtime | sed 's|.*zoneinfo/||')"
     timedatectl set-timezone $TIME
     hwclock --systohc
-    mkdir -p /home/$USER/.config/scripts
     return 0
 }
 
@@ -51,7 +64,7 @@ user_prompts ()
 
 packagemanager ()
 {
-    cp -f $DIR/packagemanager/pacman.conf /etc/pacman.conf
+    dotfile 'packagemanager/pacman.conf' '/etc/pacman.conf'
     echo "#This system uses doas instead of sudo" > /etc/doas.conf
     echo "permit persist $USER" >> /etc/doas.conf
     echo "permit nopass $USER cmd pacman" >> /etc/doas.conf
@@ -66,6 +79,7 @@ packagemanager ()
     cd ../
     rm -r pikaur
     return 0
+    #*Remove nopass*
 }
 
 cloud ()
@@ -76,8 +90,7 @@ cloud ()
     echo "Setup any rclone remotes you want. If you don't want any just enter 'q'."
     echo
     rclone config
-    cp -f $DIR/cloud/rcloneautomater.sh /home/$USER/.config/scripts/rcloneautomater
-    chmod +x /home/$USER/.config/scripts/rcloneautomater
+    dotfile 'cloud/rcloneautomater.sh' '/home/$USER/.config/scripts/rcloneautomater'
     /home/$USER/.config/scripts/rcloneautomater $DIR
     return 0
 }
@@ -85,8 +98,8 @@ cloud ()
 update ()
 {
     pacman -S cron reflector --noconfirm --needed
-    cp -f $DIR/update/backup.sh /home/$USER/.config/scripts/backup
-    cp -f $DIR/update/update.sh /home/$USER/.config/scripts/update
+    dotfile 'update/backup.sh' '/home/$USER/.config/scripts/backup'
+    dotfile 'update/update.sh' '/home/$USER/.config/scripts/update'
     echo "0 3 * * 1 root /home/$USER/.config/scripts/backup" >> /etc/crontab
     echo "0 4 * * 1 $USER /home/$USER/.config/scripts/update" >> /etc/crontab
     reflector --country $(curl -sL https://raw.github.com/eggert/tz/master/zone1970.tab | grep $TIME | awk '{print $1}') --protocol https --sort rate --save /etc/pacman.d/mirrorlist
@@ -110,21 +123,16 @@ video ()
 login ()
 {
     pacman -S lightdm lightdm-gtk-greeter --noconfirm --needed
-    cp -f $DIR/login/lightdm.conf /etc/lightdm/lightdm.conf
-    sed -i "s/USER/$USER/g" /etc/lightdm/lightdm.conf
-    cp -f $DIR/login/displaysetup.sh /home/$USER/.config/scripts/displaysetup
-    cp -f $DIR/login/lightdm-gtk-greeter.conf /etc/lightdm/lightdm-gtk-greeter.conf
-    sed -i "s/USER/$USER/g" /etc/lightdm/lightdm-gtk-greeter.conf
-    cp -f $DIR/login/background.png /home/$USER/.config/background.png
-    mkdir -p /usr/share/xsessions
-    cp -f $DIR/login/alacritty.desktop /usr/share/xsessions/alacritty.desktop
-    cp -f $DIR/login/xinitrc.desktop /usr/share/xsessions/xinitrc.desktop
-    sed -i "s/USER/$USER/g" /usr/share/xsessions/xinitrc.desktop
-    cp -f $DIR/login/xinitrc /home/$USER/.xinitrc
-    chmod +x /home/$USER/.xinitrc
+    dotfile 'login/lightdm.conf' '/etc/lightdm/lightdm.conf'
+    dotfile 'login/displaysetup.sh' '/home/$USER/.config/scripts/displaysetup'
+    dotfile 'login/lightdm-gtk-greeter.conf' '/etc/lightdm/lightdm-gtk-greeter.conf'
+    dotfile 'login/background.png' '/home/$USER/.config/background.png'
+    dotfile 'login/alacritty.desktop' '/usr/share/xsessions/alacritty.desktop'
+    dotfile 'login/xinitrc.desktop' '/usr/share/xsessions/xinitrc.desktop'
+    dotfile 'login/xinitrc' '/home/$USER/.xinitrc'
     rm /usr/share/xsessions/spectrwm.desktop
     systemctl enable lightdm
-    cp -f $DIR/login/grub /etc/default/grub
+    dotfile 'login/grub' '/etc/default/grub'
     UUID="$(blkid -o device | xargs -L1 cryptsetup luksUUID | grep -v WARNING)"
     sed -i "s/GRUB_CMDLINE_LINUX=\"\"/GRUB_CMDLINE_LINUX=\"cryptdevice=UUID=$(echo $UUID):cryptroot\"/g" /etc/default/grub
     grub-mkconfig -o /boot/grub/grub.cfg
@@ -135,7 +143,7 @@ login ()
 xorg ()
 {
     pikaur -S xorg xdotool xclip picom-git all-repository-fonts --noconfirm --needed
-    cp -f $DIR/xorg/picom.conf /home/$USER/.config/picom.conf
+    dotfile 'xorg/picom.conf' '/home/$USER/.config/picom.conf'
     git clone https://github.com/EmperorPenguin18/SkyrimCursor
     mkdir -p /home/$USER/.local/share/icons/skyrim/cursors
     cp SkyrimCursor/Small/Linux/x11/* /home/$USER/.local/share/icons/skyrim/cursors/
@@ -149,23 +157,16 @@ xorg ()
 windowmanager ()
 {
     pacman -S spectrwm sxhkd feh rofi unclutter --noconfirm --needed
-    cp -f $DIR/windowmanager/spectrwm.conf /home/$USER/.spectrwm.conf
-    sed -i "s/USER/$USER/g" /home/$USER/.spectrwm.conf
-    mkdir /home/$USER/.config/sxhkd
-    cp -f $DIR/windowmanager/sxhkdrc /home/$USER/.config/sxhkd/sxhkdrc
-    sed -i "s/USER/$USER/g" /home/$USER/.config/sxhkd/sxhkdrc
-    cp -f $DIR/windowmanager/screenshot.sh /home/$USER/.config/scripts/screenshot
-    cp -f $DIR/windowmanager/monitor.sh /home/$USER/.config/scripts/monitor
-    cp -f $DIR/windowmanager/wallpaper.jpg /home/$USER/.config/wallpaper.jpg
-    cp -f $DIR/windowmanager/DTM-Mono.otf /usr/share/fonts/DTM-Mono.otf
-    cp -f $DIR/windowmanager/DTM-Sans.otf /usr/share/fonts/DTM-Sans.otf
-    chmod 0444 /usr/share/fonts/DTM-Mono.otf
-    chmod 0444 /usr/share/fonts/DTM-Sans.otf
-    fc-cache
-    mkdir /home/$USER/.config/rofi
-    cp -f $DIR/windowmanager/config.rasi /home/$USER/.config/rofi/config.rasi
-    cp -f $DIR/windowmanager/*.rasi /usr/share/rofi/themes/
-    cp -f $DIR/windowmanager/rofi-* /home/$USER/.config/scripts/
+    dotfile 'windowmanager/spectrwm.conf' '/home/$USER/.spectrwm.conf'
+    dotfile 'windowmanager/sxhkdrc' '/home/$USER/.config/sxhkd/sxhkdrc'
+    dotfile 'windowmanager/screenshot.sh' '/home/$USER/.config/scripts/screenshot'
+    dotfile 'windowmanager/monitor.sh' '/home/$USER/.config/scripts/monitor'
+    dotfile 'windowmanager/wallpaper.jpg' '/home/$USER/.config/wallpaper.jpg'
+    dotfile 'windowmanager/DTM-Mono.otf' '/usr/share/fonts/DTM-Mono.otf'
+    dotfile 'windowmanager/DTM-Sans.otf' '/usr/share/fonts/DTM-Sans.otf'
+    dotfile 'windowmanager/config.rasi' '/home/$USER/.config/rofi/config.rasi'
+    ls $DIR/windowmanager/*.rasi | cut -f 6 -d '/' | xargs -P 0 -n 1 -I {} sh -c dotfile windowmanager/{} /usr/share/rofi/themes/{}
+    ls $DIR/windowmanager/rofi-* | cut -f 6 -d '/' | xargs -P 0 -n 1 -I {} sh -c dotfile windowmanager/{} /home/$USER/.config/scripts/{}
     return 0
     #https://manpages.debian.org/testing/rofi/rofi-theme.5.en.html
     #*Workspace notification*
@@ -174,17 +175,12 @@ windowmanager ()
 terminal ()
 {
     pacman -S alacritty wget mlocate lsd pkgfile neovim parted openssh unzip zip unrar speedtest-cli --noconfirm --needed
-    mkdir -p /home/$USER/.config/alacritty
-    cp -f $DIR/terminal/alacritty.yml /home/$USER/.config/alacritty/alacritty.yml
-    mkdir -p /home/$USER/.config/fish
-    cp -f $DIR/terminal/config.fish /home/$USER/.config/fish/config.fish
-    cp -f $DIR/terminal/fish_variables /home/$USER/.config/fish/fish_variables
-    sed -i "s/USER/$USER/g" /home/$USER/.config/fish/fish_variables
+    dotfile 'terminal/alacritty.yml' '/home/$USER/.config/alacritty/alacritty.yml'
+    dotfile 'terminal/config.fish' '/home/$USER/.config/fish/config.fish'
+    dotfile 'terminal/fish_variables' '/home/$USER/.config/fish/fish_variables'
     rm /home/$USER/.bash*
-    updatedb
     systemctl enable pkgfile-update.timer
-    mkdir -p /home/$USER/.config/nvim
-    cp -f $DIR/terminal/init.vim /home/$USER/.config/nvim/init.vim
+    dotfile 'terminal/init.vim' '/home/$USER/.config/nvim/init.vim'
     return 0
     #*Help command (for terminal utilities)*
     #*Fetch*
@@ -193,10 +189,9 @@ terminal ()
 filemanager ()
 {
     pikaur -S pcmanfm-gtk3 gvfs arc-gtk-theme hicolor-icon-theme arc-icon-theme moka-icon-theme-git lxsession-gtk3 mtools exfatprogs e2fsprogs ntfs-3g xfsprogs zathura zathura-cb zathura-djvu zathura-pdf-mupdf zathura-ps mpv mpv-mpris libreoffice-fresh --noconfirm --needed #hfsprogs apfsprogs-git
-    cp -f $DIR/filemanager/settings.ini /etc/gtk-3.0/settings.ini
-    mkdir -p /home/$USER/.config/mpv
-    cp -f $DIR/filemanager/mpv.conf /home/$USER/.config/mpv/mpv.conf
-    cp -f $DIR/filemanager/input.conf /home/$USER/.config/mpv/input.conf
+    dotfile 'filemanager/settings.ini' '/etc/gtk-3.0/settings.ini'
+    dotfile 'filemanager/mpv.conf' '/home/$USER/.config/mpv/mpv.conf'
+    dotfile 'filemanager/input.conf' '/home/$USER/.config/mpv/input.conf'
     return 0
     #https://github.com/deviantfero/wpgtk
     #https://github.com/Misterio77/flavours
@@ -206,40 +201,33 @@ filemanager ()
 audio ()
 {
     pacman -S pulseaudio pulseaudio-alsa pulseaudio-bluetooth lib32-libpulse lib32-alsa-plugins spotifyd playerctl dunst --noconfirm --needed
-    mkdir -p /home/$USER/.config/pulse
-    cp -f $DIR/audio/default.pa /home/$USER/.config/pulse/default.pa
-    cp -f $DIR/audio/audiocontrol.sh /home/$USER/.config/scripts/audiocontrol
-    mkdir -p /home/$USER/.config/spotifyd
-    cp -f $DIR/audio/spotifyd.conf /home/$USER/.config/spotifyd/spotifyd.conf
-    sed -i "s/USER/$USER/g" /home/$USER/.config/spotifyd/spotifyd.conf
+    dotfile 'audio/default.pa' '/home/$USER/.config/pulse/default.pa'
+    dotfile 'audio/audiocontrol.sh' '/home/$USER/.config/scripts/audiocontrol'
+    dotfile 'audio/spotifyd.conf' '/home/$USER/.config/spotifyd/spotifyd.conf'
     sed -i "s/SNAME/$SNAME/g" /home/$USER/.config/spotifyd/spotifyd.conf
     sed -i "s/SPASS/$SPASS/g" /home/$USER/.config/spotifyd/spotifyd.conf
     cp /usr/lib/systemd/user/spotifyd.service /etc/systemd/user/
     su $USER -c "systemctl --user enable spotifyd.service"
-    cp -f $DIR/audio/newsong.sh /home/$USER/.config/scripts/newsong
-    mkdir -p /home/$USER/.config/dunst
-    cp -f $DIR/audio/dunstrc /home/$USER/.config/dunst/dunstrc
+    dotfile 'audio/newsong.sh' '/home/$USER/.config/scripts/newsong'
+    dotfile 'audio/dunstrc' '/home/$USER/.config/dunst/dunstrc'
     echo "ja_JP.UTF-8 UTF-8" >> /etc/locale.gen
-    locale-gen
     return 0
-    #Output auto-selection
+    #*Output auto-selection*
 }
 
 browser ()
 {
     pacman -S firefox pass pass-otp --noconfirm --needed
-    mkdir -p /home/$USER/.mozilla/firefox
+    #mkdir -p /home/$USER/.mozilla/firefox
     firefox -headless &
     killall firefox
     PROFILE="$(ls /home/$USER/.mozilla/firefox | grep default-release)"
-    cp -f $DIR/browser/prefs.js /home/$USER/.mozilla/firefox/$PROFILE/prefs.js
-    mkdir -p /home/$USER/.mozilla/firefox/$PROFILE/extensions
-    cp -f $DIR/browser/*.xpi /home/$USER/.mozilla/firefox/$PROFILE/extensions/
-    cp -f $DIR/browser/homepage.html /home/$USER/.config/homepage.html
-    sed -i "s/USER/$USER/g" /home/$USER/.config/homepage.html
+    dotfile 'browser/prefs.js' '/home/$USER/.mozilla/firefox/$PROFILE/prefs.js'
+    ls $DIR/browser/*.xpi | cut -f 6 -d '/' | xargs -P 0 -n 1 -I {} sh -c dotfile browser/{} /home/$USER/.mozilla/firefox/$PROFILE/extensions/{}
+    dotfile 'browser/homepage.html' '/home/$USER/.config/homepage.html'
     sed -i 's/dmenu/rofi -theme center -dmenu -p Passwords -i/g' /usr/bin/passmenu
     return 0
-    #*Passwords*
+    #*Passwords (+spotify)*
     #https://www.youtube.com/watch?v=NH4DdXC0RFw&ab_channel=SunKnudsen
 }
 
@@ -265,14 +253,14 @@ browser ()
 power ()
 {
     pikaur -S light tlp acpid --noconfirm --needed
-    cp -f $DIR/power/brightnesscontrol.sh /home/$USER/.config/scripts/brightnesscontrol
+    dotfile 'power/brightnesscontrol.sh' '/home/$USER/.config/scripts/brightnesscontrol'
     insert_binding XF86MonBrightnessUp "/home/$USER/.config/scripts/brightnesscontrol up" 'Increase brightness'
     insert_binding XF86MonBrightnessDown "/home/$USER/.config/scripts/brightnesscontrol down" 'Decrease brightness'
     systemctl enable tlp
     systemctl enable NetworkManager-dispatcher
     systemctl mask systemd-rfkill.service
     systemctl mask systemd-rfkill.socket
-    cp -f $DIR/power/tlp.conf /etc/tlp.conf
+    dotfile 'power/tlp.conf' '/etc/tlp.conf'
     #https://wiki.archlinux.org/index.php/TLP
     systemctl enable acpid
     #https://wiki.archlinux.org/index.php/Laptop_Mode_Tools
@@ -303,7 +291,6 @@ other ()
     mullvad auto-connect set on
     mullvad lan set allow
     mullvad relay set tunnel-protocol openvpn
-    mkinitcpio -P
     return 0
     #https://wiki.archlinux.org/index.php/Improving_performance
     #*Manjaro settings*
@@ -319,8 +306,11 @@ other ()
 
 clean_up ()
 {
-    chmod +x /home/$USER/.config/scripts/*
     chown -R $USER:$USER /home/$USER
+    fc-cache
+    updatedb
+    locale-gen
+    mkinitcpio -P
     return 0
 }
 
@@ -346,9 +336,6 @@ echo "-------------------------------------------------"
 echo "          All done! You can reboot now.          "
 echo "-------------------------------------------------"
 
-#*System configs*
 #*Script performance*
-#*Unify passwords*
-#https://wiki.archlinux.org/index.php/Dash
-#https://wiki.archlinux.org/index.php/Dotfiles
+#*Dotfile management (chezmoi)*
 #https://wiki.archlinux.org/index.php/General_recommendations
