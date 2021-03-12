@@ -11,6 +11,7 @@ dotfile ()
     else
         sed -i "s/USER/$USER/g" $2
     fi
+    echo $1,$2 >> /home/$USER/.config/files.csv
 }
 export -f dotfile
 
@@ -144,9 +145,11 @@ xorg ()
 {
     pikaur -S xorg xdotool xclip picom-git all-repository-fonts --noconfirm --needed
     dotfile 'xorg/picom.conf' '/home/$USER/.config/picom.conf'
-    git clone https://github.com/EmperorPenguin18/SkyrimCursor
-    mkdir -p /home/$USER/.local/share/icons/skyrim/cursors
-    cp SkyrimCursor/Small/Linux/x11/* /home/$USER/.local/share/icons/skyrim/cursors/
+    su $USER -c "git clone https://github.com/EmperorPenguin18/SkyrimCursor"
+    cd SkyrimCursor
+    su $USER -c "makepkg --noconfirm"
+    pacman -U *.pkg* --noconfirm --needed
+    cd ../
     rm -r SkyrimCursor
     mkdir -p /home/$USER/.icons/default
     echo "[icon theme]" > /home/$USER/.icons/default/index.theme
