@@ -2,7 +2,7 @@
 
 sxhkd &
 picom --experimental-backends -b
-unclutter &
+unclutter -b
 feh --bg-scale --no-fehbg /home/USER/.config/wallpaper.jpg
 pcmanfm -d
 lxpolkit &
