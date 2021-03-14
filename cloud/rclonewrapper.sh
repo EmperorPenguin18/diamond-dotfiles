@@ -6,14 +6,19 @@ if [ "$(id -u)" -ne 0 ]; then
 fi
 
 USER="$(ls /home)"
-REMOTES="$(cat /home/$USER/.config/rclone/rclone.conf | grep ']')"
-DIR=$1
+SERVICE=${1:-rclone.service}
+
+rm /etc/systemd/system/rclone*.service
+mkdir -p /home/$USER/.config/rclone
+touch /home/$USER/.config/rclone/rclone.conf
+su $USER -c "rclone config"
 
 NUM=0
+REMOTES="$(cat /home/$USER/.config/rclone/rclone.conf | grep ']')"
 for I in $REMOTES
 do
         NAME=$(echo $I | cut -c 2- | rev | cut -c 2- | rev)
-        cp -f $DIR/cloud/rclone.service /etc/systemd/system/rclone$NUM.service
+        cp -f $SERVICE /etc/systemd/system/rclone$NUM.service
         sed -i "s/NAME/$NAME/g" /etc/systemd/system/rclone$NUM.service
         sed -i "s/USER/$USER/g" /etc/systemd/system/rclone$NUM.service
         mkdir /mnt/$NAME
