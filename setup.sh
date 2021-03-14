@@ -2,7 +2,7 @@
 
 dotfile ()
 {
-    echo $2 | grep -o '/' > /dev/null && mkdir -p (echo $2 | cut -f -(echo $2 | grep -o '/' | wc -l) -d '/')
+    echo $2 | grep -o '/' > /dev/null && mkdir -p $(echo $2 | cut -f -$(echo $2 | grep -o '/' | wc -l) -d '/')
     cp -f $DIR/$1 $2
     if file -i $2 | grep shellscript; then
         chmod +x $2
