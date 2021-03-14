@@ -6,7 +6,7 @@ if [ "$(id -u)" -ne 0 ]; then
 fi
 
 USER="$(ls /home)"
-REMOTES="$(cat .config/rclone/rclone.conf | grep ']')"
+REMOTES="$(cat /home/$USER/.config/rclone/rclone.conf | grep ']')"
 DIR=$1
 
 NUM=0
