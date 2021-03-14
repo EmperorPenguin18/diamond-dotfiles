@@ -87,12 +87,13 @@ cloud ()
 {
     pacman -S fuse rclone --noconfirm --needed
     echo "user_allow_other" >> /etc/fuse.conf
+    mkdir -p /home/$USER/.config/rclone && touch /home/$USER/.config/rclone/rclone.conf
     clear
     echo "Setup any rclone remotes you want. If you don't want any just enter 'q'."
     echo
-    rclone config
+    su $USER -c "rclone config"
     dotfile 'cloud/rcloneautomater.sh' '/home/$USER/.config/scripts/rcloneautomater'
-    /home/$USER/.config/scripts/rcloneautomater $DIR
+    /home/$USER/.config/scripts/rcloneautomater $DIR/cloud/rclone.service
     return 0
 }
 
@@ -340,5 +341,4 @@ echo "          All done! You can reboot now.          "
 echo "-------------------------------------------------"
 
 #*Script performance*
-#*Dotfile management (chezmoi)*
 #https://wiki.archlinux.org/index.php/General_recommendations
