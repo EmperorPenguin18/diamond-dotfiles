@@ -87,21 +87,16 @@ cloud ()
 {
     pacman -S fuse rclone --noconfirm --needed
     echo "user_allow_other" >> /etc/fuse.conf
-    mkdir -p /home/$USER/.config/rclone && touch /home/$USER/.config/rclone/rclone.conf
-    clear
-    echo "Setup any rclone remotes you want. If you don't want any just enter 'q'."
-    echo
-    su $USER -c "rclone config"
-    dotfile 'cloud/rcloneautomater.sh' '/home/$USER/.config/scripts/rcloneautomater'
-    /home/$USER/.config/scripts/rcloneautomater $DIR/cloud/rclone.service
+    dotfile 'cloud/rclonewrapper.sh' "/home/$USER/.config/scripts/rclonewrapper"
+    /home/$USER/.config/scripts/rclonewrapper $DIR/cloud/rclone.service
     return 0
 }
 
 update ()
 {
     pacman -S cron reflector --noconfirm --needed
-    dotfile 'update/backup.sh' '/home/$USER/.config/scripts/backup'
-    dotfile 'update/update.sh' '/home/$USER/.config/scripts/update'
+    dotfile 'update/backup.sh' "/home/$USER/.config/scripts/backup"
+    dotfile 'update/update.sh' "/home/$USER/.config/scripts/update"
     echo "0 3 * * 1 root /home/$USER/.config/scripts/backup" >> /etc/crontab
     echo "0 4 * * 1 $USER /home/$USER/.config/scripts/update" >> /etc/crontab
     reflector --country $(curl -sL https://raw.github.com/eggert/tz/master/zone1970.tab | grep $TIME | awk '{print $1}') --protocol https --sort rate --save /etc/pacman.d/mirrorlist
@@ -126,12 +121,12 @@ login ()
 {
     pacman -S lightdm lightdm-gtk-greeter --noconfirm --needed
     dotfile 'login/lightdm.conf' '/etc/lightdm/lightdm.conf'
-    dotfile 'login/displaysetup.sh' '/home/$USER/.config/scripts/displaysetup'
+    dotfile 'login/displaysetup.sh' "/home/$USER/.config/scripts/displaysetup"
     dotfile 'login/lightdm-gtk-greeter.conf' '/etc/lightdm/lightdm-gtk-greeter.conf'
-    dotfile 'login/background.png' '/home/$USER/.config/background.png'
+    dotfile 'login/background.png' "/home/$USER/.config/background.png"
     dotfile 'login/alacritty.desktop' '/usr/share/xsessions/alacritty.desktop'
     dotfile 'login/xinitrc.desktop' '/usr/share/xsessions/xinitrc.desktop'
-    dotfile 'login/xinitrc' '/home/$USER/.xinitrc'
+    dotfile 'login/xinitrc' "/home/$USER/.xinitrc"
     rm /usr/share/xsessions/spectrwm.desktop
     systemctl enable lightdm
     dotfile 'login/grub' '/etc/default/grub'
@@ -145,7 +140,7 @@ login ()
 xorg ()
 {
     pikaur -S xorg xdotool xclip picom-git all-repository-fonts --noconfirm --needed
-    dotfile 'xorg/picom.conf' '/home/$USER/.config/picom.conf'
+    dotfile 'xorg/picom.conf' "/home/$USER/.config/picom.conf"
     su $USER -c "git clone https://github.com/EmperorPenguin18/SkyrimCursor"
     cd SkyrimCursor
     su $USER -c "makepkg --noconfirm"
@@ -161,14 +156,14 @@ xorg ()
 windowmanager ()
 {
     pacman -S spectrwm sxhkd feh rofi unclutter --noconfirm --needed
-    dotfile 'windowmanager/spectrwm.conf' '/home/$USER/.spectrwm.conf'
-    dotfile 'windowmanager/sxhkdrc' '/home/$USER/.config/sxhkd/sxhkdrc'
-    dotfile 'windowmanager/screenshot.sh' '/home/$USER/.config/scripts/screenshot'
-    dotfile 'windowmanager/monitor.sh' '/home/$USER/.config/scripts/monitor'
-    dotfile 'windowmanager/wallpaper.jpg' '/home/$USER/.config/wallpaper.jpg'
+    dotfile 'windowmanager/spectrwm.conf' "/home/$USER/.spectrwm.conf"
+    dotfile 'windowmanager/sxhkdrc' "/home/$USER/.config/sxhkd/sxhkdrc"
+    dotfile 'windowmanager/screenshot.sh' "/home/$USER/.config/scripts/screenshot"
+    dotfile 'windowmanager/monitor.sh' "/home/$USER/.config/scripts/monitor"
+    dotfile 'windowmanager/wallpaper.jpg' "/home/$USER/.config/wallpaper.jpg"
     dotfile 'windowmanager/DTM-Mono.otf' '/usr/share/fonts/DTM-Mono.otf'
     dotfile 'windowmanager/DTM-Sans.otf' '/usr/share/fonts/DTM-Sans.otf'
-    dotfile 'windowmanager/config.rasi' '/home/$USER/.config/rofi/config.rasi'
+    dotfile 'windowmanager/config.rasi' "/home/$USER/.config/rofi/config.rasi"
     ls $DIR/windowmanager/*.rasi | cut -f 6 -d '/' | xargs -P 0 -n 1 -I {} sh -c dotfile windowmanager/{} /usr/share/rofi/themes/{}
     ls $DIR/windowmanager/rofi-* | cut -f 6 -d '/' | xargs -P 0 -n 1 -I {} sh -c dotfile windowmanager/{} /home/$USER/.config/scripts/{}
     return 0
@@ -179,12 +174,12 @@ windowmanager ()
 terminal ()
 {
     pacman -S alacritty wget mlocate lsd pkgfile neovim parted openssh unzip zip unrar speedtest-cli --noconfirm --needed
-    dotfile 'terminal/alacritty.yml' '/home/$USER/.config/alacritty/alacritty.yml'
-    dotfile 'terminal/config.fish' '/home/$USER/.config/fish/config.fish'
-    dotfile 'terminal/fish_variables' '/home/$USER/.config/fish/fish_variables'
+    dotfile 'terminal/alacritty.yml' "/home/$USER/.config/alacritty/alacritty.yml"
+    dotfile 'terminal/config.fish' "/home/$USER/.config/fish/config.fish"
+    dotfile 'terminal/fish_variables' "/home/$USER/.config/fish/fish_variables"
     rm /home/$USER/.bash*
     systemctl enable pkgfile-update.timer
-    dotfile 'terminal/init.vim' '/home/$USER/.config/nvim/init.vim'
+    dotfile 'terminal/init.vim' "/home/$USER/.config/nvim/init.vim"
     return 0
     #*Help command (for terminal utilities)*
     #*Fetch*
@@ -194,8 +189,8 @@ filemanager ()
 {
     pikaur -S pcmanfm-gtk3 gvfs arc-gtk-theme hicolor-icon-theme arc-icon-theme moka-icon-theme-git lxsession-gtk3 mtools exfatprogs e2fsprogs ntfs-3g xfsprogs zathura zathura-cb zathura-djvu zathura-pdf-mupdf zathura-ps mpv mpv-mpris libreoffice-fresh --noconfirm --needed #hfsprogs apfsprogs-git
     dotfile 'filemanager/settings.ini' '/etc/gtk-3.0/settings.ini'
-    dotfile 'filemanager/mpv.conf' '/home/$USER/.config/mpv/mpv.conf'
-    dotfile 'filemanager/input.conf' '/home/$USER/.config/mpv/input.conf'
+    dotfile 'filemanager/mpv.conf' "/home/$USER/.config/mpv/mpv.conf"
+    dotfile 'filemanager/input.conf' "/home/$USER/.config/mpv/input.conf"
     return 0
     #https://github.com/deviantfero/wpgtk
     #https://github.com/Misterio77/flavours
@@ -205,15 +200,15 @@ filemanager ()
 audio ()
 {
     pacman -S pulseaudio pulseaudio-alsa pulseaudio-bluetooth lib32-libpulse lib32-alsa-plugins spotifyd playerctl dunst --noconfirm --needed
-    dotfile 'audio/default.pa' '/home/$USER/.config/pulse/default.pa'
-    dotfile 'audio/audiocontrol.sh' '/home/$USER/.config/scripts/audiocontrol'
-    dotfile 'audio/spotifyd.conf' '/home/$USER/.config/spotifyd/spotifyd.conf'
+    dotfile 'audio/default.pa' "/home/$USER/.config/pulse/default.pa"
+    dotfile 'audio/audiocontrol.sh' "/home/$USER/.config/scripts/audiocontrol"
+    dotfile 'audio/spotifyd.conf' "/home/$USER/.config/spotifyd/spotifyd.conf"
     sed -i "s/SNAME/$SNAME/g" /home/$USER/.config/spotifyd/spotifyd.conf
     sed -i "s/SPASS/$SPASS/g" /home/$USER/.config/spotifyd/spotifyd.conf
     cp /usr/lib/systemd/user/spotifyd.service /etc/systemd/user/
     su $USER -c "systemctl --user enable spotifyd.service"
-    dotfile 'audio/newsong.sh' '/home/$USER/.config/scripts/newsong'
-    dotfile 'audio/dunstrc' '/home/$USER/.config/dunst/dunstrc'
+    dotfile 'audio/newsong.sh' "/home/$USER/.config/scripts/newsong"
+    dotfile 'audio/dunstrc' "/home/$USER/.config/dunst/dunstrc"
     echo "ja_JP.UTF-8 UTF-8" >> /etc/locale.gen
     return 0
     #*Output auto-selection*
@@ -226,9 +221,9 @@ browser ()
     firefox -headless &
     killall firefox
     PROFILE="$(ls /home/$USER/.mozilla/firefox | grep default-release)"
-    dotfile 'browser/prefs.js' '/home/$USER/.mozilla/firefox/$PROFILE/prefs.js'
+    dotfile 'browser/prefs.js' "/home/$USER/.mozilla/firefox/$PROFILE/prefs.js"
     ls $DIR/browser/*.xpi | cut -f 6 -d '/' | xargs -P 0 -n 1 -I {} sh -c dotfile browser/{} /home/$USER/.mozilla/firefox/$PROFILE/extensions/{}
-    dotfile 'browser/homepage.html' '/home/$USER/.config/homepage.html'
+    dotfile 'browser/homepage.html' "/home/$USER/.config/homepage.html"
     sed -i 's/dmenu/rofi -theme center -dmenu -p Passwords -i/g' /usr/bin/passmenu
     return 0
     #*Passwords (+spotify)*
@@ -257,7 +252,7 @@ browser ()
 power ()
 {
     pikaur -S light tlp acpid --noconfirm --needed
-    dotfile 'power/brightnesscontrol.sh' '/home/$USER/.config/scripts/brightnesscontrol'
+    dotfile 'power/brightnesscontrol.sh' "/home/$USER/.config/scripts/brightnesscontrol"
     insert_binding XF86MonBrightnessUp "/home/$USER/.config/scripts/brightnesscontrol up" 'Increase brightness'
     insert_binding XF86MonBrightnessDown "/home/$USER/.config/scripts/brightnesscontrol down" 'Decrease brightness'
     systemctl enable tlp
