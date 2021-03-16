@@ -1,25 +1,55 @@
 #!/bin/sh
 
+install_repo ()
+{
+    pacman -Sy "$@" --noconfirm --needed || return 1
+    return 0
+}
+install_aur ()
+{
+    pikaur -Sy "$@" --noconfirm --needed || return 1
+    return 0
+}
+install_git ()
+{
+    su $USER -c "git clone $1 newgitpackage" && \
+    cd newgitpackage && \
+    su $USER -c "makepkg --noconfirm" && \
+    pacman -U *.pkg* --noconfirm --needed && \
+    cd ../ && \
+    rm -r newgitpackage || \
+    return 1
+    return 0
+}
+
 dotfile ()
 {
-    echo $2 | grep -o '/' > /dev/null && mkdir -p $(echo $2 | cut -f -$(echo $2 | grep -o '/' | wc -l) -d '/')
-    cp -f $DIR/$1 $2
-    if file -i $2 | grep shellscript; then
-        chmod +x $2
-    elif file $2 | grep font; then
-        chmod 0444 $2
-    else
-        sed -i "s/USER/$USER/g" $2
-    fi
-    echo $1,$2 >> /home/$USER/.config/files.csv
+    NUM=$(echo "$1" | grep -o '/' | wc -l)
+    DIR=$(echo "$1" | cut -f -$NUM -d '/')
+    FILE=$(echo "$1" | cut -f $(expr $NUM + 1) -d '/')
+    NUM=$(echo "$2" | grep -o '/' | wc -l)
+    DEST=$(echo "$2" | cut -f -$NUM -d '/')
+    echo "$2" | grep -o '/' > /dev/null && mkdir -p $DEST
+    cd "$DIR"
+    for I in $(find . -type f -name "$FILE"); do
+        cp -f $SRC/"$DIR"/"$I" "$DEST"/"$I"
+        if file -i "$DEST"/"$I" | grep shellscript; then
+            chmod +x "$DEST"/"$I"
+        elif file "$DEST"/"$I" | grep font; then
+            chmod 0444 "$DEST"/"$I"
+        else
+            sed -i "s/USER/$USER/g" "$DEST"/"$I"
+        fi
+    done
+    [ "$2" = "/etc/default/grub" ] || [ "$2" = "/home/$USER/.config/sxhkd/sxhkdrc" ] || [ "$2" = "/home/$USER/.config/spotifyd/spotifyd.conf" ] || \
+        echo "$1","$2" >> /home/$USER/.config/files.csv
+    cd $SRC
 }
-export -f dotfile
 
 insert_binding ()
 {
-    echo "$1    #$3" >> /home/$USER/.config/sxhkd/sxhkdrc
-    echo "  $2" >> /home/$USER/.config/sxhkd/sxhkdrc
-    echo "" >> /home/$USER/.config/sxhkd/sxhkdrc
+    printf "$1    #$3\n  $2\n\n" >> /home/$USER/.config/sxhkd/sxhkdrc || return 1
+    return 0
 }
 
 pre_checks ()
@@ -31,8 +61,8 @@ pre_checks ()
     USER="$(ls /home)"
     su $USER -c "git clone https://github.com/EmperorPenguin18/diamond-dotfiles /home/$USER/dotfiles"
     cd /home/$USER/dotfiles
-    DIR="$(pwd)"
-    pacman -Sy dialog --noconfirm --needed
+    SRC="$(pwd)"
+    install_repo dialog
     TIME="$(ls -l /etc/localtime | sed 's|.*zoneinfo/||')"
     timedatectl set-timezone $TIME
     hwclock --systohc
@@ -66,19 +96,10 @@ user_prompts ()
 packagemanager ()
 {
     dotfile 'packagemanager/pacman.conf' '/etc/pacman.conf' && \
-    echo "#This system uses doas instead of sudo" > /etc/doas.conf && \
-    echo "permit persist $USER" >> /etc/doas.conf && \
-    echo "permit nopass $USER cmd pacman" >> /etc/doas.conf && \
-    echo "permit nopass $USER cmd pikaur" >> /etc/doas.conf && \
-    echo "permit nopass $USER cmd makepkg" >> /etc/doas.conf && \
+    dotfile 'packagemanager/doas.conf' '/etc/doas.conf' && \
     sed -i '/MAKEFLAGS.*/c\MAKEFLAGS="-j$(nproc)"' /etc/makepkg.conf && \
-    pacman -Sy autoconf automake bison flex groff m4 pkgconf pyalpm python-commonmark make patch gcc --noconfirm --needed && \
-    su $USER -c "git clone https://aur.archlinux.org/pikaur.git" && \
-    cd pikaur && \
-    su $USER -c "makepkg --noconfirm" && \
-    pacman -U *.pkg* --noconfirm --needed && \
-    cd ../ && \
-    rm -r pikaur || \
+    install_repo autoconf automake bison flex groff m4 pkgconf pyalpm python-commonmark make patch gcc && \
+    install_git "https://aur.archlinux.org/pikaur.git" || \
     return 1
     return 0
     #*Remove nopass*
@@ -86,21 +107,19 @@ packagemanager ()
 
 cloud ()
 {
-    pacman -S fuse rclone --noconfirm --needed && \
-    echo "user_allow_other" >> /etc/fuse.conf && \
+    install_repo fuse rclone && \
+    dotfile 'cloud/fuse.conf' '/etc/fuse.conf' && \
     dotfile 'cloud/rclonewrapper.sh' "/home/$USER/.config/scripts/rclonewrapper" && \
-    /home/$USER/.config/scripts/rclonewrapper $DIR/cloud/rclone.service || \
     return 1
     return 0
 }
 
 update ()
 {
-    pacman -S cron reflector --noconfirm --needed && \
+    install_repo cron reflector && \
     dotfile 'update/backup.sh' "/home/$USER/.config/scripts/backup" && \
     dotfile 'update/update.sh' "/home/$USER/.config/scripts/update" && \
-    echo "0 3 * * 1 root /home/$USER/.config/scripts/backup" >> /etc/crontab && \
-    echo "0 4 * * 1 $USER /home/$USER/.config/scripts/update" >> /etc/crontab && \
+    dotfile 'update/crontab' '/etc/crontab' && \
     reflector --country $(curl -sL https://raw.github.com/eggert/tz/master/zone1970.tab | grep $TIME | awk '{print $1}') --protocol https --sort rate --save /etc/pacman.d/mirrorlist || \
     return 1
     return 0
@@ -108,11 +127,11 @@ update ()
 
 video ()
 {
-    pacman -S mesa lib32-mesa vulkan-icd-loader lib32-vulkan-icd-loader libva-mesa-driver lib32-libva-mesa-driver mesa-vdpau lib32-mesa-vdpau --noconfirm --needed || \
+    install_repo mesa lib32-mesa vulkan-icd-loader lib32-vulkan-icd-loader libva-mesa-driver lib32-libva-mesa-driver mesa-vdpau lib32-mesa-vdpau || \
     return 1
-    [ "$(echo $VIDEO | grep 'intel' | wc -l)" -gt 0 ] && pacman -S xf86-video-intel vulkan-intel lib32-vulkan-intel intel-media-driver libva-intel-driver --noconfirm --needed
-    [ "$(echo $VIDEO | grep 'amd' | wc -l)" -gt 0 ] && pacman -S xf86-video-amdgpu vulkan-radeon lib32-vulkan-radeon --noconfirm --needed
-    [ "$(echo $VIDEO | grep 'nvidia' | wc -l)" -gt 0 ] && pacman -S nvidia-dkms lib32-nvidia-utils nvidia-prime --noconfirm --needed
+    [ "$(echo $VIDEO | grep 'intel' | wc -l)" -gt 0 ] && install_repo xf86-video-intel vulkan-intel lib32-vulkan-intel intel-media-driver libva-intel-driver
+    [ "$(echo $VIDEO | grep 'amd' | wc -l)" -gt 0 ] && install_repo xf86-video-amdgpu vulkan-radeon lib32-vulkan-radeon
+    [ "$(echo $VIDEO | grep 'nvidia' | wc -l)" -gt 0 ] && install_repo nvidia-dkms lib32-nvidia-utils nvidia-prime
     #[ "$(echo $VIDEO | grep 'intel' | wc -l)" -gt 0 ] && [ "$(echo $VIDEO | grep 'nvidia' | wc -l)" -gt 0 ] && pikaur -S optimus-manager && cp -f $DIR/xorg/optimus-manager.conf /etc/optimus-manager/optimus-manager.conf
     return 0
     #*Enable vsync + freesync/gsync*
@@ -123,7 +142,7 @@ video ()
 
 login ()
 {
-    pacman -S lightdm lightdm-gtk-greeter --noconfirm --needed && \
+    install_repo lightdm lightdm-gtk-greeter && \
     dotfile 'login/lightdm.conf' '/etc/lightdm/lightdm.conf' && \
     dotfile 'login/displaysetup.sh' "/home/$USER/.config/scripts/displaysetup" && \
     dotfile 'login/lightdm-gtk-greeter.conf' '/etc/lightdm/lightdm-gtk-greeter.conf' && \
@@ -135,8 +154,7 @@ login ()
     systemctl enable lightdm && \
     dotfile 'login/grub' '/etc/default/grub' && \
     UUID="$(blkid -o device | xargs -L1 cryptsetup luksUUID | grep -v WARNING)" && \
-    sed -i "s/GRUB_CMDLINE_LINUX=\"\"/GRUB_CMDLINE_LINUX=\"cryptdevice=UUID=$(echo $UUID):cryptroot\"/g" /etc/default/grub && \
-    grub-mkconfig -o /boot/grub/grub.cfg || \
+    sed -i "s/GRUB_CMDLINE_LINUX=\"\"/GRUB_CMDLINE_LINUX=\"cryptdevice=UUID=$(echo $UUID):cryptroot\"/g" /etc/default/grub || \
     return 1
     return 0
     #https://github.com/phillipberndt/autorandr
@@ -144,24 +162,17 @@ login ()
 
 xorg ()
 {
-    pikaur -S xorg xdotool xclip picom-git all-repository-fonts --noconfirm --needed && \
+    install_aur xorg xdotool xclip picom-git all-repository-fonts && \
     dotfile 'xorg/picom.conf' "/home/$USER/.config/picom.conf" && \
-    su $USER -c "git clone https://github.com/EmperorPenguin18/SkyrimCursor" && \
-    cd SkyrimCursor && \
-    su $USER -c "makepkg --noconfirm" && \
-    pacman -U *.pkg* --noconfirm --needed && \
-    cd ../ && \
-    rm -r SkyrimCursor && \
-    mkdir -p /home/$USER/.icons/default && \
-    echo "[icon theme]" > /home/$USER/.icons/default/index.theme && \
-    echo "Inherits=skyrim" >> /home/$USER/.icons/default/index.theme || \
+    install_git "https://github.com/EmperorPenguin18/SkyrimCursor" && \
+    dotfile 'xorg/index.theme' "/home/$USER/.icons/default/index.theme" || \
     return 1
     return 0
 }
 
 windowmanager ()
 {
-    pacman -S spectrwm sxhkd feh rofi unclutter --noconfirm --needed && \
+    install_repo spectrwm sxhkd feh rofi unclutter && \
     dotfile 'windowmanager/spectrwm.conf' "/home/$USER/.spectrwm.conf" && \
     dotfile 'windowmanager/sxhkdrc' "/home/$USER/.config/sxhkd/sxhkdrc" && \
     dotfile 'windowmanager/screenshot.sh' "/home/$USER/.config/scripts/screenshot" && \
@@ -170,8 +181,8 @@ windowmanager ()
     dotfile 'windowmanager/DTM-Mono.otf' '/usr/share/fonts/DTM-Mono.otf' && \
     dotfile 'windowmanager/DTM-Sans.otf' '/usr/share/fonts/DTM-Sans.otf' && \
     dotfile 'windowmanager/config.rasi' "/home/$USER/.config/rofi/config.rasi" && \
-    ls $DIR/windowmanager/*.rasi | cut -f 6 -d '/' | xargs -P 0 -n 1 -I {} sh -c dotfile windowmanager/{} /usr/share/rofi/themes/{} && \
-    ls $DIR/windowmanager/rofi-* | cut -f 6 -d '/' | xargs -P 0 -n 1 -I {} sh -c dotfile windowmanager/{} /home/$USER/.config/scripts/{} || \
+    dotfile 'windowmanager/*.rasi' '/usr/share/rofi/themes/' && \
+    dotfile 'windowmanager/rofi-*' '/home/$USER/.config/scripts/' || \
     return 1
     return 0
     #https://manpages.debian.org/testing/rofi/rofi-theme.5.en.html
@@ -181,7 +192,7 @@ windowmanager ()
 
 terminal ()
 {
-    pacman -S alacritty wget mlocate lsd pkgfile neovim parted openssh unzip zip unrar speedtest-cli --noconfirm --needed && \
+    install_repo alacritty wget mlocate lsd pkgfile neovim parted openssh unzip zip unrar speedtest-cli && \
     dotfile 'terminal/alacritty.yml' "/home/$USER/.config/alacritty/alacritty.yml" && \
     dotfile 'terminal/config.fish' "/home/$USER/.config/fish/config.fish" && \
     dotfile 'terminal/fish_variables' "/home/$USER/.config/fish/fish_variables" && \
@@ -197,20 +208,17 @@ terminal ()
 
 filemanager ()
 {
-    pikaur -S pcmanfm-gtk3 gvfs arc-gtk-theme hicolor-icon-theme arc-icon-theme moka-icon-theme-git lxsession-gtk3 mtools exfatprogs e2fsprogs ntfs-3g xfsprogs zathura zathura-cb zathura-djvu zathura-pdf-mupdf zathura-ps mpv mpv-mpris libreoffice-fresh --noconfirm --needed && \
+    install_aur pcmanfm-gtk3 gvfs arc-gtk-theme hicolor-icon-theme arc-icon-theme moka-icon-theme-git lxsession-gtk3 mtools exfatprogs e2fsprogs ntfs-3g xfsprogs zathura zathura-cb zathura-djvu zathura-pdf-mupdf zathura-ps mpv mpv-mpris libreoffice-fresh && \
     dotfile 'filemanager/settings.ini' '/etc/gtk-3.0/settings.ini' && \
     dotfile 'filemanager/mpv.conf' "/home/$USER/.config/mpv/mpv.conf" && \
     dotfile 'filemanager/input.conf' "/home/$USER/.config/mpv/input.conf" || \
     return 1
     return 0
-    #https://github.com/deviantfero/wpgtk
-    #https://github.com/Misterio77/flavours
-    #https://github.com/themix-project/oomox
 }
 
 audio ()
 {
-    pacman -S pulseaudio pulseaudio-alsa pulseaudio-bluetooth lib32-libpulse lib32-alsa-plugins spotifyd playerctl dunst --noconfirm --needed && \
+    install_repo pulseaudio pulseaudio-alsa pulseaudio-bluetooth lib32-libpulse lib32-alsa-plugins spotifyd playerctl dunst && \
     dotfile 'audio/default.pa' "/home/$USER/.config/pulse/default.pa" && \
     dotfile 'audio/audiocontrol.sh' "/home/$USER/.config/scripts/audiocontrol" && \
     dotfile 'audio/spotifyd.conf' "/home/$USER/.config/spotifyd/spotifyd.conf" && \
@@ -220,7 +228,7 @@ audio ()
     su $USER -c "systemctl --user enable spotifyd.service" && \
     dotfile 'audio/newsong.sh' "/home/$USER/.config/scripts/newsong" && \
     dotfile 'audio/dunstrc' "/home/$USER/.config/dunst/dunstrc" && \
-    echo "ja_JP.UTF-8 UTF-8" >> /etc/locale.gen || \
+    dotfile 'audio/locale.gen' '/etc/locale.gen' || \
     return 1
     return 0
     #*Output auto-selection*
@@ -228,13 +236,13 @@ audio ()
 
 browser ()
 {
-    pacman -S firefox pass pass-otp --noconfirm --needed
+    install_repo firefox pass pass-otp
     #mkdir -p /home/$USER/.mozilla/firefox
     firefox -headless &
     killall firefox
     PROFILE="$(ls /home/$USER/.mozilla/firefox | grep default-release)" && \
     dotfile 'browser/prefs.js' "/home/$USER/.mozilla/firefox/$PROFILE/prefs.js" && \
-    ls $DIR/browser/*.xpi | cut -f 6 -d '/' | xargs -P 0 -n 1 -I {} sh -c dotfile browser/{} /home/$USER/.mozilla/firefox/$PROFILE/extensions/{} && \
+    dotfile 'browser/*.xpi' "/home/$USER/.mozilla/firefox/$PROFILE/extensions/" && \
     dotfile 'browser/homepage.html' "/home/$USER/.config/homepage.html" && \
     sed -i 's/dmenu/rofi -theme center -dmenu -p Passwords -i/g' /usr/bin/passmenu || \
     return 1
@@ -264,7 +272,7 @@ browser ()
 
 power ()
 {
-    pikaur -S light tlp acpid --noconfirm --needed
+    install_aur light tlp acpid
     dotfile 'power/brightnesscontrol.sh' "/home/$USER/.config/scripts/brightnesscontrol"
     insert_binding XF86MonBrightnessUp "/home/$USER/.config/scripts/brightnesscontrol up" 'Increase brightness'
     insert_binding XF86MonBrightnessDown "/home/$USER/.config/scripts/brightnesscontrol down" 'Decrease brightness'
@@ -286,7 +294,7 @@ power ()
 
 virtualization ()
 {
-    pacman -S qemu qemu-arch-extra libvirt ebtables dnsmasq virt-manager libguestfs edk2-ovmf dmidecode --noconfirm --needed && \
+    install_repo qemu qemu-arch-extra libvirt ebtables dnsmasq virt-manager libguestfs edk2-ovmf dmidecode && \
     systemctl enable libvirtd && \
     insert_binding 'super + m' virt-manager 'Open Virtual Machine Manager' || \
     return 1
@@ -298,7 +306,7 @@ other ()
 {
     gpg --recv-key 78CEAA8CB72E4467 && \
     gpg --recv-key AEE9DECFD582E984 && \
-    pikaur -S freetube discord mullvad-vpn-cli networkmanager-openvpn aic94xx-firmware wd719x-firmware upd72020x-fw --noconfirm && \
+    install_aur freetube discord mullvad-vpn-cli networkmanager-openvpn aic94xx-firmware wd719x-firmware upd72020x-fw && \
     systemctl start mullvad-daemon && \
     mullvad account set $MULLVAD && \
     mullvad auto-connect set on && \
@@ -310,7 +318,6 @@ other ()
     #*Manjaro settings*
     #*Security*
     #*Video calling*
-    #https://github.com/AryToNeX/Glasscord
     #https://github.com/Lightcord/Lightcord
     #https://unix.stackexchange.com/questions/53080/list-optional-dependencies-with-pacman-on-arch-linux
     #https://github.com/hakavlad/nohang
@@ -324,7 +331,8 @@ clean_up ()
     fc-cache && \
     updatedb && \
     locale-gen && \
-    mkinitcpio -P || \
+    mkinitcpio -P && \
+    grub-mkconfig -o /boot/grub/grub.cfg || \
     return 1
     return 0
 }
