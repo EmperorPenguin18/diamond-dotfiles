@@ -10,7 +10,6 @@ Designed to completely automate setting up the computer, so that it can be deplo
 - Connect any cloud storage
 - Automated updates and backups
 - Supports all three GPU brands (Nvidia, AMD, Intel)
-- Multiple rices to choose from
 - Keyboard-centric workflow
 - Spotifyd controlled with media keys
 - Privacy focused Firefox setup
@@ -24,13 +23,15 @@ curl -sL https://raw.github.com/EmperorPenguin18/diamond-dotfiles/master/setup.s
 4. Answer prompts. Not designed to be user friendly.
 5. Wait for installation to complete.
 6. Make sure to reboot when the script finishes so everything is set properly.
-7. Press Super+s once in spectrwm to see all shortcuts
+7. Press Super+s once in spectrwm to see all shortcuts.
+8. Run `rclonewrapper {service file}` substituting the provided rclone.service file (if you want cloud storage).
 
 ### Future:
+- Multiple rices to choose from
 - User-agnostic dotfiles
 - Dash as script shell
 - Multi-monitor
-- Useable from the couch
+- Gaming from the couch
 - Support more distros
 - More minimal
 
