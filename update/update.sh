@@ -9,14 +9,22 @@ firefox file:///home/$USER/output.txt
 #Update dotfiles
 git clone https://github.com/EmperorPenguin18/diamond-dotfiles /tmp/dotfiles
 while IFS=, read -r input output; do
-    cp -f /tmp/dotfiles/$1 $2
-    if file -i $2 | grep shellscript; then
-        chmod +x $2
-    elif file $2 | grep font; then
-        chmod 0444 $2
-    else
-        sed -i "s/USER/$USER/g" $2
-    fi
+    NUM=$(echo "$input" | grep -o '/' | wc -l)
+    DIR=$(echo "$input" | cut -f -$NUM -d '/')
+    FILE=$(echo "$input" | cut -f $(expr $NUM + 1) -d '/')
+    NUM=$(echo "$output" | grep -o '/' | wc -l)
+    DEST=$(echo "$output" | cut -f -$NUM -d '/')
+    cd "$DIR"
+    for I in $(find . -type f -name "$FILE"); do
+        cp -f /tmp/dotfiles/"$DIR"/"$I" "$DEST"/"$I"
+        if file -i "$DEST"/"$I" | grep shellscript; then
+            chmod +x "$DEST"/"$I"
+        elif file "$DEST"/"$I" | grep font; then
+            chmod 0444 "$DEST"/"$I"
+        else
+            sed -i "s/USER/$USER/g" "$DEST"/"$I"
+        fi
+    done
 done < /home/$USER/.config/files.csv
 
 #Finish
