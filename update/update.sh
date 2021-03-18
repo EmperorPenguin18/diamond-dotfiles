@@ -14,8 +14,10 @@ while IFS=, read -r input output; do
     FILE=$(echo "$input" | cut -f $(expr $NUM + 1) -d '/')
     NUM=$(echo "$output" | grep -o '/' | wc -l)
     DEST=$(echo "$output" | cut -f -$NUM -d '/')
+        RENAME=$(echo "$2" | cut -f $(expr $NUM + 1) -d '/')
     cd "$DIR"
     for I in $(find . -type f -name "$FILE"); do
+        [ -z "$RENAME" ] || I="$RENAME"
         cp -f /tmp/dotfiles/"$DIR"/"$I" "$DEST"/"$I"
         if file -i "$DEST"/"$I" | grep shellscript; then
             chmod +x "$DEST"/"$I"
