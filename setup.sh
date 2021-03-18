@@ -29,9 +29,11 @@ dotfile ()
     FILE=$(echo "$1" | cut -f $(expr $NUM + 1) -d '/')
     NUM=$(echo "$2" | grep -o '/' | wc -l)
     DEST=$(echo "$2" | cut -f -$NUM -d '/')
+    RENAME=$(echo "$2" | cut -f $(expr $NUM + 1) -d '/')
     echo "$2" | grep -o '/' > /dev/null && mkdir -p $DEST
     cd "$DIR"
     for I in $(find . -type f -name "$FILE"); do
+        [ -z "$RENAME" ] || I="$RENAME"
         cp -f $SRC/"$DIR"/"$I" "$DEST"/"$I"
         if file -i "$DEST"/"$I" | grep shellscript; then
             chmod +x "$DEST"/"$I"
