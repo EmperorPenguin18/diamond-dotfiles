@@ -160,6 +160,7 @@ login ()
     return 1
     return 0
     #https://github.com/phillipberndt/autorandr
+    #https://ruedigergad.com/2012/01/28/hotplug-an-external-screen-to-your-laptop-on-linux/
 }
 
 xorg ()
