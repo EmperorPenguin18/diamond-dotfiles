@@ -66,8 +66,6 @@ pre_checks ()
     SRC="$(pwd)"
     install_repo dialog
     TIME="$(ls -l /etc/localtime | sed 's|.*zoneinfo/||')"
-    timedatectl set-timezone $TIME
-    hwclock --systohc
     return 0
 }
 
@@ -165,7 +163,8 @@ login ()
 
 xorg ()
 {
-    install_aur xorg xdotool xclip picom-git all-repository-fonts && \
+    install_repo xorg xdotool xclip && \
+    install_aur picom-git all-repository-fonts && \
     dotfile 'xorg/picom.conf' "/home/$USER/.config/picom.conf" && \
     install_git "https://github.com/EmperorPenguin18/SkyrimCursor" && \
     dotfile 'xorg/index.theme' "/home/$USER/.icons/default/index.theme" || \
@@ -211,7 +210,8 @@ terminal ()
 
 filemanager ()
 {
-    install_aur pcmanfm-gtk3 gvfs arc-gtk-theme hicolor-icon-theme arc-icon-theme moka-icon-theme-git lxsession-gtk3 mtools exfatprogs e2fsprogs ntfs-3g xfsprogs zathura zathura-cb zathura-djvu zathura-pdf-mupdf zathura-ps mpv mpv-mpris libreoffice-fresh && \
+    install_repo pcmanfm-gtk3 gvfs arc-gtk-theme hicolor-icon-theme arc-icon-theme lxsession-gtk3 mtools exfatprogs e2fsprogs ntfs-3g xfsprogs zathura zathura-cb zathura-djvu zathura-pdf-mupdf zathura-ps mpv libreoffice-fresh && \
+    install_aur moka-icon-theme-git mpv-mpris && \
     dotfile 'filemanager/settings.ini' '/etc/gtk-3.0/settings.ini' && \
     dotfile 'filemanager/mpv.conf' "/home/$USER/.config/mpv/mpv.conf" && \
     dotfile 'filemanager/input.conf' "/home/$USER/.config/mpv/input.conf" || \
@@ -275,7 +275,7 @@ browser ()
 
 power ()
 {
-    install_aur light tlp acpid
+    install_repo light tlp acpid
     dotfile 'power/brightnesscontrol.sh' "/home/$USER/.config/scripts/brightnesscontrol"
     insert_binding XF86MonBrightnessUp "/home/$USER/.config/scripts/brightnesscontrol up" 'Increase brightness'
     insert_binding XF86MonBrightnessDown "/home/$USER/.config/scripts/brightnesscontrol down" 'Decrease brightness'
@@ -309,7 +309,8 @@ other ()
 {
     gpg --recv-key 78CEAA8CB72E4467 && \
     gpg --recv-key AEE9DECFD582E984 && \
-    install_aur freetube discord mullvad-vpn-cli networkmanager-openvpn aic94xx-firmware wd719x-firmware upd72020x-fw && \
+    install_aur freetube lightcord mullvad-vpn-cli aic94xx-firmware wd719x-firmware upd72020x-fw && \
+    install_repo networkmanager-openvpn
     systemctl start mullvad-daemon && \
     mullvad account set $MULLVAD && \
     mullvad auto-connect set on && \
@@ -321,7 +322,6 @@ other ()
     #*Manjaro settings*
     #*Security*
     #*Video calling*
-    #https://github.com/Lightcord/Lightcord
     #https://unix.stackexchange.com/questions/53080/list-optional-dependencies-with-pacman-on-arch-linux
     #https://github.com/hakavlad/nohang
     #https://wiki.archlinux.org/index.php/Zswap
