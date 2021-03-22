@@ -17,7 +17,7 @@ super + y #Open youtube viewer
   freetube
 
 super + d #Open messenging software
-  discord
+  lightcord
 
 super + Up  #View the top rofi
   /home/USER/.config/scripts/rofi-top
