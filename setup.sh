@@ -154,11 +154,11 @@ login ()
     systemctl enable lightdm && \
     dotfile 'login/grub' '/etc/default/grub' && \
     UUID="$(blkid -o device | xargs -L1 cryptsetup luksUUID | grep -v WARNING)" && \
-    sed -i "s/GRUB_CMDLINE_LINUX=\"\"/GRUB_CMDLINE_LINUX=\"cryptdevice=UUID=$(echo $UUID):cryptroot\"/g" /etc/default/grub || \
+    sed -i "s/GRUB_CMDLINE_LINUX=\"\"/GRUB_CMDLINE_LINUX=\"cryptdevice=UUID=$(echo $UUID):cryptroot\"/g" /etc/default/grub && \
+    dotfile 'login/95-monitor-hotplug.rules' '/etc/udev/rules.d/95-monitor-hotplug.rules' && \
+    dotfile 'login/hotplug.sh' "/home/$USER/.config/scripts/hotplug" || \
     return 1
     return 0
-    #https://github.com/phillipberndt/autorandr
-    #https://ruedigergad.com/2012/01/28/hotplug-an-external-screen-to-your-laptop-on-linux/
 }
 
 xorg ()
@@ -271,6 +271,8 @@ browser ()
     #https://github.com/lucasassislar/nucleuscoop/
     #https://wiki.archlinux.org/index.php/List_of_games
     #https://github.com/dreamer
+    #https://libredd.it/r/leagueoflinux/comments/dr2qye/amazing_performance_boost_by_tweaking_pulseaudio/
+    #https://blog.thepoon.fr/osuLinuxAudioLatency/
 #}
 
 power ()
