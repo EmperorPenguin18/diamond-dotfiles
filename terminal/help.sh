@@ -1,8 +1,11 @@
 #!/bin/sh
 
+NC='\033[1;0m'
+WHITE='\033[1;37m'
+
 describe ()
 {
-        printf "$1 -$(man -f $1 | cut -f 2- -d '-')\n"
+        printf "${WHITE}$1${NC} -$(man -f $1 | cut -f 2- -d '-')\n"
 }
 
 echo "Basic commands:"
@@ -11,9 +14,15 @@ describe cd
 describe cp
 echo
 
-echo "Advanced commands:"
+echo "Intermediate commands:"
 describe unzip
 describe grep
+describe find
+echo
+
+echo "Advanced commands:"
+describe curl
+describe dmidecode
 describe whereis
 echo
 
