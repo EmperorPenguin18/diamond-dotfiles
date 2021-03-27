@@ -200,11 +200,11 @@ terminal ()
     dotfile 'terminal/fish_variables' "/home/$USER/.config/fish/fish_variables" && \
     rm /home/$USER/.bash* && \
     systemctl enable pkgfile-update.timer && \
-    dotfile 'terminal/init.vim' "/home/$USER/.config/nvim/init.vim" || \
+    dotfile 'terminal/init.vim' "/home/$USER/.config/nvim/init.vim" && \
+    dotfile 'terminal/fetch.sh' "/home/$USER/.config/scripts/fetch" || \
     return 1
     return 0
     #*Help command (for terminal utilities)*
-    #*Fetch*
     #https://www.youtube.com/channel/UCS97tchJDq17Qms3cux8wcA/videos
 }
 
@@ -234,7 +234,6 @@ audio ()
     dotfile 'audio/locale.gen' '/etc/locale.gen' || \
     return 1
     return 0
-    #*Output auto-selection*
 }
 
 browser ()
