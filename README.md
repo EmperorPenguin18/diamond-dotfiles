@@ -24,7 +24,8 @@ curl -sL https://raw.github.com/EmperorPenguin18/diamond-dotfiles/master/setup.s
 5. Wait for installation to complete.
 6. Make sure to reboot when the script finishes so everything is set properly.
 7. Press Super+s once in spectrwm to see all shortcuts.
-8. Run `rclonewrapper {service file}` substituting the provided rclone.service file (if you want cloud storage).
+8. Use `help` in the terminal to learn how to use the terminal.
+9. Run `rclonewrapper {service file}` substituting the provided rclone.service file (if you want cloud storage).
 
 ### Future:
 - Multiple rices to choose from
