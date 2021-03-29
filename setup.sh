@@ -194,7 +194,7 @@ windowmanager ()
 
 terminal ()
 {
-    install_repo alacritty wget mlocate lsd pkgfile neovim parted openssh unzip zip unrar speedtest-cli && \
+    install_repo alacritty wget mlocate lsd pkgfile neovim ctags parted openssh unzip zip unrar speedtest-cli && \
     dotfile 'terminal/alacritty.yml' "/home/$USER/.config/alacritty/alacritty.yml" && \
     dotfile 'terminal/config.fish' "/home/$USER/.config/fish/config.fish" && \
     dotfile 'terminal/fish_variables' "/home/$USER/.config/fish/fish_variables" && \
@@ -205,7 +205,6 @@ terminal ()
     dotfile 'terminal/fetch.sh' "/home/$USER/.config/scripts/fetch" || \
     return 1
     return 0
-    #https://www.youtube.com/channel/UCS97tchJDq17Qms3cux8wcA/videos
 }
 
 filemanager ()
