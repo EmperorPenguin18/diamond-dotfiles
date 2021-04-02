@@ -194,7 +194,8 @@ windowmanager ()
 
 terminal ()
 {
-    install_repo alacritty wget mlocate lsd pkgfile neovim ctags parted openssh unzip zip unrar speedtest-cli && \
+    install_repo alacritty wget mlocate lsd pkgfile neovim ctags python-nvim parted openssh unzip zip unrar speedtest-cli && \
+    install_aur python2-nvim && \
     dotfile 'terminal/alacritty.yml' "/home/$USER/.config/alacritty/alacritty.yml" && \
     dotfile 'terminal/config.fish' "/home/$USER/.config/fish/config.fish" && \
     dotfile 'terminal/fish_variables' "/home/$USER/.config/fish/fish_variables" && \
