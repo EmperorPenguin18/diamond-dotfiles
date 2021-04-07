@@ -14,12 +14,14 @@ install_git ()
 {
     su $USER -c "git clone $1 newgitpackage" && \
     cd newgitpackage && \
+    sed -i "s/depends=('vim')//g" PKGBUILD && \
     su $USER -c "makepkg --noconfirm" && \
     pacman -U *.pkg* --noconfirm --needed && \
     cd ../ && \
     rm -r newgitpackage || \
     return 1
     return 0
+    #Implement multi packages
 }
 
 dotfile ()
@@ -174,7 +176,7 @@ xorg ()
 
 windowmanager ()
 {
-    install_repo spectrwm sxhkd feh rofi unclutter && \
+    install_repo spectrwm sxhkd feh rofi unclutter dunst && \
     dotfile 'windowmanager/spectrwm.conf' "/home/$USER/.spectrwm.conf" && \
     dotfile 'windowmanager/sxhkdrc' "/home/$USER/.config/sxhkd/sxhkdrc" && \
     dotfile 'windowmanager/screenshot.sh' "/home/$USER/.config/scripts/screenshot" && \
@@ -184,7 +186,8 @@ windowmanager ()
     dotfile 'windowmanager/DTM-Sans.otf' '/usr/share/fonts/DTM-Sans.otf' && \
     dotfile 'windowmanager/config.rasi' "/home/$USER/.config/rofi/config.rasi" && \
     dotfile 'windowmanager/*.rasi' '/usr/share/rofi/themes/' && \
-    dotfile 'windowmanager/rofi-*' '/home/$USER/.config/scripts/' || \
+    dotfile 'windowmanager/rofi-*' '/home/$USER/.config/scripts/' && \
+    dotfile 'windowmanager/dunstrc' "/home/$USER/.config/dunst/dunstrc" || \
     return 1
     return 0
     #https://manpages.debian.org/testing/rofi/rofi-theme.5.en.html
@@ -195,7 +198,8 @@ windowmanager ()
 terminal ()
 {
     install_repo alacritty wget mlocate lsd pkgfile neovim ctags python-nvim parted openssh unzip zip unrar speedtest-cli && \
-    install_aur python2-nvim && \
+    install_aur python2-nvim hexokinase-git vim-hexokinase-git && \
+    install_git vim-sneak && \
     dotfile 'terminal/alacritty.yml' "/home/$USER/.config/alacritty/alacritty.yml" && \
     dotfile 'terminal/config.fish' "/home/$USER/.config/fish/config.fish" && \
     dotfile 'terminal/fish_variables' "/home/$USER/.config/fish/fish_variables" && \
@@ -221,7 +225,7 @@ filemanager ()
 
 audio ()
 {
-    install_repo pulseaudio pulseaudio-alsa pulseaudio-bluetooth lib32-libpulse lib32-alsa-plugins spotifyd playerctl dunst && \
+    install_repo pulseaudio pulseaudio-alsa pulseaudio-bluetooth lib32-libpulse lib32-alsa-plugins spotifyd playerctl && \
     dotfile 'audio/default.pa' "/home/$USER/.config/pulse/default.pa" && \
     dotfile 'audio/audiocontrol.sh' "/home/$USER/.config/scripts/audiocontrol" && \
     dotfile 'audio/spotifyd.conf' "/home/$USER/.config/spotifyd/spotifyd.conf" && \
@@ -230,7 +234,6 @@ audio ()
     cp /usr/lib/systemd/user/spotifyd.service /etc/systemd/user/ && \
     su $USER -c "systemctl --user enable spotifyd.service" && \
     dotfile 'audio/newsong.sh' "/home/$USER/.config/scripts/newsong" && \
-    dotfile 'audio/dunstrc' "/home/$USER/.config/dunst/dunstrc" && \
     dotfile 'audio/locale.gen' '/etc/locale.gen' || \
     return 1
     return 0
