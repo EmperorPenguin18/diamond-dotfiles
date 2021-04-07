@@ -12,16 +12,18 @@ install_aur ()
 }
 install_git ()
 {
-    su $USER -c "git clone $1 newgitpackage" && \
-    cd newgitpackage && \
-    sed -i "s/depends=('vim')//g" PKGBUILD && \
-    su $USER -c "makepkg --noconfirm" && \
-    pacman -U *.pkg* --noconfirm --needed && \
-    cd ../ && \
-    rm -r newgitpackage || \
-    return 1
+    for I in $@
+    do
+        su $USER -c "git clone $I newgitpackage" && \
+        cd newgitpackage && \
+        sed -i "s/depends=('vim')//g" PKGBUILD && \
+        su $USER -c "makepkg --noconfirm" && \
+        pacman -U *.pkg* --noconfirm --needed && \
+        cd ../ && \
+        rm -r newgitpackage || \
+        return 1
+    done
     return 0
-    #Implement multi packages
 }
 
 dotfile ()
@@ -199,7 +201,7 @@ terminal ()
 {
     install_repo alacritty wget mlocate lsd pkgfile neovim ctags python-nvim parted openssh unzip zip unrar speedtest-cli && \
     install_aur python2-nvim hexokinase-git vim-hexokinase-git && \
-    install_git vim-sneak && \
+    install_git "https://aur.archlinux.org/vim-sneak.git" && \
     dotfile 'terminal/alacritty.yml' "/home/$USER/.config/alacritty/alacritty.yml" && \
     dotfile 'terminal/config.fish' "/home/$USER/.config/fish/config.fish" && \
     dotfile 'terminal/fish_variables' "/home/$USER/.config/fish/fish_variables" && \
@@ -388,4 +390,3 @@ echo "          All done! You can reboot now.          "
 echo "-------------------------------------------------"
 
 #*Script performance*
-#https://wiki.archlinux.org/index.php/General_recommendations
