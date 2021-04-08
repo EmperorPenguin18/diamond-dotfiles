@@ -216,9 +216,11 @@ terminal ()
 
 filemanager ()
 {
-    install_repo pcmanfm-gtk3 gvfs arc-gtk-theme hicolor-icon-theme arc-icon-theme lxsession-gtk3 mtools exfatprogs e2fsprogs ntfs-3g xfsprogs zathura zathura-cb zathura-djvu zathura-pdf-mupdf zathura-ps mpv libreoffice-fresh && \
+    install_repo pcmanfm-gtk3 gvfs arc-gtk-theme kvantum-qt5 hicolor-icon-theme arc-icon-theme lxsession-gtk3 mtools exfatprogs e2fsprogs ntfs-3g xfsprogs zathura zathura-cb zathura-djvu zathura-pdf-mupdf zathura-ps mpv libreoffice-fresh && \
     install_aur moka-icon-theme-git mpv-mpris && \
     dotfile 'filemanager/settings.ini' '/etc/gtk-3.0/settings.ini' && \
+    dotfile 'filemanager/Trolltech.conf' '/etc/xdg/Trolltech.conf' && \
+    dotfile 'filemanager/kvantum.kvconfig' "/home/$USER/.config/Kvantum/kvantum.kvconfig" && \
     dotfile 'filemanager/mpv.conf' "/home/$USER/.config/mpv/mpv.conf" && \
     dotfile 'filemanager/input.conf' "/home/$USER/.config/mpv/input.conf" || \
     return 1
