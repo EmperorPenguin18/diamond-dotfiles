@@ -8,4 +8,5 @@ pcmanfm -d
 lxpolkit &
 playerctld daemon
 xset s off -dpms
+export QT_STYLE_OVERRIDE=kvantum
 exec spectrwm
