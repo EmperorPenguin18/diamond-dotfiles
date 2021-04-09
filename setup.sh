@@ -47,7 +47,7 @@ dotfile ()
             sed -i "s/USER/$USER/g" "$DEST"/"$I"
         fi
     done
-    [ "$2" = "/etc/default/grub" ] || [ "$2" = "/home/$USER/.config/sxhkd/sxhkdrc" ] || [ "$2" = "/home/$USER/.config/spotifyd/spotifyd.conf" ] || \
+    [ "$2" = "/etc/default/grub" ] || [ "$2" = "/home/$USER/.config/sxhkd/sxhkdrc" ] || [ "$2" = "/home/$USER/.config/spotifyd/spotifyd.conf" ] || [ "$2" = "/home/$USER/.xinitrc" ] || \
         echo "$1","$2" >> /home/$USER/.config/files.csv
     cd $SRC
 }
@@ -56,6 +56,10 @@ insert_binding ()
 {
     printf "$1    #$3\n  $2\n\n" >> /home/$USER/.config/sxhkd/sxhkdrc || return 1
     return 0
+}
+insert_startup ()
+{
+    sed -i "s/exec/$1\n&/g" /home/$USER/.xinitrc
 }
 
 pre_checks ()
@@ -124,6 +128,7 @@ update ()
     dotfile 'update/backup.sh' "/home/$USER/.config/scripts/backup" && \
     dotfile 'update/update.sh' "/home/$USER/.config/scripts/update" && \
     dotfile 'update/crontab' '/etc/crontab' && \
+    systemctl enable cronie && \
     reflector --country $(curl -sL https://raw.github.com/eggert/tz/master/zone1970.tab | grep $TIME | awk '{print $1}') --protocol https --sort rate --save /etc/pacman.d/mirrorlist || \
     return 1
     return 0
@@ -158,7 +163,8 @@ login ()
     systemctl enable lightdm && \
     dotfile 'login/grub' '/etc/default/grub' && \
     UUID="$(blkid -o device | xargs -L1 cryptsetup luksUUID | grep -v WARNING)" && \
-    sed -i "s/GRUB_CMDLINE_LINUX=\"\"/GRUB_CMDLINE_LINUX=\"cryptdevice=UUID=$(echo $UUID):cryptroot\"/g" /etc/default/grub && \
+    SWAP="$(blkid | grep swap | cut -f 2 -d '"')" && \
+    sed -i "s/GRUB_CMDLINE_LINUX=\"\"/GRUB_CMDLINE_LINUX=\"cryptdevice=UUID=$(echo $UUID):cryptroot resume=UUID=$(echo $SWAP)\"/g" /etc/default/grub && \
     dotfile 'login/95-monitor-hotplug.rules' '/etc/udev/rules.d/95-monitor-hotplug.rules' && \
     dotfile 'login/hotplug.sh' "/home/$USER/.config/scripts/hotplug" || \
     return 1
@@ -283,7 +289,7 @@ browser ()
 
 power ()
 {
-    install_repo light tlp acpid
+    install_repo light tlp tlp-rdw acpid xscreensaver
     dotfile 'power/brightnesscontrol.sh' "/home/$USER/.config/scripts/brightnesscontrol"
     insert_binding XF86MonBrightnessUp "/home/$USER/.config/scripts/brightnesscontrol up" 'Increase brightness'
     insert_binding XF86MonBrightnessDown "/home/$USER/.config/scripts/brightnesscontrol down" 'Decrease brightness'
@@ -292,15 +298,16 @@ power ()
     systemctl mask systemd-rfkill.service
     systemctl mask systemd-rfkill.socket
     dotfile 'power/tlp.conf' '/etc/tlp.conf'
-    #https://wiki.archlinux.org/index.php/TLP
     systemctl enable acpid
     #https://wiki.archlinux.org/index.php/Laptop_Mode_Tools
     #https://wiki.archlinux.org/index.php/CPU_frequency_scaling / AUTO_CPUFREQ
-    #*Hibernate*
     #*powertop*
     #*Mute LED*
-    #*Screen timeout*
-    #*Battery notification*
+    dotfile 'power/powersave.rules' '/etc/udev/rules.d/powersave.rules'
+    dotfile 'power/powerevents.sh' "/home/$USER/.config/scripts/powerevents"
+    insert_startup "/home/$USER/.config/scripts/powerevents check"
+    dotfile 'power/batterycron' '/etc/cron.d/batterycron'
+    dotfile 'power/batterynotify.sh' "/home/sebastien/.config/scripts/batterynotify"
 }
 
 virtualization ()
