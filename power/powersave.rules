@@ -1,0 +1,2 @@
+SUBSYSTEM=="power_supply", ATTR{online}=="0", RUN+="/home/USER/.config/scripts/powerevents true"
+SUBSYSTEM=="power_supply", ATTR{online}=="1", RUN+="/home/USER/.config/scripts/powerevents false"
