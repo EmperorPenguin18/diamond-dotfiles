@@ -321,6 +321,8 @@ power ()
 virtualization ()
 {
     install_repo qemu qemu-arch-extra libvirt ebtables dnsmasq virt-manager libguestfs edk2-ovmf dmidecode && \
+    usermod -a -G libvirt $USER
+    usermod -a -G kvm $USER
     systemctl enable libvirtd && \
     insert_binding 'super + m' virt-manager 'Open Virtual Machine Manager' || \
     return 1
