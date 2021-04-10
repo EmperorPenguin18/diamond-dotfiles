@@ -189,18 +189,28 @@ windowmanager ()
     dotfile 'windowmanager/sxhkdrc' "/home/$USER/.config/sxhkd/sxhkdrc" && \
     dotfile 'windowmanager/screenshot.sh' "/home/$USER/.config/scripts/screenshot" && \
     dotfile 'windowmanager/monitor.sh' "/home/$USER/.config/scripts/monitor" && \
-    dotfile 'windowmanager/wallpaper.jpg' "/home/$USER/.config/wallpaper.jpg" && \
-    dotfile 'windowmanager/DTM-Mono.otf' '/usr/share/fonts/DTM-Mono.otf' && \
-    dotfile 'windowmanager/DTM-Sans.otf' '/usr/share/fonts/DTM-Sans.otf' && \
     dotfile 'windowmanager/config.rasi' "/home/$USER/.config/rofi/config.rasi" && \
-    dotfile 'windowmanager/*.rasi' '/usr/share/rofi/themes/' && \
     dotfile 'windowmanager/rofi-*' '/home/$USER/.config/scripts/' && \
     dotfile 'windowmanager/dunstrc' "/home/$USER/.config/dunst/dunstrc" || \
     return 1
     return 0
-    #https://manpages.debian.org/testing/rofi/rofi-theme.5.en.html
     #*Workspace notification*
     #https://wiki.archlinux.org/index.php/Tint2
+}
+
+theme ()
+{
+    install_repo arc-gtk-theme kvantum-qt5 hicolor-icon-theme arc-icon-theme && \
+    install_aur moka-icon-theme-git && \
+    dotfile 'theme/wallpaper.jpg' "/home/$USER/.config/wallpaper.jpg" && \
+    dotfile 'theme/DTM-Mono.otf' '/usr/share/fonts/DTM-Mono.otf' && \
+    dotfile 'theme/DTM-Sans.otf' '/usr/share/fonts/DTM-Sans.otf' && \
+    dotfile 'theme/*.rasi' '/usr/share/rofi/themes/' && \
+    dotfile 'theme/Trolltech.conf' '/etc/xdg/Trolltech.conf' && \
+    dotfile 'theme/kvantum.kvconfig' "/home/$USER/.config/Kvantum/kvantum.kvconfig" || \
+    return 1
+    return 0
+    #https://manpages.debian.org/testing/rofi/rofi-theme.5.en.html
 }
 
 terminal ()
@@ -222,11 +232,9 @@ terminal ()
 
 filemanager ()
 {
-    install_repo pcmanfm-gtk3 gvfs arc-gtk-theme kvantum-qt5 hicolor-icon-theme arc-icon-theme lxsession-gtk3 mtools exfatprogs e2fsprogs ntfs-3g xfsprogs zathura zathura-cb zathura-djvu zathura-pdf-mupdf zathura-ps mpv libreoffice-fresh && \
-    install_aur moka-icon-theme-git mpv-mpris && \
+    install_repo pcmanfm-gtk3 gvfs lxsession-gtk3 mtools exfatprogs e2fsprogs ntfs-3g xfsprogs zathura zathura-cb zathura-djvu zathura-pdf-mupdf zathura-ps mpv libreoffice-fresh && \
+    install_aur mpv-mpris && \
     dotfile 'filemanager/settings.ini' '/etc/gtk-3.0/settings.ini' && \
-    dotfile 'filemanager/Trolltech.conf' '/etc/xdg/Trolltech.conf' && \
-    dotfile 'filemanager/kvantum.kvconfig' "/home/$USER/.config/Kvantum/kvantum.kvconfig" && \
     dotfile 'filemanager/mpv.conf' "/home/$USER/.config/mpv/mpv.conf" && \
     dotfile 'filemanager/input.conf' "/home/$USER/.config/mpv/input.conf" || \
     return 1
@@ -317,7 +325,6 @@ virtualization ()
     insert_binding 'super + m' virt-manager 'Open Virtual Machine Manager' || \
     return 1
     return 0
-    #https://github.com/Fmstrat/winapps
 }
 
 other ()
@@ -336,10 +343,8 @@ other ()
     #https://wiki.archlinux.org/index.php/Improving_performance
     #*Manjaro settings*
     #*Security*
-    #*Video calling*
     #https://unix.stackexchange.com/questions/53080/list-optional-dependencies-with-pacman-on-arch-linux
     #https://github.com/hakavlad/nohang
-    #https://wiki.archlinux.org/index.php/Zswap
     #https://github.com/Nefelim4ag/Ananicy
 }
 
@@ -379,6 +384,8 @@ xorg
 check_error "xorg failed"
 windowmanager
 check_error "windowmanager failed"
+theme
+check_error "theme failed"
 terminal
 check_error "terminal failed"
 filemanager
