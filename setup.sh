@@ -184,17 +184,18 @@ xorg ()
 
 windowmanager ()
 {
-    install_repo spectrwm sxhkd feh rofi unclutter dunst && \
+    install_repo spectrwm sxhkd wmctrl feh rofi unclutter dunst && \
+    install_aur devour && \
     dotfile 'windowmanager/spectrwm.conf' "/home/$USER/.spectrwm.conf" && \
     dotfile 'windowmanager/sxhkdrc' "/home/$USER/.config/sxhkd/sxhkdrc" && \
     dotfile 'windowmanager/screenshot.sh' "/home/$USER/.config/scripts/screenshot" && \
     dotfile 'windowmanager/monitor.sh' "/home/$USER/.config/scripts/monitor" && \
+    dotfile 'windowmanager/ws.sh' "/home/$USER/.config/scripts/ws" && \
     dotfile 'windowmanager/config.rasi' "/home/$USER/.config/rofi/config.rasi" && \
     dotfile 'windowmanager/rofi-*' '/home/$USER/.config/scripts/' && \
     dotfile 'windowmanager/dunstrc' "/home/$USER/.config/dunst/dunstrc" || \
     return 1
     return 0
-    #*Workspace notification*
     #https://wiki.archlinux.org/index.php/Tint2
 }
 
