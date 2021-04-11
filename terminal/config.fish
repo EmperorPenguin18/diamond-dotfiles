@@ -6,6 +6,13 @@ end
 function feh
         command feh -Z -F -B black --conversion-timeout 1 --cache-size 2048 $argv
 end
+function mpv
+        command devour mpv $argv
+end
+function zathura
+        command devour zathura $argv
+end
+
 function ls
         clear
         lsd $argv
@@ -14,6 +21,7 @@ function chpwd --on-variable PWD --description 'List the directory when changing
         status --is-command-substitution; and return
         lsd
 end
+
 function cp --description 'Make any directories needed when copying'
         set DEST (echo $argv | awk '{print $NF}')
         echo $DEST | grep -o '/' > /dev/null; and mkdir -p (echo $DEST | cut -f -(echo $DEST | grep -o '/' | wc -l) -d '/')
