@@ -1,3 +1,9 @@
+Alt + Left  #Switch to previous workspace
+  /home/USER/.config/scripts/ws left
+
+Alt + right #Switch to next workspace
+  /home/USER/.config/scripts/ws right
+
 super + Return  #Open the terminal
   alacritty
 
