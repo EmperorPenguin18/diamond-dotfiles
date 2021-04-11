@@ -26,6 +26,12 @@ install_git ()
     return 0
 }
 
+service ()
+{
+    systemctl $@ || return 1
+    return 0
+}
+
 dotfile ()
 {
     NUM=$(echo "$1" | grep -o '/' | wc -l)
@@ -124,11 +130,11 @@ cloud ()
 
 update ()
 {
-    install_repo cron reflector && \
+    install_repo cronie reflector && \
     dotfile 'update/backup.sh' "/home/$USER/.config/scripts/backup" && \
     dotfile 'update/update.sh' "/home/$USER/.config/scripts/update" && \
     dotfile 'update/crontab' '/etc/crontab' && \
-    systemctl enable cronie && \
+    service enable cronie && \
     reflector --country $(curl -sL https://raw.github.com/eggert/tz/master/zone1970.tab | grep $TIME | awk '{print $1}') --protocol https --sort rate --save /etc/pacman.d/mirrorlist || \
     return 1
     return 0
@@ -160,7 +166,7 @@ login ()
     dotfile 'login/xinitrc.desktop' '/usr/share/xsessions/xinitrc.desktop' && \
     dotfile 'login/xinitrc' "/home/$USER/.xinitrc" && \
     rm /usr/share/xsessions/spectrwm.desktop && \
-    systemctl enable lightdm && \
+    service enable lightdm && \
     dotfile 'login/grub' '/etc/default/grub' && \
     UUID="$(blkid -o device | xargs -L1 cryptsetup luksUUID | grep -v WARNING)" && \
     SWAP="$(blkid | grep swap | cut -f 2 -d '"')" && \
@@ -223,7 +229,7 @@ terminal ()
     dotfile 'terminal/config.fish' "/home/$USER/.config/fish/config.fish" && \
     dotfile 'terminal/fish_variables' "/home/$USER/.config/fish/fish_variables" && \
     rm /home/$USER/.bash* && \
-    systemctl enable pkgfile-update.timer && \
+    service enable pkgfile-update.timer && \
     dotfile 'terminal/init.vim' "/home/$USER/.config/nvim/init.vim" && \
     dotfile 'terminal/help.sh' "/hoem/$USER/.config/scripts/help" && \
     dotfile 'terminal/fetch.sh' "/home/$USER/.config/scripts/fetch" || \
@@ -298,25 +304,22 @@ browser ()
 
 power ()
 {
-    install_repo light tlp tlp-rdw acpid xscreensaver
+    install_repo light acpid hdparm sdparm xscreensaver
+    install_aur laptop-mode-tools
     dotfile 'power/brightnesscontrol.sh' "/home/$USER/.config/scripts/brightnesscontrol"
     insert_binding XF86MonBrightnessUp "/home/$USER/.config/scripts/brightnesscontrol up" 'Increase brightness'
     insert_binding XF86MonBrightnessDown "/home/$USER/.config/scripts/brightnesscontrol down" 'Decrease brightness'
-    systemctl enable tlp
-    systemctl enable NetworkManager-dispatcher
-    systemctl mask systemd-rfkill.service
-    systemctl mask systemd-rfkill.socket
-    dotfile 'power/tlp.conf' '/etc/tlp.conf'
-    systemctl enable acpid
-    #https://wiki.archlinux.org/index.php/Laptop_Mode_Tools
+    service enable acpid
     #https://wiki.archlinux.org/index.php/CPU_frequency_scaling / AUTO_CPUFREQ
-    #*powertop*
-    #*Mute LED*
+    dotfile 'power/laptop-mode.conf' '/etc/laptop-mode/laptop-mode.conf'
+    service enable laptop-mode
     dotfile 'power/powersave.rules' '/etc/udev/rules.d/powersave.rules'
     dotfile 'power/powerevents.sh' "/home/$USER/.config/scripts/powerevents"
     insert_startup "/home/$USER/.config/scripts/powerevents check"
     dotfile 'power/batterycron' '/etc/cron.d/batterycron'
     dotfile 'power/batterynotify.sh' "/home/sebastien/.config/scripts/batterynotify"
+    #*powertop*
+    #*Mute LED*
 }
 
 virtualization ()
@@ -324,7 +327,7 @@ virtualization ()
     install_repo qemu qemu-arch-extra libvirt ebtables dnsmasq virt-manager libguestfs edk2-ovmf dmidecode && \
     usermod -a -G libvirt $USER
     usermod -a -G kvm $USER
-    systemctl enable libvirtd && \
+    service enable libvirtd && \
     insert_binding 'super + m' virt-manager 'Open Virtual Machine Manager' || \
     return 1
     return 0
@@ -336,7 +339,7 @@ other ()
     gpg --recv-key AEE9DECFD582E984 && \
     install_aur freetube lightcord mullvad-vpn-cli aic94xx-firmware wd719x-firmware upd72020x-fw && \
     install_repo networkmanager-openvpn
-    systemctl start mullvad-daemon && \
+    service start mullvad-daemon && \
     mullvad account set $MULLVAD && \
     mullvad auto-connect set on && \
     mullvad lan set allow && \
