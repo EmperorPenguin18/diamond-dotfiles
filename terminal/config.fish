@@ -4,7 +4,7 @@ function vim
         nvim $argv
 end
 function feh
-        command feh -Z -F -B black --conversion-timeout 1 --start-at $argv
+        command feh -Z -F -B black --conversion-timeout 1 --cache-size 2048 $argv
 end
 function ls
         clear
