@@ -3,6 +3,10 @@ set -x MANPAGER "nvim -c 'set ft=man' -"
 function vim
         nvim $argv
 end
+function unrar
+        bsdtar -xvf $argv
+end
+
 function feh
         command feh -Z -F -B black --conversion-timeout 1 --cache-size 2048 $argv
 end
