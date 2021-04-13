@@ -304,29 +304,30 @@ browser ()
 
 power ()
 {
-    install_repo light acpid hdparm sdparm xscreensaver
-    install_aur laptop-mode-tools
-    dotfile 'power/brightnesscontrol.sh' "/home/$USER/.config/scripts/brightnesscontrol"
-    insert_binding XF86MonBrightnessUp "/home/$USER/.config/scripts/brightnesscontrol up" 'Increase brightness'
-    insert_binding XF86MonBrightnessDown "/home/$USER/.config/scripts/brightnesscontrol down" 'Decrease brightness'
-    service enable acpid
-    #https://wiki.archlinux.org/index.php/CPU_frequency_scaling / AUTO_CPUFREQ
-    dotfile 'power/laptop-mode.conf' '/etc/laptop-mode/laptop-mode.conf'
-    service enable laptop-mode
-    dotfile 'power/powersave.rules' '/etc/udev/rules.d/powersave.rules'
-    dotfile 'power/powerevents.sh' "/home/$USER/.config/scripts/powerevents"
-    insert_startup "/home/$USER/.config/scripts/powerevents check"
-    dotfile 'power/batterycron' '/etc/cron.d/batterycron'
-    dotfile 'power/batterynotify.sh' "/home/sebastien/.config/scripts/batterynotify"
-    #*powertop*
+    install_repo light acpid hdparm sdparm xscreensaver && \
+    install_aur laptop-mode-tools auto-cpufreq && \
+    dotfile 'power/brightnesscontrol.sh' "/home/$USER/.config/scripts/brightnesscontrol" && \
+    insert_binding XF86MonBrightnessUp "/home/$USER/.config/scripts/brightnesscontrol up" 'Increase brightness' && \
+    insert_binding XF86MonBrightnessDown "/home/$USER/.config/scripts/brightnesscontrol down" 'Decrease brightness' && \
+    service enable acpid && \
+    service enable auto-cpufreq && \
+    dotfile 'power/laptop-mode.conf' '/etc/laptop-mode/laptop-mode.conf' && \
+    service enable laptop-mode && \
+    dotfile 'power/powersave.rules' '/etc/udev/rules.d/powersave.rules' && \
+    dotfile 'power/powerevents.sh' "/home/$USER/.config/scripts/powerevents" && \
+    insert_startup "/home/$USER/.config/scripts/powerevents check" && \
+    dotfile 'power/batterycron' '/etc/cron.d/batterycron' && \
+    dotfile 'power/batterynotify.sh' "/home/sebastien/.config/scripts/batterynotify" || \
+    return 1
+    return 0
     #*Mute LED*
 }
 
 virtualization ()
 {
     install_repo qemu qemu-arch-extra libvirt ebtables dnsmasq virt-manager libguestfs edk2-ovmf dmidecode && \
-    usermod -a -G libvirt $USER
-    usermod -a -G kvm $USER
+    usermod -a -G libvirt $USER && \
+    usermod -a -G kvm $USER && \
     service enable libvirtd && \
     insert_binding 'super + m' virt-manager 'Open Virtual Machine Manager' || \
     return 1
