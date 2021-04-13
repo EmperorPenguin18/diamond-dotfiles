@@ -13,7 +13,7 @@ function zip --description 'Old habits die hard'
         bsdtar -a -cvf $argv
 end
 
-function feh --description 'Feh doesn't have a config file so...'
+function feh --description 'Feh does not have a config file so...'
         command feh -Z -F -B black --conversion-timeout 1 --cache-size 2048 $argv
 end
 function mpv --description 'Swallow mpv windows'
