@@ -222,7 +222,7 @@ theme ()
 
 terminal ()
 {
-    install_repo alacritty wget mlocate lsd pkgfile neovim ctags python-nvim parted openssh unzip zip unrar speedtest-cli && \
+    install_repo alacritty wget mlocate lsd pkgfile neovim ctags python-nvim parted openssh unzip zip speedtest-cli && \
     install_aur python2-nvim hexokinase-git vim-hexokinase-git && \
     install_git "https://aur.archlinux.org/vim-sneak.git" && \
     dotfile 'terminal/alacritty.yml' "/home/$USER/.config/alacritty/alacritty.yml" && \
