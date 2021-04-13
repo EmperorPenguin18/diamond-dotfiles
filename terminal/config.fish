@@ -1,23 +1,29 @@
 set -x MANPAGER "nvim -c 'set ft=man' -"
 
-function vim
+function vim --description 'Old habits die hard'
         nvim $argv
 end
-function unrar
+function unrar --description 'Old habits die hard'
         bsdtar -xvf $argv
 end
+function unzip --description 'Old habits die hard'
+        bsdtar -xvf $argv
+end
+function zip --description 'Old habits die hard'
+        bsdtar -a -cvf $argv
+end
 
-function feh
+function feh --description 'Feh doesn't have a config file so...'
         command feh -Z -F -B black --conversion-timeout 1 --cache-size 2048 $argv
 end
-function mpv
+function mpv --description 'Swallow mpv windows'
         command devour mpv $argv
 end
-function zathura
+function zathura --description 'Swallow zathura windows'
         command devour zathura $argv
 end
 
-function ls
+function ls --description 'Improve directory listing'
         clear
         lsd $argv
 end
@@ -31,6 +37,13 @@ function cp --description 'Make any directories needed when copying'
         echo $DEST | grep -o '/' > /dev/null; and mkdir -p (echo $DEST | cut -f -(echo $DEST | grep -o '/' | wc -l) -d '/')
         command cp $argv
 end
+function mv --description 'Make any directories needed when moving'
+        set DEST (echo $argv | awk '{print $NF}')
+        echo $DEST | grep -o '/' > /dev/null; and mkdir -p (echo $DEST | cut -f -(echo $DEST | grep -o '/' | wc -l) -d '/')
+        command mv $argv
+end
+
+
 
 function fish_prompt --description 'Write out the prompt'
         set -l last_pipestatus $pipestatus
