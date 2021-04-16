@@ -22,6 +22,7 @@ do
         sed -i "s/NAME/$NAME/g" /etc/systemd/system/rclone$NUM.service
         sed -i "s/USER/$USER/g" /etc/systemd/system/rclone$NUM.service
         mkdir /mnt/$NAME
+        chown $USER:$USER /mnt/$NAME
         systemctl enable rclone$NUM
 
         NUM=$(expr $NUM + 1)
