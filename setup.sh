@@ -74,12 +74,13 @@ pre_checks ()
         echo "Script must be run as user: root"
         exit 255
     fi
-    USER="$(ls /home)"
-    su $USER -c "git clone https://github.com/EmperorPenguin18/diamond-dotfiles /home/$USER/dotfiles"
-    cd /home/$USER/dotfiles
-    SRC="$(pwd)"
-    install_repo dialog
-    TIME="$(ls -l /etc/localtime | sed 's|.*zoneinfo/||')"
+    USER="$(ls /home)" && \
+    su $USER -c "git clone https://github.com/EmperorPenguin18/diamond-dotfiles /home/$USER/dotfiles" && \
+    cd /home/$USER/dotfiles && \
+    SRC="$(pwd)" && \
+    install_repo dialog && \
+    TIME="$(ls -l /etc/localtime | sed 's|.*zoneinfo/||')" || \
+    return 1
     return 0
 }
 
@@ -172,7 +173,8 @@ login ()
     SWAP="$(blkid | grep swap | cut -f 2 -d '"')" && \
     sed -i "s/GRUB_CMDLINE_LINUX=\"\"/GRUB_CMDLINE_LINUX=\"cryptdevice=UUID=$(echo $UUID):cryptroot resume=UUID=$(echo $SWAP)\"/g" /etc/default/grub && \
     dotfile 'login/95-monitor-hotplug.rules' '/etc/udev/rules.d/95-monitor-hotplug.rules' && \
-    dotfile 'login/hotplug.sh' "/home/$USER/.config/scripts/hotplug" || \
+    dotfile 'login/hotplug.sh' "/home/$USER/.config/scripts/hotplug" && \
+    dotfile 'login/watchdog.conf' '/etc/modprobe.d/watchdog.conf' || \
     return 1
     return 0
 }
@@ -281,6 +283,25 @@ browser ()
     #https://www.youtube.com/watch?v=NH4DdXC0RFw&ab_channel=SunKnudsen
 }
 
+security ()
+{
+    install_repo ufw fail2ban apparmor && \
+    service enable ufw && \
+    sed -i 's/DEFAULT_FORWARD_POLICY="DROP"/DEFAULT_FORWARD_POLICY="ACCEPT"/g' /etc/default/ufw && \
+    ufw limit 22/tcp && \
+    ufw allow 80/tcp && \
+    ufw allow 443/tcp && \
+    ufw default deny incoming && \
+    ufw default allow outgoing && \
+    ufw enable && \
+    service enable fail2ban && \
+    dotfile 'security/jail.local' '/etc/fail2ban/jail.local' && \
+    service enable apparmor && \
+    dotfile 'security/host.conf' '/etc/host.conf' || \
+    return 1
+    return 0
+}
+
 #gaming ()
 #{
     #*Lutris wiki*
@@ -339,7 +360,7 @@ other ()
     gpg --recv-key 78CEAA8CB72E4467 && \
     gpg --recv-key AEE9DECFD582E984 && \
     install_aur freetube lightcord mullvad-vpn-cli aic94xx-firmware wd719x-firmware upd72020x-fw && \
-    install_repo networkmanager-openvpn
+    install_repo networkmanager-openvpn && \
     service start mullvad-daemon && \
     mullvad account set $MULLVAD && \
     mullvad auto-connect set on && \
@@ -347,12 +368,9 @@ other ()
     mullvad relay set tunnel-protocol openvpn || \
     return 1
     return 0
-    #https://wiki.archlinux.org/index.php/Improving_performance
+    #https://wiki.archlinux.org/index.php/Sysctl
     #*Manjaro settings*
-    #*Security*
     #https://unix.stackexchange.com/questions/53080/list-optional-dependencies-with-pacman-on-arch-linux
-    #https://github.com/hakavlad/nohang
-    #https://github.com/Nefelim4ag/Ananicy
 }
 
 clean_up ()
@@ -401,6 +419,8 @@ audio
 check_error "audio failed"
 browser
 check_error "browser failed"
+security
+check_error "security failed"
 #[ "${GAMING}" = "y" ] && gaming
 [ "${LAPTOP}" = "y" ] && power; check_error "power failed"
 [ "${VIRTUALIZATION}" = "y" ] && virtualization; check_error "virtualization failed"
