@@ -338,10 +338,10 @@ power ()
     dotfile 'power/powerevents.sh' "/home/$USER/.config/scripts/powerevents" && \
     insert_startup "/home/$USER/.config/scripts/powerevents check" && \
     dotfile 'power/batterycron' '/etc/cron.d/batterycron' && \
-    dotfile 'power/batterynotify.sh' "/home/sebastien/.config/scripts/batterynotify" || \
+    dotfile 'power/batterynotify.sh' "/home/sebastien/.config/scripts/batterynotify" && \
+    dotfile 'power/mute.conf' '/etc/modprobe.d/mute.conf' || \
     return 1
     return 0
-    #*Mute LED*
 }
 
 virtualization ()
