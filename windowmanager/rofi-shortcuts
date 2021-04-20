@@ -3,8 +3,8 @@
 
 USER="$(ls /home)"
 
-fgrep "bind" /home/$USER/.spectrwm.conf | sed -n 's/.*= //p' | sed 's/MOD/Super/g' | sed 's/Mod1/Alt/g' > /tmp/kb.txt
-fgrep "#" /home/$USER/.config/sxhkd/sxhkdrc | sed 's/super/Super/g' | sed 's/alt/Alt/g' >> /tmp/kb.txt
+fgrep "bind" /home/$USER/.spectrwm.conf | sed -n 's/.*= //p' | sed 's/MOD/Super/g;s/Mod1/Alt/g' > /tmp/kb.txt
+fgrep "#" /home/$USER/.config/sxhkd/* | cut -f 2 -d ':' | sed 's/super/Super/g;s/alt/Alt/g' >> /tmp/kb.txt
 
 output=$(cat /tmp/kb.txt | rofi -theme center -dmenu -p Shortcuts -i)
 if [[ $output == "" ]]; then exit 1;
