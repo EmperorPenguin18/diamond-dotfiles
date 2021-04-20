@@ -53,19 +53,9 @@ dotfile ()
             sed -i "s/USER/$USER/g" "$DEST"/"$I"
         fi
     done
-    [ "$2" = "/etc/default/grub" ] || [ "$2" = "/home/$USER/.config/sxhkd/sxhkdrc" ] || [ "$2" = "/home/$USER/.config/spotifyd/spotifyd.conf" ] || [ "$2" = "/home/$USER/.xinitrc" ] || \
+    [ "$2" = "/etc/default/grub" ] || [ "$2" = "/home/$USER/.config/spotifyd/spotifyd.conf" ] || \
         echo "$1","$2" >> /home/$USER/.config/files.csv
     cd $SRC
-}
-
-insert_binding ()
-{
-    printf "$1    #$3\n  $2\n\n" >> /home/$USER/.config/sxhkd/sxhkdrc || return 1
-    return 0
-}
-insert_startup ()
-{
-    sed -i "s/exec/$1\n&/g" /home/$USER/.xinitrc
 }
 
 pre_checks ()
@@ -125,6 +115,7 @@ cloud ()
     install_repo fuse rclone && \
     dotfile 'cloud/fuse.conf' '/etc/fuse.conf' && \
     dotfile 'cloud/rclonewrapper.sh' "/home/$USER/.config/scripts/rclonewrapper" && \
+    dotfile 'cloud/80-netperf.conf' '/etc/sysctl.d/80-netperf.conf' || \
     return 1
     return 0
 }
@@ -143,11 +134,10 @@ update ()
 
 video ()
 {
-    install_repo mesa lib32-mesa vulkan-icd-loader lib32-vulkan-icd-loader libva-mesa-driver lib32-libva-mesa-driver mesa-vdpau lib32-mesa-vdpau || \
-    return 1
-    [ "$(echo $VIDEO | grep 'intel' | wc -l)" -gt 0 ] && install_repo xf86-video-intel vulkan-intel lib32-vulkan-intel intel-media-driver libva-intel-driver
-    [ "$(echo $VIDEO | grep 'amd' | wc -l)" -gt 0 ] && install_repo xf86-video-amdgpu vulkan-radeon lib32-vulkan-radeon
-    [ "$(echo $VIDEO | grep 'nvidia' | wc -l)" -gt 0 ] && install_repo nvidia-dkms lib32-nvidia-utils nvidia-prime
+    install_repo mesa lib32-mesa vulkan-icd-loader lib32-vulkan-icd-loader libva-mesa-driver lib32-libva-mesa-driver mesa-vdpau lib32-mesa-vdpau || return 1
+    [ "$(echo $VIDEO | grep 'intel' | wc -l)" -gt 0 ] && install_repo xf86-video-intel vulkan-intel lib32-vulkan-intel intel-media-driver libva-intel-driver lib32-libva-intel-driver || return 1
+    [ "$(echo $VIDEO | grep 'amd' | wc -l)" -gt 0 ] && install_repo xf86-video-amdgpu vulkan-radeon lib32-vulkan-radeon || return 1
+    [ "$(echo $VIDEO | grep 'nvidia' | wc -l)" -gt 0 ] && install_repo nvidia-dkms lib32-nvidia-utils nvidia-prime || return 1
     #[ "$(echo $VIDEO | grep 'intel' | wc -l)" -gt 0 ] && [ "$(echo $VIDEO | grep 'nvidia' | wc -l)" -gt 0 ] && pikaur -S optimus-manager && cp -f $DIR/xorg/optimus-manager.conf /etc/optimus-manager/optimus-manager.conf
     return 0
     #*Enable vsync + freesync/gsync*
@@ -182,10 +172,8 @@ login ()
 xorg ()
 {
     install_repo xorg xdotool xclip && \
-    install_aur picom-git all-repository-fonts && \
-    dotfile 'xorg/picom.conf' "/home/$USER/.config/picom.conf" && \
-    install_git "https://github.com/EmperorPenguin18/SkyrimCursor" && \
-    dotfile 'xorg/index.theme' "/home/$USER/.icons/default/index.theme" || \
+    install_aur picom-git && \
+    dotfile 'xorg/picom.conf' "/home/$USER/.config/picom.conf" || \
     return 1
     return 0
 }
@@ -210,13 +198,15 @@ windowmanager ()
 theme ()
 {
     install_repo arc-gtk-theme kvantum-qt5 hicolor-icon-theme arc-icon-theme && \
-    install_aur moka-icon-theme-git && \
+    install_aur moka-icon-theme-git all-repository-fonts && \
+    install_git "https://github.com/EmperorPenguin18/SkyrimCursor" && \
     dotfile 'theme/wallpaper.jpg' "/home/$USER/.config/wallpaper.jpg" && \
     dotfile 'theme/DTM-Mono.otf' '/usr/share/fonts/DTM-Mono.otf' && \
     dotfile 'theme/DTM-Sans.otf' '/usr/share/fonts/DTM-Sans.otf' && \
     dotfile 'theme/*.rasi' '/usr/share/rofi/themes/' && \
     dotfile 'theme/Trolltech.conf' '/etc/xdg/Trolltech.conf' && \
-    dotfile 'theme/kvantum.kvconfig' "/home/$USER/.config/Kvantum/kvantum.kvconfig" || \
+    dotfile 'theme/kvantum.kvconfig' "/home/$USER/.config/Kvantum/kvantum.kvconfig" && \
+    dotfile 'theme/index.theme' "/home/$USER/.icons/default/index.theme" || \
     return 1
     return 0
     #https://manpages.debian.org/testing/rofi/rofi-theme.5.en.html
@@ -297,7 +287,8 @@ security ()
     service enable fail2ban && \
     dotfile 'security/jail.local' '/etc/fail2ban/jail.local' && \
     service enable apparmor && \
-    dotfile 'security/host.conf' '/etc/host.conf' || \
+    dotfile 'security/host.conf' '/etc/host.conf' && \
+    dotfile 'security/90-netsec.conf' '/etc/sysctl.d/90-netsec.conf' || \
     return 1
     return 0
 }
@@ -328,15 +319,14 @@ power ()
     install_repo light acpid hdparm sdparm xscreensaver && \
     install_aur laptop-mode-tools auto-cpufreq && \
     dotfile 'power/brightnesscontrol.sh' "/home/$USER/.config/scripts/brightnesscontrol" && \
-    insert_binding XF86MonBrightnessUp "/home/$USER/.config/scripts/brightnesscontrol up" 'Increase brightness' && \
-    insert_binding XF86MonBrightnessDown "/home/$USER/.config/scripts/brightnesscontrol down" 'Decrease brightness' && \
+    dotfile 'power/power.kb' "/home/$USER/.config/sxhkd/power.kb" && \
     service enable acpid && \
     service enable auto-cpufreq && \
     dotfile 'power/laptop-mode.conf' '/etc/laptop-mode/laptop-mode.conf' && \
     service enable laptop-mode && \
     dotfile 'power/powersave.rules' '/etc/udev/rules.d/powersave.rules' && \
     dotfile 'power/powerevents.sh' "/home/$USER/.config/scripts/powerevents" && \
-    insert_startup "/home/$USER/.config/scripts/powerevents check" && \
+    dotfile 'power/99-battery.sh' '/etc/X11/xinit/xinitrc.d/99-battery.sh' && \
     dotfile 'power/batterycron' '/etc/cron.d/batterycron' && \
     dotfile 'power/batterynotify.sh' "/home/sebastien/.config/scripts/batterynotify" && \
     dotfile 'power/mute.conf' '/etc/modprobe.d/mute.conf' || \
@@ -350,7 +340,7 @@ virtualization ()
     usermod -a -G libvirt $USER && \
     usermod -a -G kvm $USER && \
     service enable libvirtd && \
-    insert_binding 'super + m' virt-manager 'Open Virtual Machine Manager' || \
+    dotfile '/virtualization/virt.kb' "/home/$USER/.config/sxhkd/virt.kb" || \
     return 1
     return 0
 }
@@ -368,7 +358,6 @@ other ()
     mullvad relay set tunnel-protocol openvpn || \
     return 1
     return 0
-    #https://wiki.archlinux.org/index.php/Sysctl
     #*Manjaro settings*
     #https://unix.stackexchange.com/questions/53080/list-optional-dependencies-with-pacman-on-arch-linux
 }
