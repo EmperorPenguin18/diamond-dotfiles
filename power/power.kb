@@ -1,0 +1,4 @@
+XF86MonBrightnessUp #Increase brightness
+  /home/$USER/.config/scripts/brightnesscontrol up
+XF86MonBrightnessDown #Decrease brightness
+  /home/$USER/.config/scripts/brightnesscontrol down
