@@ -107,7 +107,6 @@ packagemanager ()
     install_git "https://aur.archlinux.org/pikaur.git" || \
     return 1
     return 0
-    #*Remove nopass*
 }
 
 cloud ()
@@ -358,7 +357,6 @@ other ()
     mullvad relay set tunnel-protocol openvpn || \
     return 1
     return 0
-    #*Manjaro settings*
     #https://unix.stackexchange.com/questions/53080/list-optional-dependencies-with-pacman-on-arch-linux
 }
 
