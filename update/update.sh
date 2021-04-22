@@ -4,7 +4,7 @@ USER="$(ls /home)"
 
 #Update system
 pikaur -Syyuuq --noconfirm >output.txt 2>&1
-firefox file:///home/$USER/output.txt
+su $USER -c "firefox file:///home/$USER/output.txt &"
 
 #Update dotfiles
 git clone https://github.com/EmperorPenguin18/diamond-dotfiles /tmp/dotfiles
