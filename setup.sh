@@ -257,13 +257,10 @@ audio ()
 
 browser ()
 {
-    install_repo firefox pass pass-otp
-    #mkdir -p /home/$USER/.mozilla/firefox
-    firefox -headless &
-    killall firefox
-    PROFILE="$(ls /home/$USER/.mozilla/firefox | grep default-release)" && \
-    dotfile 'browser/prefs.js' "/home/$USER/.mozilla/firefox/$PROFILE/prefs.js" && \
-    dotfile 'browser/*.xpi' "/home/$USER/.mozilla/firefox/$PROFILE/extensions/" && \
+    install_repo firefox pass pass-otp && \
+    dotfile 'browser/profiles.ini' "/home/$USER/.mozilla/firefox/profiles.ini" && \
+    dotfile 'browser/prefs.js' "/home/$USER/.mozilla/firefox/profile/prefs.js" && \
+    dotfile 'browser/*.xpi' "/home/$USER/.mozilla/firefox/profile/extensions/" && \
     dotfile 'browser/homepage.html' "/home/$USER/.config/homepage.html" && \
     sed -i 's/dmenu/rofi -theme center -dmenu -p Passwords -i/g' /usr/bin/passmenu || \
     return 1
