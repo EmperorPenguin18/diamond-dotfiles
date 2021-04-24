@@ -187,11 +187,10 @@ windowmanager ()
     dotfile 'windowmanager/monitor.sh' "/home/$USER/.config/scripts/monitor" && \
     dotfile 'windowmanager/ws.sh' "/home/$USER/.config/scripts/ws" && \
     dotfile 'windowmanager/config.rasi' "/home/$USER/.config/rofi/config.rasi" && \
-    dotfile 'windowmanager/rofi-*' '/home/$USER/.config/scripts/' && \
+    dotfile 'windowmanager/rofi-*' "/home/$USER/.config/scripts/" && \
     dotfile 'windowmanager/dunstrc' "/home/$USER/.config/dunst/dunstrc" || \
     return 1
     return 0
-    #https://wiki.archlinux.org/index.php/Tint2
 }
 
 theme ()
