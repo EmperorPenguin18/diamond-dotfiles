@@ -5,7 +5,7 @@ USER=$(ls /home)
 sxhkd /home/$USER/.config/sxhkd/*.hk &
 picom --experimental-backends -b
 unclutter -b
-feh --bg-scale --no-fehbg /home/$USER/.config/wallpaper.jpg
+xwallpaper --zoom /home/$USER/.config/wallpaper.jpg
 pcmanfm -d
 lxpolkit &
 playerctld daemon
