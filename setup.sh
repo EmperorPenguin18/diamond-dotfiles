@@ -179,7 +179,7 @@ xorg ()
 
 windowmanager ()
 {
-    install_repo spectrwm sxhkd wmctrl feh rofi unclutter dunst && \
+    install_repo spectrwm sxhkd wmctrl rofi unclutter dunst && \
     install_aur devour && \
     dotfile 'windowmanager/spectrwm.conf' "/home/$USER/.spectrwm.conf" && \
     dotfile 'windowmanager/sxhkdrc' "/home/$USER/.config/sxhkd/sxhkdrc" && \
@@ -195,7 +195,7 @@ windowmanager ()
 
 theme ()
 {
-    install_repo arc-gtk-theme kvantum-qt5 hicolor-icon-theme arc-icon-theme && \
+    install_repo xwallpaper arc-gtk-theme kvantum-qt5 hicolor-icon-theme arc-icon-theme && \
     install_aur moka-icon-theme-git all-repository-fonts && \
     install_git "https://github.com/EmperorPenguin18/SkyrimCursor" && \
     dotfile 'theme/wallpaper.jpg' "/home/$USER/.config/wallpaper.jpg" && \
@@ -207,7 +207,6 @@ theme ()
     dotfile 'theme/index.theme' "/home/$USER/.icons/default/index.theme" || \
     return 1
     return 0
-    #https://manpages.debian.org/testing/rofi/rofi-theme.5.en.html
 }
 
 terminal ()
@@ -229,7 +228,7 @@ terminal ()
 
 filemanager ()
 {
-    install_repo pcmanfm-gtk3 gvfs lxsession-gtk3 mtools exfatprogs e2fsprogs ntfs-3g xfsprogs zathura zathura-cb zathura-djvu zathura-pdf-mupdf zathura-ps mpv libreoffice-fresh && \
+    install_repo pcmanfm-gtk3 gvfs lxsession-gtk3 mtools exfatprogs e2fsprogs ntfs-3g xfsprogs zathura zathura-cb zathura-djvu zathura-pdf-mupdf zathura-ps imv mpv libreoffice-fresh && \
     install_aur mpv-mpris && \
     dotfile 'filemanager/settings.ini' '/etc/gtk-3.0/settings.ini' && \
     dotfile 'filemanager/mpv.conf' "/home/$USER/.config/mpv/mpv.conf" && \
