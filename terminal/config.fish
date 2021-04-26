@@ -12,9 +12,12 @@ end
 function zip --description 'Old habits die hard'
         bsdtar -a -cvf $argv
 end
+function feh --description 'Old habits die hard'
+        imv $argv
+end
 
-function feh --description 'Feh does not have a config file so...'
-        command feh -Z -F -B black --conversion-timeout 1 --cache-size 2048 $argv
+function imv --description 'Fullscreen image viewing'
+        command imv -f $argv
 end
 function mpv --description 'Swallow mpv windows'
         command devour mpv $argv
@@ -42,8 +45,6 @@ function mv --description 'Make any directories needed when moving'
         echo $DEST | grep -o '/' > /dev/null; and mkdir -p (echo $DEST | cut -f -(echo $DEST | grep -o '/' | wc -l) -d '/')
         command mv $argv
 end
-
-
 
 function fish_prompt --description 'Write out the prompt'
         set -l last_pipestatus $pipestatus
