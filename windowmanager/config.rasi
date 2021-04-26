@@ -1,7 +1,7 @@
 configuration {
 	modi: "drun";
 	//font: "Determination Mono 10";
-	//show-icons: true;
+	show-icons: true;
 	drun-match-fields: "name,generic,exec,categories,keywords";
 	drun-display-format: "{name} [<span weight='light' size='small'><i>({generic})</i></span>]";
 	drun-url-launcher: "xdg-open";
