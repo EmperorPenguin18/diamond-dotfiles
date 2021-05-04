@@ -15,6 +15,9 @@ end
 function feh --description 'Old habits die hard'
         imv $argv
 end
+function ifconfig --description 'Old habits die hard'
+        ip addr $argv
+end
 
 function imv --description 'Fullscreen image viewing'
         command imv -f $argv
