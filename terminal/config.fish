@@ -23,10 +23,10 @@ function imv --description 'Fullscreen image viewing'
         command imv -f $argv
 end
 function mpv --description 'Swallow mpv windows'
-        command devour mpv $argv
+        command gobble mpv $argv
 end
 function zathura --description 'Swallow zathura windows'
-        command devour zathura $argv
+        command gobble zathura $argv
 end
 
 function ls --description 'Improve directory listing'
