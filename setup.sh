@@ -7,7 +7,7 @@ install_repo ()
 }
 install_aur ()
 {
-    pikaur -Sy "$@" --noconfirm --needed || return 1
+    pikaur -Sy "$@" --noconfirm --needed --mflags=--skippgpcheck || return 1
     return 0
 }
 install_git ()
@@ -180,7 +180,7 @@ xorg ()
 windowmanager ()
 {
     install_repo spectrwm sxhkd wmctrl rofi unclutter dunst && \
-    install_aur devour && \
+    install_git "https://github.com/EmperorPenguin18/gobble" && \
     dotfile 'windowmanager/spectrwm.conf' "/home/$USER/.spectrwm.conf" && \
     dotfile 'windowmanager/sxhkdrc' "/home/$USER/.config/sxhkd/sxhkdrc" && \
     dotfile 'windowmanager/screenshot.sh' "/home/$USER/.config/scripts/screenshot" && \
@@ -344,8 +344,6 @@ virtualization ()
 
 other ()
 {
-    gpg --recv-key 78CEAA8CB72E4467 && \
-    gpg --recv-key AEE9DECFD582E984 && \
     install_aur freetube lightcord mullvad-vpn-cli aic94xx-firmware wd719x-firmware upd72020x-fw && \
     install_repo networkmanager-openvpn && \
     service start mullvad-daemon && \
