@@ -255,7 +255,7 @@ audio ()
 
 browser ()
 {
-    install_repo firefox pass pass-otp && \
+    install_repo firefox firefox-ublock-origin pass pass-otp && \
     dotfile 'browser/profiles.ini' "/home/$USER/.mozilla/firefox/profiles.ini" && \
     dotfile 'browser/prefs.js' "/home/$USER/.mozilla/firefox/profile/prefs.js" && \
     dotfile 'browser/*.xpi' "/home/$USER/.mozilla/firefox/profile/extensions/" && \
@@ -290,7 +290,7 @@ security ()
 gaming ()
 {
     install_repo 0ad xonotic minetest supertuxkart dwarffortress nethack rogue warsow openttd && \
-    install_aur zork1 veloren vvvvvv-git thedarkmod-bin freedoom gzdoom || \
+    install_aur zork1 veloren vvvvvv-git thedarkmod-bin freedoom gzdoom tetris-terminal-git || \
     return 1
     return 0
     #*Lutris wiki*
