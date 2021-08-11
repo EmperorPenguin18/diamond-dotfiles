@@ -117,6 +117,7 @@ cloud ()
     dotfile 'cloud/80-netperf.conf' '/etc/sysctl.d/80-netperf.conf' || \
     return 1
     return 0
+    #https://github.com/jstaf/onedriver
 }
 
 update ()
@@ -258,8 +259,9 @@ browser ()
     install_repo firefox firefox-ublock-origin pass pass-otp && \
     dotfile 'browser/profiles.ini' "/home/$USER/.mozilla/firefox/profiles.ini" && \
     dotfile 'browser/prefs.js' "/home/$USER/.mozilla/firefox/profile/prefs.js" && \
-    dotfile 'browser/*.xpi' "/home/$USER/.mozilla/firefox/profile/extensions/" && \
+    dotfile 'browser/@testpilot-containers.xpi' "/home/$USER/.mozilla/firefox/profile/extensions/@testpilot-containers.xpi" && \
     dotfile 'browser/homepage.html' "/home/$USER/.config/homepage.html" && \
+    dotfile 'browser/homepage.css' "/home/$USER/.config/homepage.css" && \
     sed -i 's/dmenu/rofi -theme center -dmenu -p Passwords -i/g' /usr/bin/passmenu || \
     return 1
     return 0
@@ -309,6 +311,7 @@ gaming ()
     #https://github.com/dreamer
     #https://libredd.it/r/leagueoflinux/comments/dr2qye/amazing_performance_boost_by_tweaking_pulseaudio/
     #https://blog.thepoon.fr/osuLinuxAudioLatency/
+    #https://github.com/AUNaseef/protonup
 }
 
 power ()
