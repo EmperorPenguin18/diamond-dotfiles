@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    
+    <title>Home</title>
+    <link rel="stylesheet" href="./homepage.css">
+    <link href="favicon.png" rel="shortcut icon" type="image/x-icon" />
+</head>
+<body>
+    <div class="container">
+        <div id="clock"></div>
+        <div class="weather-container">
+            <div class="row">
+                <div id="weather-description"class="inline"></div>
+                <div class="inline">-</div>
+                <div id="temp" class="inline"></div>
+            </div>
+        </div>
+        <div class="bookmark-container">
+            <div class="bookmark-set">
+                <div class="bookmark-title">Linux</div>
+                <div class="bookmark-inner-container">
+                    <a class="bookmark" href="https://wiki.archlinux.org/" target="_blank">Arch Wiki</a>
+                    <a class="bookmark" href="https://archlinux.org/packages/" target="_blank">Arch Packages</a>
+                    <a class="bookmark" href="https://aur.archlinux.org/" target="_blank">AUR Packages</a>
+                    <a class="bookmark" href="https://packages.debian.org/index" target="_blank">Debian Packages</a>
+                    <a class="bookmark" href="https://phoronix.com/" target="_blank">Phoronix</a>
+                </div>
+            </div>
+            <div class="bookmark-set">
+                <div class="bookmark-title">MTG</div>
+                <div class="bookmark-inner-container">
+                    <a class="bookmark" href="https://scryfall.com/" target="_blank">Card Search</a>
+                    <a class="bookmark" href="https://tappedout.net/" target="_blank">Deckbuilder</a>
+                    <a class="bookmark" href="https://kanatacg.com/" target="_blank">Wizards Tower</a>
+                    <a class="bookmark" href="https://tcgplayer.com/" target="_blank">TCGPlayer</a>
+                    <a class="bookmark" href="https://mythicspoiler.com/" target="_blank">Set Spoilers</a>
+                </div>
+            </div>
+            <div class="bookmark-set">
+                <div class="bookmark-title">School</div>
+                <div class="bookmark-inner-container">
+                    <a class="bookmark" href="https://onq.queensu.ca/" target="_blank">onQ</a>
+                    <a class="bookmark" href="https://my.queensu.ca/" target="_blank">Solus</a>
+                    <a class="bookmark" href="https://queensuca.sharepoint.com/" target="_blank">Sharepoint</a>
+                </div>
+            </div>
+            <div class="bookmark-set">
+                <div class="bookmark-title">Social</div>
+                <div class="bookmark-inner-container">
+                    <a class="bookmark" href="https://youtube.com/" target="_blank">Youtube</a>
+                    <a class="bookmark" href="https://github.com/" target="_blank">Github</a>
+                    <a class="bookmark" href="https://mail.google.com/" target="_blank">Gmail</a>
+                    <a class="bookmark" href="https://outlook.office.com/" target="_blank">Outlook</a>
+                </div>
+            </div>
+            <div class="bookmark-set">
+            <div class="bookmark-title">Server</div>
+                <div class="bookmark-inner-container">
+                    <a class="bookmark" href="https://mullvad.net/" target="_blank">VPN</a>
+                    <a class="bookmark" href="https://10.0.0.47:8096/" target="_blank">Jellyfin</a>
+                    <a class="bookmark" href="https://10.0.0.47:5000/" target="_blank">Ombi</a>
+                    <a class="bookmark" href="https://10.0.0.47:8989/" target="_blank">Sonarr</a>
+                    <a class="bookmark" href="https://10.0.0.47:7878/" target="_blank">Radarr</a>
+                    <a class="bookmark" href="https://10.0.0.47:8080/" target="_blank">qBittorrent</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Get current time and format
+        getTime = () => {
+            let date = new Date(),
+                min = date.getMinutes(),
+                sec = date.getSeconds(),
+                hour = date.getHours();
+
+            return "" + 
+                (hour < 10 ? ("0" + hour) : hour) + ":" + 
+                (min < 10 ? ("0" + min) : min) + ":" + 
+                (sec < 10 ? ("0" + sec) : sec);
+        }
+
+        window.onload = () => {
+            let xhr = new XMLHttpRequest();
+            // Request to open weather map
+            xhr.open('GET', 'http://api.openweathermap.org/data/2.5/weather?q=Ottawa&units=metric&appid=e5b292ae2f9dae5f29e11499c2d82ece');
+            xhr.onload = () => {
+                if (xhr.readyState === 4) {
+                    if (xhr.status === 200) {
+                        let json = JSON.parse(xhr.responseText);
+                        console.log(json);
+                        document.getElementById("temp").innerHTML = json.main.temp.toFixed(0) + " C";
+                        document.getElementById("weather-description").innerHTML = json.weather[0].description;
+                    } else {
+                        console.log('error msg: ' + xhr.status);
+                    }
+                }
+            }
+            xhr.send();
+            // Set up the clock
+            document.getElementById("clock").innerHTML = getTime();
+            // Set clock interval to tick clock
+            setInterval( () => {
+                document.getElementById("clock").innerHTML = getTime();
+            },100);
+        }
+    </script>
+</body>
+</html>
+ 
