@@ -102,6 +102,7 @@ packagemanager ()
 {
     dotfile 'packagemanager/pacman.conf' '/etc/pacman.conf' && \
     dotfile 'packagemanager/doas.conf' '/etc/doas.conf' && \
+    dotfile 'packagemanager/nvidia.hook' '/etc/pacman.d/hooks/nvidia.hook' && \
     sed -i '/MAKEFLAGS.*/c\MAKEFLAGS="-j$(nproc)"' /etc/makepkg.conf && \
     install_repo autoconf automake bison flex groff m4 pkgconf pyalpm python-commonmark make patch gcc && \
     install_git "https://aur.archlinux.org/pikaur.git" || \
@@ -137,12 +138,9 @@ video ()
     install_repo mesa lib32-mesa vulkan-icd-loader lib32-vulkan-icd-loader libva-mesa-driver lib32-libva-mesa-driver mesa-vdpau lib32-mesa-vdpau || return 1
     [ "$(echo $VIDEO | grep 'intel' | wc -l)" -gt 0 ] && install_repo xf86-video-intel vulkan-intel lib32-vulkan-intel intel-media-driver libva-intel-driver lib32-libva-intel-driver || return 1
     [ "$(echo $VIDEO | grep 'amd' | wc -l)" -gt 0 ] && install_repo xf86-video-amdgpu vulkan-radeon lib32-vulkan-radeon || return 1
-    [ "$(echo $VIDEO | grep 'nvidia' | wc -l)" -gt 0 ] && install_repo nvidia-dkms lib32-nvidia-utils nvidia-prime || return 1
-    #[ "$(echo $VIDEO | grep 'intel' | wc -l)" -gt 0 ] && [ "$(echo $VIDEO | grep 'nvidia' | wc -l)" -gt 0 ] && pikaur -S optimus-manager && cp -f $DIR/xorg/optimus-manager.conf /etc/optimus-manager/optimus-manager.conf
+    [ "$(echo $VIDEO | grep 'nvidia' | wc -l)" -gt 0 ] && install_repo nvidia-dkms lib32-nvidia-utils nvidia-prime && sed -i 's/MODULES=()/MODULES=(nvidia nvidia_modeset nvidia_uvm nvidia_drm)/g' /etc/mkinitcpio.conf || return 1
     return 0
     #*Enable vsync + freesync/gsync*
-    #*https://wiki.archlinux.org/index.php/NVIDIA#DRM_kernel_mode_setting*
-    #https://github.com/Askannz/optimus-manager/wiki/A-guide--to-power-management-options
     #https://wiki.archlinux.org/index.php/PRIME#PRIME_synchronization
 }
 
