@@ -81,3 +81,6 @@ super + c #View cpu information
 
 super + i #View internet information
   /home/USER/.config/scripts/monitor int
+
+super + m #Mute focused window
+  /home/USER/.config/scripts/pulsemute
