@@ -247,7 +247,8 @@ audio ()
     cp /usr/lib/systemd/user/spotifyd.service /etc/systemd/user/ && \
     su $USER -c "systemctl --user enable spotifyd.service" && \
     dotfile 'audio/newsong.sh' "/home/$USER/.config/scripts/newsong" && \
-    dotfile 'audio/locale.gen' '/etc/locale.gen' || \
+    dotfile 'audio/locale.gen' '/etc/locale.gen' && \
+    dotfile 'audio/pulsemute.sh' "/home/$USER/.config/scripts/pulsemute" || \
     return 1
     return 0
 }
