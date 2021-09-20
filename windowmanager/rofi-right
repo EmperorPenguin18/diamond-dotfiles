@@ -1,2 +1,8 @@
-#!/bin/bash
-#Games
+#!/bin/sh
+#Music
+
+USER="$(ls /home)"
+
+OUTPUT="$(cat /home/$USER/.config/spotifyd/library.txt | cut -f 1,2,3 -d '|' | rofi -theme right -dmenu -p Music -i)"
+[ "$OUTPUT" = "" ] && exit 1
+playerctl --player=spotifyd open "$(fgrep "$OUTPUT" /home/$USER/.config/spotifyd/library.txt | cut -f 5 -d '|')"
