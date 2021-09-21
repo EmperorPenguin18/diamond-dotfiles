@@ -1,14 +1,20 @@
-Alt + Left  #Switch to previous workspace
+super + h  #Switch to previous workspace
   /home/USER/.config/scripts/ws left
 
-Alt + right #Switch to next workspace
+super + l #Switch to next workspace
   /home/USER/.config/scripts/ws right
+
+Alt + h  #Follow focused window to previous workspace
+  /home/USER/.config/scripts/ws send-left
+
+Alt + l #Follow focused window to next workspace
+  /home/USER/.config/scripts/ws send-right
+
+super + q #Close the focused window
+  /home/USER/.config/scripts/ws close
 
 super + Return  #Open the terminal
   alacritty
-
-super + v #Open the text editor
-  alacritty -e vim
 
 super + b #Open the browser
   firefox
