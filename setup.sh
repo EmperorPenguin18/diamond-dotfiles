@@ -198,6 +198,7 @@ theme ()
     install_aur moka-icon-theme-git all-repository-fonts && \
     install_git "https://github.com/EmperorPenguin18/SkyrimCursor" && \
     dotfile 'theme/wallpaper.jpg' "/home/$USER/.config/wallpaper.jpg" && \
+    dotfile 'theme/settings.ini' '/etc/gtk-3.0/settings.ini' && \
     dotfile 'theme/DTM-Mono.otf' '/usr/share/fonts/DTM-Mono.otf' && \
     dotfile 'theme/DTM-Sans.otf' '/usr/share/fonts/DTM-Sans.otf' && \
     dotfile 'theme/*.rasi' '/usr/share/rofi/themes/' && \
@@ -229,7 +230,6 @@ filemanager ()
 {
     install_repo pcmanfm-gtk3 gvfs lxsession-gtk3 mtools exfatprogs e2fsprogs ntfs-3g xfsprogs zathura zathura-cb zathura-djvu zathura-pdf-mupdf zathura-ps imv mpv libreoffice-fresh && \
     install_aur mpv-mpris && \
-    dotfile 'filemanager/settings.ini' '/etc/gtk-3.0/settings.ini' && \
     dotfile 'filemanager/mpv.conf' "/home/$USER/.config/mpv/mpv.conf" && \
     dotfile 'filemanager/input.conf' "/home/$USER/.config/mpv/input.conf" || \
     return 1
@@ -264,8 +264,6 @@ browser ()
     sed -i 's/dmenu/rofi -theme center -dmenu -p Passwords -i/g' /usr/bin/passmenu || \
     return 1
     return 0
-    #*Passwords (+spotify)*
-    #https://www.youtube.com/watch?v=NH4DdXC0RFw&ab_channel=SunKnudsen
 }
 
 security ()
@@ -355,7 +353,6 @@ other ()
     mullvad relay set tunnel-protocol openvpn || \
     return 1
     return 0
-    #https://unix.stackexchange.com/questions/53080/list-optional-dependencies-with-pacman-on-arch-linux
 }
 
 clean_up ()
@@ -416,5 +413,3 @@ check_error "clean_up failed"
 echo "-------------------------------------------------"
 echo "          All done! You can reboot now.          "
 echo "-------------------------------------------------"
-
-#*Script performance*
