@@ -10,6 +10,24 @@ Alt + h  #Follow focused window to previous workspace
 Alt + l #Follow focused window to next workspace
   /home/USER/.config/scripts/ws send-right
 
+super + 1 #Switch to workspace 1
+  /home/USER/.config/scripts/ws one
+
+super + 2 #Switch to workspace 2
+  /home/USER/.config/scripts/ws two
+
+super + 3 #Switch to workspace 3
+  /home/USER/.config/scripts/ws three
+
+super + 4 #Switch to workspace 4
+  /home/USER/.config/scripts/ws four
+
+super + 5 #Switch to workspace 5
+  /home/USER/.config/scripts/ws five
+
+super + e #Fullscreen focused window
+  /home/USER/.config/scripts/ws fullscreen
+
 super + q #Close the focused window
   /home/USER/.config/scripts/ws close
 
