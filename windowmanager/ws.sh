@@ -30,6 +30,35 @@ then
         wmctrl -i -a $ACTIVE && \
         dunstify -I /usr/share/icons/Arc/places/symbolic/start-here-symbolic.svg -h string:x-dunst-stack-tag:workspace $(expr $NUM + 1) && \
         exit 0
+elif [ "$ACTION" = "one" ]
+then
+        wmctrl -s 0 && \
+        dunstify -I /usr/share/icons/Arc/places/symbolic/start-here-symbolic.svg -h string:x-dunst-stack-tag:workspace 1 && \
+        exit 0
+elif [ "$ACTION" = "two" ]
+then
+        wmctrl -s 1 && \
+        dunstify -I /usr/share/icons/Arc/places/symbolic/start-here-symbolic.svg -h string:x-dunst-stack-tag:workspace 2 && \
+        exit 0
+elif [ "$ACTION" = "three" ]
+then
+        wmctrl -s 2 && \
+        dunstify -I /usr/share/icons/Arc/places/symbolic/start-here-symbolic.svg -h string:x-dunst-stack-tag:workspace 3 && \
+        exit 0
+elif [ "$ACTION" = "four" ]
+then
+        wmctrl -s 3 && \
+        dunstify -I /usr/share/icons/Arc/places/symbolic/start-here-symbolic.svg -h string:x-dunst-stack-tag:workspace 4 && \
+        exit 0
+elif [ "$ACTION" = "five" ]
+then
+        wmctrl -s 4 && \
+        dunstify -I /usr/share/icons/Arc/places/symbolic/start-here-symbolic.svg -h string:x-dunst-stack-tag:workspace 5 && \
+        exit 0
+elif [ "$ACTION" = "fullscreen" ]
+then
+        wmctrl -r :ACTIVE: -b toggle,fullscreen && \
+        exit 0
 elif [ "$ACTION" = "close" ]
 then
         wmctrl -c :ACTIVE: && \
