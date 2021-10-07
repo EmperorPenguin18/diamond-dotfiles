@@ -32,7 +32,7 @@ super + q #Close the focused window
   /home/USER/.config/scripts/ws close
 
 super + Return  #Open the terminal
-  alacritty
+  WINIT_X11_SCALE_FACTOR=1 alacritty
 
 super + b #Open the browser
   firefox
