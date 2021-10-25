@@ -179,7 +179,7 @@ xorg ()
 windowmanager ()
 {
     install_repo spectrwm sxhkd wmctrl rofi unclutter dunst && \
-    install_git "https://github.com/EmperorPenguin18/gobble" && \
+    install_aur gobble && \
     dotfile 'windowmanager/spectrwm.conf' "/home/$USER/.spectrwm.conf" && \
     dotfile 'windowmanager/sxhkdrc' "/home/$USER/.config/sxhkd/sxhkdrc" && \
     dotfile 'windowmanager/screenshot.sh' "/home/$USER/.config/scripts/screenshot" && \
@@ -289,7 +289,7 @@ security ()
 gaming ()
 {
     install_repo 0ad xonotic minetest supertuxkart dwarffortress nethack rogue warsow openttd && \
-    install_aur zork1 veloren vvvvvv-git thedarkmod-bin freedoom gzdoom tetris-terminal-git || \
+    install_aur zork1 veloren vvvvvv-git thedarkmod-bin freedoom gzdoom tetris-terminal-git unvanquished || \
     return 1
     return 0
     #*Lutris wiki*
@@ -353,6 +353,7 @@ other ()
     mullvad relay set tunnel-protocol openvpn || \
     return 1
     return 0
+    #https://github.com/blueOkiris/bgrm
 }
 
 clean_up ()
