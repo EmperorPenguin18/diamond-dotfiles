@@ -54,3 +54,6 @@ vmap  <S-Tab> <gv
 "Colorizer
 let g:Hexokinase_highlighters = ['backgroundfull']
 set termguicolors
+
+"Better yank functionality
+nmap Y y$
