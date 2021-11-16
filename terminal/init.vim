@@ -7,6 +7,7 @@ syntax enable
 
 "General settings
 set number
+set relativenumber
 let g:mapleader = ","
 set hidden
 set encoding=utf-8
