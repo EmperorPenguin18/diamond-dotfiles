@@ -49,6 +49,10 @@ function mv --description 'Make any directories needed when moving'
         command mv $argv
 end
 
+function rm --description 'Prevent accidental deletion'
+        command rm -i $argv
+end
+
 function fish_prompt --description 'Write out the prompt'
         set -l last_pipestatus $pipestatus
         set -l normal (set_color normal)
