@@ -26,6 +26,7 @@ curl -sL https://raw.github.com/EmperorPenguin18/diamond-dotfiles/master/setup.s
 9. Run `rclonewrapper {service file}` substituting the provided rclone.service file (if you want cloud storage).
 
 ### Future:
+- Switch to improved NTFS driver
 - System tray
 - Multiple rices to choose from
 - User-agnostic dotfiles
