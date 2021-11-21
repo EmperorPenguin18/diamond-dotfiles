@@ -27,6 +27,7 @@ curl -sL https://raw.github.com/EmperorPenguin18/diamond-dotfiles/master/setup.s
 
 ### Future:
 - Switch to improved NTFS driver
+- Add an option to setup video conferencing software
 - System tray
 - Multiple rices to choose from
 - User-agnostic dotfiles
