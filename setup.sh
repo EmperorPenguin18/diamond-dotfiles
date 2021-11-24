@@ -344,7 +344,7 @@ virtualization ()
 
 other ()
 {
-    install_aur freetube lightcord mullvad-vpn-cli aic94xx-firmware wd719x-firmware upd72020x-fw && \
+    install_aur freetube lightcord mullvad-vpn-cli aic94xx-firmware wd719x-firmware upd72020x-fw scrycli && \
     install_repo networkmanager-openvpn && \
     service start mullvad-daemon && \
     mullvad account set $MULLVAD && \
