@@ -44,12 +44,12 @@ end
 function cp --description 'Make any directories needed when copying'
         set DEST (echo $argv | awk '{print $NF}')
         echo $DEST | grep -o '/' > /dev/null; and mkdir -p (echo $DEST | cut -f -(echo $DEST | grep -o '/' | wc -l) -d '/')
-        command cp $argv
+        command cp -i $argv
 end
 function mv --description 'Make any directories needed when moving'
         set DEST (echo $argv | awk '{print $NF}')
         echo $DEST | grep -o '/' > /dev/null; and mkdir -p (echo $DEST | cut -f -(echo $DEST | grep -o '/' | wc -l) -d '/')
-        command mv $argv
+        command mv -i $argv
 end
 
 function rm --description 'Prevent accidental deletion'
