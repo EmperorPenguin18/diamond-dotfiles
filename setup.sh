@@ -158,8 +158,7 @@ login ()
     service enable lightdm && \
     dotfile 'login/grub' '/etc/default/grub' && \
     UUID="$(blkid -o device | xargs -L1 cryptsetup luksUUID | grep -v WARNING)" && \
-    SWAP="$(blkid | grep swap | cut -f 2 -d '"')" && \
-    sed -i "s/GRUB_CMDLINE_LINUX=\"\"/GRUB_CMDLINE_LINUX=\"cryptdevice=UUID=$(echo $UUID):cryptroot resume=UUID=$(echo $SWAP)\"/g" /etc/default/grub && \
+    sed -i "s/GRUB_CMDLINE_LINUX=\"\"/GRUB_CMDLINE_LINUX=\"cryptdevice=UUID=$(echo $UUID):cryptroot resume=/dev/mapper/cryptswap\"/g" /etc/default/grub && \
     dotfile 'login/95-monitor-hotplug.rules' '/etc/udev/rules.d/95-monitor-hotplug.rules' && \
     dotfile 'login/hotplug.sh' "/home/$USER/.config/scripts/hotplug" && \
     dotfile 'login/watchdog.conf' '/etc/modprobe.d/watchdog.conf' || \
