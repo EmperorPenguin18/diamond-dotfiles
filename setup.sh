@@ -158,7 +158,7 @@ login ()
     service enable lightdm && \
     dotfile 'login/grub' '/etc/default/grub' && \
     UUID="$(blkid -o device | xargs -L1 cryptsetup luksUUID | grep -v WARNING)" && \
-    sed -i "s/GRUB_CMDLINE_LINUX=\"\"/GRUB_CMDLINE_LINUX=\"cryptdevice=UUID=$(echo $UUID):cryptroot resume=/dev/mapper/cryptswap\"/g" /etc/default/grub && \
+    sed -i "s/GRUB_CMDLINE_LINUX=\"\"/GRUB_CMDLINE_LINUX=\"cryptkey=rootfs:\/etc\/keys\/keyfile.bin cryptdevice=UUID=$(echo $UUID):cryptroot resume=/dev/mapper/cryptswap\"/g" /etc/default/grub && \
     dotfile 'login/95-monitor-hotplug.rules' '/etc/udev/rules.d/95-monitor-hotplug.rules' && \
     dotfile 'login/hotplug.sh' "/home/$USER/.config/scripts/hotplug" && \
     dotfile 'login/watchdog.conf' '/etc/modprobe.d/watchdog.conf' || \
@@ -177,7 +177,7 @@ xorg ()
 
 windowmanager ()
 {
-    install_repo spectrwm sxhkd wmctrl rofi unclutter dunst && \
+    install_repo spectrwm sxhkd wmctrl rofi unclutter dunst redshift && \
     install_aur gobble && \
     dotfile 'windowmanager/spectrwm.conf' "/home/$USER/.spectrwm.conf" && \
     dotfile 'windowmanager/sxhkdrc' "/home/$USER/.config/sxhkd/sxhkdrc" && \
@@ -186,7 +186,9 @@ windowmanager ()
     dotfile 'windowmanager/ws.sh' "/home/$USER/.config/scripts/ws" && \
     dotfile 'windowmanager/config.rasi' "/home/$USER/.config/rofi/config.rasi" && \
     dotfile 'windowmanager/rofi-*' "/home/$USER/.config/scripts/" && \
-    dotfile 'windowmanager/dunstrc' "/home/$USER/.config/dunst/dunstrc" || \
+    dotfile 'windowmanager/dunstrc' "/home/$USER/.config/dunst/dunstrc" && \
+    dotfile 'windowmanager/geoclue.conf' "/etc/geoclue/geoclue.conf" && \
+    dotfile 'windowmanager/redshift.conf' "/home/$USER/.config/redshift/redshift.conf" || \
     return 1
     return 0
 }
