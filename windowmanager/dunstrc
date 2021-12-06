@@ -3,11 +3,17 @@
 
     #monitor = 0
     follow = keyboard
-    geometry = "0x0-30+20"
+
+    ### Geometry ###
+
+    width = (0, 300)
+    height = 300
+    origin = top-right
+    offset = 30x20
     indicate_hidden = yes
     #shrink = no
-    transparency = 0
-    notification_height = 0
+    transparency = 0 
+    notification_limit = 0
     separator_height = 2
     padding = 8
     horizontal_padding = 8
@@ -17,12 +23,20 @@
     sort = yes
     idle_threshold = 0
 
+    ### Progress bar ###
+
+    progress_bar = true
+    progress_bar_height = 10
+    progress_bar_frame_width = 1
+    progress_bar_min_width = 150
+    progress_bar_max_width = 300
+
     ### Text ###
 
     font = Monospace 8
     line_height = 0
     markup = full
-    format = "%s\n%b"
+    format = "<b>%s</b>\n%b"
     alignment = left
     vertical_alignment = center
     show_age_threshold = -1
@@ -52,8 +66,6 @@
     always_run_script = true
     title = Dunst
     class = Dunst
-    startup_notification = true
-    verbosity = mesg
     corner_radius = 0
     ignore_dbusclose = true
 
@@ -76,10 +88,6 @@
     # using the resolution and physical size. This might be useful in setups
     # where there are multiple screens with very different dpi values.
     per_monitor_dpi = false
-
-[shortcuts]
-
-    history = ctrl+grave
 
 [urgency_low]
     background = "#222222"
