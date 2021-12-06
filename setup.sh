@@ -177,7 +177,7 @@ xorg ()
 
 windowmanager ()
 {
-    install_repo spectrwm sxhkd wmctrl rofi unclutter dunst redshift && \
+    install_repo spectrwm sxhkd wmctrl rofi unclutter dunst redshift sysstat && \
     install_aur gobble && \
     dotfile 'windowmanager/spectrwm.conf' "/home/$USER/.spectrwm.conf" && \
     dotfile 'windowmanager/sxhkdrc' "/home/$USER/.config/sxhkd/sxhkdrc" && \
@@ -213,7 +213,7 @@ theme ()
 terminal ()
 {
     install_repo alacritty wget mlocate lsd pkgfile neovim ctags python-nvim parted openssh speedtest-cli && \
-    install_aur python2-nvim hexokinase-git vim-hexokinase-git && \
+    install_aur hexokinase-git vim-hexokinase-git && \
     install_git "https://aur.archlinux.org/vim-sneak.git" && \
     dotfile 'terminal/alacritty.yml' "/home/$USER/.config/alacritty/alacritty.yml" && \
     dotfile 'terminal/config.fish' "/home/$USER/.config/fish/config.fish" && \
