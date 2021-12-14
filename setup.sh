@@ -177,7 +177,7 @@ xorg ()
 
 windowmanager ()
 {
-    install_repo spectrwm sxhkd wmctrl rofi unclutter dunst redshift sysstat gimp && \
+    install_repo spectrwm sxhkd wmctrl rofi unclutter dunst redshift gimp && \
     install_aur gobble && \
     dotfile 'windowmanager/spectrwm.conf' "/home/$USER/.spectrwm.conf" && \
     dotfile 'windowmanager/sxhkdrc' "/home/$USER/.config/sxhkd/sxhkdrc" && \
@@ -310,6 +310,7 @@ gaming ()
     #https://libredd.it/r/leagueoflinux/comments/dr2qye/amazing_performance_boost_by_tweaking_pulseaudio/
     #https://blog.thepoon.fr/osuLinuxAudioLatency/
     #https://github.com/AUNaseef/protonup
+    #https://github.com/DavidoTek/ProtonUp-Qt
 }
 
 power ()
