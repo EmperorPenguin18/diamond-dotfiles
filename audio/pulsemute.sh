@@ -18,4 +18,5 @@ findChilds() {
 }
 
 WINDOW=$(xprop -id $(xdotool getwindowfocus) | awk '/_NET_WM_PID/ {print $(NF)}')
+mute $WINDOW
 findChilds $WINDOW
