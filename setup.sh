@@ -138,7 +138,7 @@ video ()
     install_repo mesa lib32-mesa vulkan-icd-loader lib32-vulkan-icd-loader libva-mesa-driver lib32-libva-mesa-driver mesa-vdpau lib32-mesa-vdpau || return 1
     [ "$(echo $VIDEO | grep 'intel' | wc -l)" -gt 0 ] && install_repo xf86-video-intel vulkan-intel lib32-vulkan-intel intel-media-driver libva-intel-driver lib32-libva-intel-driver || return 1
     [ "$(echo $VIDEO | grep 'amd' | wc -l)" -gt 0 ] && install_repo xf86-video-amdgpu vulkan-radeon lib32-vulkan-radeon || return 1
-    [ "$(echo $VIDEO | grep 'nvidia' | wc -l)" -gt 0 ] && install_repo nvidia-dkms lib32-nvidia-utils nvidia-prime && sed -i 's/MODULES=()/MODULES=(nvidia nvidia_modeset nvidia_uvm nvidia_drm)/g' /etc/mkinitcpio.conf || return 1
+    [ "$(echo $VIDEO | grep 'nvidia' | wc -l)" -gt 0 ] && install_repo nvidia-dkms lib32-nvidia-utils nvidia-prime && sed -i 's/MODULES=()/MODULES=(nvidia nvidia_modeset nvidia_uvm nvidia_drm)/g' /etc/mkinitcpio.conf && install_aur nvidia-fake-powerd || return 1
     return 0
     #*Enable vsync + freesync/gsync*
     #https://wiki.archlinux.org/index.php/PRIME#PRIME_synchronization
@@ -262,6 +262,7 @@ browser ()
     dotfile 'browser/@testpilot-containers.xpi' "/home/$USER/.mozilla/firefox/profile/extensions/@testpilot-containers.xpi" && \
     dotfile 'browser/homepage.html' "/home/$USER/.config/homepage.html" && \
     dotfile 'browser/homepage.css' "/home/$USER/.config/homepage.css" && \
+    dotfile 'browser/nobeep.conf' '/etc/modprobe.d/nobeep.conf' && \
     sed -i 's/dmenu/rofi -theme center -dmenu -p Passwords -i/g' /usr/bin/passmenu || \
     return 1
     return 0
