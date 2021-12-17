@@ -229,7 +229,7 @@ terminal ()
 
 filemanager ()
 {
-    install_repo pcmanfm-gtk3 gvfs lxsession-gtk3 mtools exfatprogs e2fsprogs ntfs-3g xfsprogs zathura zathura-cb zathura-djvu zathura-pdf-mupdf zathura-ps imv mpv libreoffice-fresh && \
+    install_repo pcmanfm-gtk3 gvfs lxsession-gtk3 mtools exfatprogs e2fsprogs ntfs-3g xfsprogs zathura-cb zathura-pdf-poppler imv mpv libreoffice-fresh && \
     install_aur mpv-mpris && \
     dotfile 'filemanager/mpv.conf' "/home/$USER/.config/mpv/mpv.conf" && \
     dotfile 'filemanager/input.conf' "/home/$USER/.config/mpv/input.conf" || \
