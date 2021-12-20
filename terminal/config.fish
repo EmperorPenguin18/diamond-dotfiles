@@ -40,6 +40,9 @@ function chpwd --on-variable PWD --description 'List the directory when changing
         status --is-command-substitution; and return
         lsd
 end
+function cat --description 'Improve outputting a file'
+        bat $argv
+end
 
 function cp --description 'Make any directories needed when copying'
         set DEST (echo $argv | awk '{print $NF}')
