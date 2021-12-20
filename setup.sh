@@ -212,7 +212,7 @@ theme ()
 
 terminal ()
 {
-    install_repo alacritty wget mlocate lsd pkgfile neovim ctags python-nvim parted openssh speedtest-cli && \
+    install_repo alacritty wget mlocate lsd pkgfile neovim ctags python-nvim parted openssh speedtest-cli bat && \
     install_aur hexokinase-git vim-hexokinase-git && \
     install_git "https://aur.archlinux.org/vim-sneak.git" && \
     dotfile 'terminal/alacritty.yml' "/home/$USER/.config/alacritty/alacritty.yml" && \
@@ -291,7 +291,7 @@ security ()
 gaming ()
 {
     install_repo 0ad xonotic minetest supertuxkart dwarffortress nethack rogue warsow openttd && \
-    install_aur zork1 veloren vvvvvv-git thedarkmod-bin freedoom gzdoom tetris-terminal-git unvanquished || \
+    install_aur zork1 veloren vvvvvv-git thedarkmod-bin freedoom gzdoom tetris-terminal-git unvanquished adom-noteye || \
     return 1
     return 0
     #*Lutris wiki*
