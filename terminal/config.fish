@@ -18,6 +18,9 @@ end
 function ifconfig --description 'Old habits die hard'
         ip addr $argv
 end
+function neofetch --description 'Old habits die hard'
+        fetch $argv
+end
 function scry --description 'Faster to type'
         scrycli $argv
 end
