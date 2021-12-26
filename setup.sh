@@ -312,6 +312,7 @@ gaming ()
     #https://blog.thepoon.fr/osuLinuxAudioLatency/
     #https://github.com/AUNaseef/protonup
     #https://github.com/DavidoTek/ProtonUp-Qt
+    #https://unix.stackexchange.com/questions/669565/cannot-use-trackpad-and-keyboard-at-the-same-time
 }
 
 power ()
