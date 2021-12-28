@@ -177,7 +177,7 @@ xorg ()
 
 windowmanager ()
 {
-    install_repo spectrwm sxhkd wmctrl rofi unclutter dunst redshift gimp && \
+    install_repo spectrwm sxhkd wmctrl rofi unclutter dunst redshift gimp zenity && \
     install_aur gobble && \
     dotfile 'windowmanager/spectrwm.conf' "/home/$USER/.spectrwm.conf" && \
     dotfile 'windowmanager/sxhkdrc' "/home/$USER/.config/sxhkd/sxhkdrc" && \
