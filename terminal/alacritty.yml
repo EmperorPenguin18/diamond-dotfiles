@@ -5,6 +5,7 @@
 window:
   dynamic_title: true
   gtk_theme_variant: None
+  opacity: 0.9
 
 scrolling:
   history: 10000
@@ -83,7 +84,8 @@ scrolling:
 # If `true`, bold text is drawn using the bright color variants.
 #draw_bold_text_with_bright_colors: false
 
-#colors:
+colors:
+  transparent_background_colors: true
   # Default colors
   #primary:
   #  background: '#1d1f21'
@@ -190,8 +192,6 @@ scrolling:
   #   `- { index: 16, color: '#ff00ff' }`
   #
   #indexed_colors: []
-
-background_opacity: 0.9 
 
 selection:
   semantic_escape_chars: ",│`|:\"' ()[]{}<>\t"
