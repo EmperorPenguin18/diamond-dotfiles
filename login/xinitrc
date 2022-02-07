@@ -12,4 +12,5 @@ playerctld daemon
 xset s off -dpms
 export QT_STYLE_OVERRIDE=kvantum
 redshift &
+xbindkeys
 exec spectrwm
