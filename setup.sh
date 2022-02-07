@@ -28,7 +28,13 @@ install_git ()
 
 service ()
 {
-    systemctl $@ || return 1
+    if [ "$1" = "enable" ]; then
+        systemctl $@ || return 1
+    elif [ "$1" = "uenable" ]; then
+        su $USER -c "systemctl --user enable $2"
+    else
+        return 1
+    fi
     return 0
 }
 
@@ -168,9 +174,14 @@ login ()
 
 xorg ()
 {
-    install_repo xorg xdotool xclip && \
+    install_repo xorg xdotool xclip xf86-input-wacom xbindkeys && \
     install_aur picom-git && \
-    dotfile 'xorg/picom.conf' "/home/$USER/.config/picom.conf" || \
+    dotfile 'xorg/picom.conf' "/home/$USER/.config/picom.conf" && \
+    dotfile 'xorg/99-wacom.rules' "/etc/udev/rules.d/99-wacom.rules" && \
+    dotfile 'xorg/wacom.service' "/home/$USER/.config/systemd/user/wacom.service" && \
+    service uenable wacom.service && \
+    dotfile 'xorg/wacom-config.sh' "/home/$USER/.config/scripts/wacom-config.sh" && \
+    dotfile 'xorg/xbindkeysrc' "/home/$USER/.xbindkeysrc" || \
     return 1
     return 0
 }
@@ -246,7 +257,7 @@ audio ()
     sed -i "s/SNAME/$SNAME/g" /home/$USER/.config/spotifyd/spotifyd.conf && \
     sed -i "s/SPASS/$SPASS/g" /home/$USER/.config/spotifyd/spotifyd.conf && \
     cp /usr/lib/systemd/user/spotifyd.service /etc/systemd/user/ && \
-    su $USER -c "systemctl --user enable spotifyd.service" && \
+    service uenable spotifyd.service && \
     dotfile 'audio/newsong.sh' "/home/$USER/.config/scripts/newsong" && \
     dotfile 'audio/locale.gen' '/etc/locale.gen' && \
     dotfile 'audio/pulsemute.sh' "/home/$USER/.config/scripts/pulsemute" || \
@@ -290,7 +301,7 @@ security ()
 
 gaming ()
 {
-    install_repo 0ad xonotic minetest supertuxkart dwarffortress nethack rogue warsow openttd && \
+    install_repo 0ad xonotic minetest supertuxkart dwarffortress nethack rogue warsow openttd sauerbraten && \
     install_aur zork1 veloren vvvvvv-git thedarkmod-bin freedoom gzdoom tetris-terminal-git unvanquished adom-noteye || \
     return 1
     return 0
