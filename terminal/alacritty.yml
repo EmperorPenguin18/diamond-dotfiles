@@ -209,8 +209,6 @@ live_config_reload: false
 
 working_directory: None
 
-alt_send_esc: false
-
 mouse:
   double_click: { threshold: 300 }
   triple_click: { threshold: 300 }
