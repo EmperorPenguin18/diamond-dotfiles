@@ -1,8 +1,0 @@
-#!/bin/bash
-#File manager
-
-USER="$(ls /home)"
-
-output=$(locate / | rofi -theme left -dmenu -p Files -i)
-if [[ $output == "" ]]; then exit 1; fi
-if [ -f $output ]; then xdg-open $output; fi

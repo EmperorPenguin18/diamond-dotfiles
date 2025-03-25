@@ -1,5 +1,0 @@
-[Desktop Entry]
-Name=Steam Big Picture Mode
-Comment=Gaming console style interface for Steam
-Exec=steam -bigpicture
-Type=Application

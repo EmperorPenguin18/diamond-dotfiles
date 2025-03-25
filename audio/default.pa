@@ -1,5 +1,0 @@
-.include /etc/pulse/default.pa
-set-sink-mute 0 false
-set-sink-volume 0 100%
-set-source-mute 1 false
-set-source-volume 1 30%

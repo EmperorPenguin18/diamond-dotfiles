@@ -1,5 +1,0 @@
-[Desktop Entry]
-Name=Terminal
-Comment=Alacritty terminal for debugging
-Exec=alacritty
-Type=Application

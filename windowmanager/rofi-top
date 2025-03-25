@@ -1,9 +1,0 @@
-#!/bin/sh
-#Bar
-
-OUTPUT="$(printf 'Suspend\nHibernate\nReboot\nShutdown\n' | rofi -theme top -dmenu -p Power -i)"
-[ "$OUTPUT" = "" ] && exit 1
-[ "$OUTPUT" = "Suspend" ] && systemctl suspend
-[ "$OUTPUT" = "Hibernate" ] && systemctl hibernate
-[ "$OUTPUT" = "Reboot" ] && reboot
-[ "$OUTPUT" = "Shutdown" ] && poweroff
