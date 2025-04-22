@@ -2,12 +2,21 @@
 
 install_repo ()
 {
-    emerge "$@" || return 1
+    emerge -q "$@" || return 1
     return 0
 }
 
 install_git ()
 {
+    local url="$1" && \
+    command -v git >/dev/null && \
+    git clone "$1" /tmp/repo && \
+    pushd /tmp/repo && \
+    make release && \
+    make install && \
+    popd && \
+    rm -rf /tmp/repo || \
+    return 1
     return 0
 }
 
@@ -34,21 +43,7 @@ dotfile ()
     DEST=$(echo "$2" | cut -f -$NUM -d '/')
     RENAME=$(echo "$2" | cut -f $(expr $NUM + 1) -d '/')
     echo "$2" | grep -o '/' > /dev/null && mkdir -p $DEST
-    cd "$DIR"
-    for I in $(find . -type f -name "$FILE"); do
-        [ -z "$RENAME" ] || I="$RENAME"
-        cp -f $SRC/"$DIR"/"$I" "$DEST"/"$I"
-        if file -i "$DEST"/"$I" | grep shellscript; then
-            chmod +x "$DEST"/"$I"
-        elif file "$DEST"/"$I" | grep font; then
-            chmod 0444 "$DEST"/"$I"
-        else
-            sed -i "s/USER/$USER/g" "$DEST"/"$I"
-        fi
-    done
-    [ "$2" = "/etc/default/grub" ] || [ "$2" = "/home/$USER/.config/spotifyd/spotifyd.conf" ] || \
-        echo "$1","$2" >> /home/$USER/.config/files.csv
-    cd $SRC
+    ln -sf "$(pwd)/$DIR/$FILE" "$DEST/$RENAME"
 }
 
 pre_checks ()
@@ -57,17 +52,16 @@ pre_checks ()
         echo "Script must be run as user: root"
         exit 255
     fi
-    SRC="$(pwd)" || \
-    return 1
     return 0
 }
 
 user_prompts ()
 {
     read -p "Enter username: " USER && \
-    useradd -m -G users,wheel,audio -s /bin/bash "$USER"
+    useradd -m -G users,wheel,audio -s /bin/bash "$USER" && \
+    mkdir -p /home/$USER/.config
     local confirm
-    read -p "Do want VM support? (Y/N): " confirm && \
+    read -p "Do you want VM support? (Y/N): " confirm && \
         [ "$confirm" = "y" -o "$confirm" = "Y" ] || \
         VIRTUALIZATION=n || \
         VIRTUALIZATION=y
@@ -75,36 +69,58 @@ user_prompts ()
     return 0
 }
 
+#echo "dev-vcs/git " >/etc/portage/package.use/git && \
 packagemanager ()
 {
-    dotfile 
-    install_repo 
+    dotfile 'packagemanager/make.conf' '/etc/portage/make.conf' && \
+    dotfile 'packagemanager/no-lto.conf' '/etc/portage/env/no-lto.conf' && \
+    dotfile 'packagemanager/package.env' '/etc/portage/package.env' && \
+    rm -rf /var/db/repos/gentoo && \
+    until emerge -q --sync; do echo "Attempting sync again"; done && \
+    eselect profile set 21 && \
+    emerge -qe system && \
+    install_repo app-eselect/eselect-repository && \
+    eselect repository enable guru && \
+    emerge -q --sync || \
     return 1
     return 0
 }
 
 backups ()
 {
-    install_repo cronie && \
+    install_repo virtual/cron grub-btrfs && \
     dotfile 'update/backup.sh' "/home/$USER/.config/scripts/backup" && \
-    dotfile 'update/crontab' '/etc/crontab' && \
-    service enable cronie && \
+    ln -s "/home/$USER/.config/scripts/backup" /etc/cron.weekly/backup && \
+    service rc cronie || \
     return 1
     return 0
 }
 
 login ()
 {
-    install_repo 
-    dotfile 'login/wayrc.sh' "/home/$USER/.config/scripts/wayrc" && \
-    dotfile 'login/watchdog.conf' '/etc/modprobe.d/watchdog.conf' || \
+    dotfile 'login/agetty-autologin' '/etc/conf.d/agetty-autologin' && \
+    sed -i "s/<username>/$USER/g" /etc/conf.d/agetty-autologin && \
+    pushd /etc/init.d && \
+    rc-config delete agetty.tty1 && \
+    mv agetty.tty1 agetty-autologin.tty1 && \
+    rc-update add agetty-autologin.tty1 default && \
+    popd || \
+    return 1
+    return 0
+}
+
+shell ()
+{
+    install_repo sys-apps/mlocate parted openssh && \
+    dotfile 'shell/bashrc' "/home/$USER/.bashrc" && \
+    dotfile 'shell/help.sh' "/home/$USER/.config/scripts/help" || \
     return 1
     return 0
 }
 
 windowmanager ()
 {
-    install_repo  && \
+    install_repo gui-wm/hyprland && \
     dotfile 
     return 1
     return 0
@@ -112,17 +128,18 @@ windowmanager ()
 
 theme ()
 {
-    install_repo 
-    dotfile 'login/background.png' "/home/$USER/.config/background.png" && \
-    dotfile 'theme/wallpaper.jpg' "/home/$USER/.config/wallpaper.jpg" && \
+    install_repo  && \
+    mkdir -p /home/$USER/git && \
+    git clone "https://github.com/Vurmiraaz/Skyrim-Wallpaper" /home/$USER/git/Skyrim-Wallpaper && \
+    ln -sf "/home/$USER/git/Skyrim-Wallpaper/Windhelm - Palace of The Kings.png" /home/$USER/.config/wallpaper.png || \
     return 1
     return 0
 }
 
 terminal ()
 {
-    install_repo sys-apps/mlocate parted openssh && \
-    dotfile 'terminal/help.sh' "/home/$USER/.config/scripts/help" && \
+    install_repo  && \
+    dotfile  && \
     return 1
     return 0
 }
@@ -230,7 +247,7 @@ clean_up ()
     #updatedb && \
     #locale-gen && \
     #mkinitcpio -P && \
-    #grub-mkconfig -o /boot/grub/grub.cfg || \
+    grub-mkconfig -o /boot/grub/grub.cfg || \
     return 1
     return 0
 }
@@ -251,6 +268,8 @@ backups
 check_error "backups failed"
 login
 check_error "login failed"
+shell
+check_error "shell failed"
 windowmanager
 check_error "windowmanager failed"
 theme

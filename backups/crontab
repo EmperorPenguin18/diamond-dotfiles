@@ -1,2 +1,0 @@
-0 3 * * 1 root /home/USER/.config/scripts/backup
-0 4 * * 1 root /home/USER/.config/scripts/update
