@@ -100,20 +100,18 @@ login ()
 {
     dotfile 'login/agetty-autologin' '/etc/conf.d/agetty-autologin' && \
     sed -i "s/<username>/$USER/g" /etc/conf.d/agetty-autologin && \
-    pushd /etc/init.d && \
-    rc-config delete agetty.tty1 && \
-    mv agetty.tty1 agetty-autologin.tty1 && \
-    rc-update add agetty-autologin.tty1 default && \
-    popd || \
+    ln -s agetty /etc/init.d/agetty-autologin.tty1 && \
+    service rc agetty-autologin.tty1 || \
     return 1
     return 0
 }
 
 shell ()
 {
-    install_repo sys-apps/mlocate parted openssh && \
+    install_repo app-shells/bash-completion sys-apps/mlocate && \
     dotfile 'shell/bashrc' "/home/$USER/.bashrc" && \
-    dotfile 'shell/help.sh' "/home/$USER/.config/scripts/help" || \
+    dotfile 'shell/help.sh' "/home/$USER/.config/scripts/help" && \
+    dotfile 'shell/colors.sh' "/home/$USER/.config/scripts/colours" || \
     return 1
     return 0
 }

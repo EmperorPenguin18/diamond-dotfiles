@@ -1,5 +1,62 @@
+# This file is source by all *interactive* bash shells on startup,
+# including some apparently interactive shells such as scp and rcp
+# that can't tolerate any output.  So make sure this doesn't display
+# anything or bad things will happen !
+
+
+# Test for an interactive shell.  There is no need to set anything
+# past this point for scp and rcp, and it's important to refrain from
+# outputting anything in those cases.
+if [[ $- != *i* ]] ; then
+    # Shell is non-interactive.  Be done now!
+    return
+fi
+
+
+# Put your fun stuff here
+
+# Modify the PS1 variable to adjust command prompt
+# /u the username of the current user
+# /h the hostname up to the first `.'
+# /w the  current  working  directory, with $HOME abbreviated with a tilde (uses the value of the PROMPT_DIRTRIM variable)
+# /$ if the effective UID is 0, a #, otherwise a $
+# For more PS1 options see the PROMPTING section of `man 1 bash`
+PS1='\u@\h \w \$ '
+
+# Do not overwrite files when redirecting output by default.
+set -o noclobber
+
+# Wrap the following commands for interactive use to avoid accidental file overwrites.
+rm() { command rm -i "${@}"; }
+cp() { command cp -i "${@}"; }
+mv() { command mv -i "${@}"; }
+
+# Git completions. From https://wiki.gentoo.org/wiki/Git
 .  /usr/share/bash-completion/completions/git
 
+# Git status. From https://wiki.gentoo.org/wiki/Git
 source /usr/share/git/git-prompt.sh
 export PS1='\[\033[01;32m\]\u@\h\[\033[01;34m\] \w\[\033[01;33m\]$(__git_ps1)\[\033[01;34m\] \$\[\033[00m\] '
 export GIT_PS1_SHOWDIRTYSTATE=1
+
+# Branch colour. From https://wiki.gentoo.org/wiki/Bash
+git_branch() {
+  branch=$(git branch 2>/dev/null | grep '^*' | colrm 1 2)
+  if [ ! -z "$branch" ]; then
+    if [ -n "$(git status --porcelain)" ]; then
+      color="31"  # Red for changes
+    elif [ "$(git stash list)" ]; then
+      color="33"  # Yellow for stashed changes
+    else
+      color="32"  # Green for a clean state
+    fi
+    echo -e "\\e[0;${color}m${branch}\\e[0m"
+  fi
+}
+
+PS1="\u@\h \w \$(git_branch)\$ "
+
+# Archive aliases
+unrar() { command bsdtar -xvf "${@}"; }
+unzip() { command bsdtar -xvf "${@}"; }
+zip() { command bsdtar -a -cvf "${@}"; }

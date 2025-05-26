@@ -50,6 +50,7 @@ describe curl
 describe dmidecode
 describe whereis
 describe fdisk
+describe sfdisk
 describe lsblk
 describe split
 describe lynx
