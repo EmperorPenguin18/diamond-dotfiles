@@ -1,0 +1,7 @@
+" Use Vim 9 syntax
+vim9script
+
+# Only source Lua config if Lua is available
+if has('lua')
+  lua dofile(vim.fn.stdpath("config") .. "/init.lua")
+endif

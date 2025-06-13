@@ -46,12 +46,18 @@ dotfile ()
     ln -sf "$(pwd)/$DIR/$FILE" "$DEST/$RENAME"
 }
 
+error ()
+{
+    echo $@
+    exit 1
+}
+
 pre_checks ()
 {
-    if [ "$(whoami)" != "root" ]; then
-        echo "Script must be run as user: root"
-        exit 255
-    fi
+    [ "$(whoami)" != "root" ] && \
+    [ "$(nproc)" -gt 3 ] && \
+    [ "$(awk '/MemTotal/ {printf "%.0f\n", $2 / 1024}' /proc/meminfo)" -gt 8000 ] || \
+    error "One or more pre-checks failed"
     return 0
 }
 
@@ -69,7 +75,6 @@ user_prompts ()
     return 0
 }
 
-#echo "dev-vcs/git " >/etc/portage/package.use/git && \
 packagemanager ()
 {
     dotfile 'packagemanager/make.conf' '/etc/portage/make.conf' && \
@@ -106,27 +111,34 @@ login ()
     return 0
 }
 
+#https://github.com/vim/vim/pull/17097
+#https://github.com/jasonccox/vim-wayland-clipboard
 shell ()
 {
-    install_repo app-shells/bash-completion sys-apps/mlocate && \
+    dotfile 'shell/vim.use' '/etc/portage/package.use/vim' && \
+    install_repo app-shells/bash-completion sys-apps/mlocate app-editors/vim && \
     dotfile 'shell/bashrc' "/home/$USER/.bashrc" && \
     dotfile 'shell/help.sh' "/home/$USER/.config/scripts/help" && \
-    dotfile 'shell/colors.sh' "/home/$USER/.config/scripts/colours" || \
+    dotfile 'shell/colors.sh' "/home/$USER/.config/scripts/colours" && \
+    dotfile 'shell/vimrc' "/home/$USER/.config/vim/vimrc" && \
+    dotfile 'shell/init.lua' "/home/$USER/.config/vim/init.lua" || \
     return 1
     return 0
 }
 
 windowmanager ()
 {
+    dotfile 'windowmanager/hyprland.use' '/etc/portage/package.use/hyprland' && \
+    dotfile 'windowmanager/clang.use' '/etc/portage/package.use/clang' && \
     install_repo gui-wm/hyprland && \
-    dotfile 
+    dotfile 'windowmanager/bash_profile' "/home/$USER/.bash_profile" && \
+    dotfile 'windowmanager/hyprland.conf' "/home/$USER/.config/hypr/hyprland.conf" || \
     return 1
     return 0
 }
 
 theme ()
 {
-    install_repo  && \
     mkdir -p /home/$USER/git && \
     git clone "https://github.com/Vurmiraaz/Skyrim-Wallpaper" /home/$USER/git/Skyrim-Wallpaper && \
     ln -sf "/home/$USER/git/Skyrim-Wallpaper/Windhelm - Palace of The Kings.png" /home/$USER/.config/wallpaper.png || \
@@ -240,12 +252,10 @@ other ()
 
 clean_up ()
 {
-    chown -R $USER:$USER /home/$USER && \
-    #fc-cache && \
-    #updatedb && \
-    #locale-gen && \
-    #mkinitcpio -P && \
-    grub-mkconfig -o /boot/grub/grub.cfg || \
+    emerge --depclean && \
+    grub-mkconfig -o /boot/grub/grub.cfg && \
+    updatedb && \
+    chown -R $USER:$USER /home/$USER || \
     return 1
     return 0
 }
