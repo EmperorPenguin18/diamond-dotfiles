@@ -60,3 +60,6 @@ PS1="\u@\h \w \$(git_branch)\$ "
 unrar() { command bsdtar -xvf "${@}"; }
 unzip() { command bsdtar -xvf "${@}"; }
 zip() { command bsdtar -a -cvf "${@}"; }
+
+# Fzf aliases
+source "$(command -v .fuzzybuddy)"

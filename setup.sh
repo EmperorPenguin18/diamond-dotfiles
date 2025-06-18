@@ -54,9 +54,9 @@ error ()
 
 pre_checks ()
 {
-    [ "$(whoami)" != "root" ] && \
-    [ "$(nproc)" -gt 3 ] && \
-    [ "$(awk '/MemTotal/ {printf "%.0f\n", $2 / 1024}' /proc/meminfo)" -gt 8000 ] || \
+    [ "$(whoami)" = "root" ] && \
+    [ "$(nproc)" -gt "3" ] && \
+    [ "$(awk '/MemTotal/ {printf "%.0f\n", $2 / 1000}' /proc/meminfo)" -gt "8000" ] || \
     error "One or more pre-checks failed"
     return 0
 }
@@ -67,7 +67,7 @@ user_prompts ()
     useradd -m -G users,wheel,audio -s /bin/bash "$USER" && \
     mkdir -p /home/$USER/.config
     local confirm
-    read -p "Do you want VM support? (Y/N): " confirm && \
+    read -p "Do you want VM support? (y/N): " confirm && \
         [ "$confirm" = "y" -o "$confirm" = "Y" ] || \
         VIRTUALIZATION=n || \
         VIRTUALIZATION=y
@@ -80,9 +80,11 @@ packagemanager ()
     dotfile 'packagemanager/make.conf' '/etc/portage/make.conf' && \
     dotfile 'packagemanager/no-lto.conf' '/etc/portage/env/no-lto.conf' && \
     dotfile 'packagemanager/package.env' '/etc/portage/package.env' && \
+    dotfile 'packagemanager/libglvnd.use' '/etc/portage/package.use/libglvnd' && \
+    dotfile 'packagemanager/pillow.use' '/etc/portage/package.use/pillow' && \
     rm -rf /var/db/repos/gentoo && \
     until emerge -q --sync; do echo "Attempting sync again"; done && \
-    eselect profile set 21 && \
+    eselect profile set default/linux/amd64/23.0/desktop && \
     emerge -qe system && \
     install_repo app-eselect/eselect-repository && \
     eselect repository enable guru && \
@@ -148,15 +150,17 @@ theme ()
 
 terminal ()
 {
-    install_repo  && \
-    dotfile  && \
+    install_repo gui-apps/foot && \
+    dotfile 'terminal/foot.ini' "/home/$USER/.config/foot/foot.ini" || \
     return 1
     return 0
 }
 
 filemanager ()
 {
-    install_repo mpv && \
+    dotfile 'filemanager/mpv.use' '/etc/portage/package.use/mpv' && \
+    install_repo app-shells/fzf media-video/mpv && \
+    dotfile 'filemanager/fuzzybuddy.sh' "/home/$USER/.config/scripts/.fuzzybuddy" && \
     dotfile 'filemanager/mpv.conf' "/home/$USER/.config/mpv/mpv.conf" && \
     dotfile 'filemanager/input.conf' "/home/$USER/.config/mpv/input.conf" || \
     return 1
