@@ -64,7 +64,7 @@ pre_checks ()
 user_prompts ()
 {
     read -p "Enter username: " USER && \
-    useradd -m -G users,wheel,audio -s /bin/bash "$USER" && \
+    useradd -m -G users,wheel,audio,video -s /bin/bash "$USER" && \
     mkdir -p /home/$USER/.config
     local confirm
     read -p "Do you want VM support? (y/N): " confirm && \
@@ -132,9 +132,21 @@ windowmanager ()
 {
     dotfile 'windowmanager/hyprland.use' '/etc/portage/package.use/hyprland' && \
     dotfile 'windowmanager/clang.use' '/etc/portage/package.use/clang' && \
-    install_repo gui-wm/hyprland && \
+    dotfile 'windowmanager/seatd.use' '/etc/portage/package.use/seatd' && \
+    install_repo gui-wm/hyprland gui-apps/hyprpaper gui-apps/waybar && \
+    service rc seatd && \
+    usermod -aG seat "$USER" && \
     dotfile 'windowmanager/bash_profile' "/home/$USER/.bash_profile" && \
     dotfile 'windowmanager/hyprland.conf' "/home/$USER/.config/hypr/hyprland.conf" || \
+    return 1
+    return 0
+}
+
+audio ()
+{
+    dotfile 'audio/pipewire.use' '/etc/portage/package.use/pipewire' && \
+    install_repo media-video/pipewire && \
+    service rc dbus || \
     return 1
     return 0
 }
@@ -167,18 +179,14 @@ filemanager ()
     return 0
 }
 
-audio ()
-{
-    install_repo 
-    return 1
-    return 0
-}
-
 browser ()
 {
-    install_repo 
+    eselect repository add brave-overlay git https://gitlab.com/jason.oliveira/brave-overlay.git && \
+    emerge --sync brave-overlay && \
+    echo 'dev-libs/libpthread-stubs **' >> /etc/portage/package.accept_keywords/libpthread-stubs && \
+    install_repo www-client/brave-bin::brave-overlay && \
     dotfile 'browser/homepage.html' "/home/$USER/.config/homepage.html" && \
-    dotfile 'browser/homepage.css' "/home/$USER/.config/homepage.css" && \
+    dotfile 'browser/homepage.css' "/home/$USER/.config/homepage.css" || \
     return 1
     return 0
 }
@@ -284,21 +292,24 @@ shell
 check_error "shell failed"
 windowmanager
 check_error "windowmanager failed"
+audio
+check_error "audio failed"
 theme
 check_error "theme failed"
 terminal
 check_error "terminal failed"
 filemanager
 check_error "filemanager failed"
-audio
-check_error "audio failed"
 browser
 check_error "browser failed"
-security
-check_error "security failed"
-[ "${VIRTUALIZATION}" = "y" ] && virtualization; check_error "virtualization failed"
-other
-check_error "other failed"
+#security
+#check_error "security failed"
+if [ "${VIRTUALIZATION}" = "y" ]; then
+    virtualization
+    check_error "virtualization failed"
+fi
+#other
+#check_error "other failed"
 clean_up
 check_error "clean_up failed"
 echo "-------------------------------------------------"
