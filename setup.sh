@@ -133,7 +133,7 @@ windowmanager ()
     dotfile 'windowmanager/hyprland.use' '/etc/portage/package.use/hyprland' && \
     dotfile 'windowmanager/clang.use' '/etc/portage/package.use/clang' && \
     dotfile 'windowmanager/seatd.use' '/etc/portage/package.use/seatd' && \
-    install_repo gui-wm/hyprland gui-apps/hyprpaper gui-apps/waybar && \
+    install_repo gui-wm/hyprland gui-apps/swaybg gui-apps/waybar && \
     service rc seatd && \
     usermod -aG seat "$USER" && \
     dotfile 'windowmanager/bash_profile' "/home/$USER/.bash_profile" && \
