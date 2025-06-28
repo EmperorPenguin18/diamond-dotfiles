@@ -66,12 +66,11 @@ user_prompts ()
     read -p "Enter username: " USER && \
     useradd -m -G users,wheel,audio,video -s /bin/bash "$USER" && \
     mkdir -p /home/$USER/.config
-    local confirm
-    read -p "Do you want VM support? (y/N): " confirm && \
-        [ "$confirm" = "y" -o "$confirm" = "Y" ] || \
-        VIRTUALIZATION=n || \
-        VIRTUALIZATION=y
-    #MULLVAD=$(dialog --stdout --inputbox "What is your Mullvad VPN account number?" 0 0)
+    #local confirm
+    #read -p "Do you want VM support? (y/N): " confirm && \
+        #[ "$confirm" = "y" -o "$confirm" = "Y" ] || \
+        #VIRTUALIZATION=n || \
+        #VIRTUALIZATION=y
     return 0
 }
 
@@ -113,8 +112,6 @@ login ()
     return 0
 }
 
-#https://github.com/vim/vim/pull/17097
-#https://github.com/jasonccox/vim-wayland-clipboard
 shell ()
 {
     dotfile 'shell/vim.use' '/etc/portage/package.use/vim' && \
@@ -171,7 +168,7 @@ terminal ()
 filemanager ()
 {
     dotfile 'filemanager/mpv.use' '/etc/portage/package.use/mpv' && \
-    install_repo app-shells/fzf media-video/mpv && \
+    install_repo app-shells/fzf media-video/mpv media-gfx/pqiv && \
     dotfile 'filemanager/fuzzybuddy.sh' "/home/$USER/.config/scripts/.fuzzybuddy" && \
     dotfile 'filemanager/mpv.conf' "/home/$USER/.config/mpv/mpv.conf" && \
     dotfile 'filemanager/input.conf' "/home/$USER/.config/mpv/input.conf" || \
@@ -185,38 +182,39 @@ browser ()
     emerge --sync brave-overlay && \
     echo 'dev-libs/libpthread-stubs **' >> /etc/portage/package.accept_keywords/libpthread-stubs && \
     install_repo www-client/brave-bin::brave-overlay && \
+    dotfile 'browser/brave.sh' "/home/$USER/.config/scripts/brave" && \
     dotfile 'browser/homepage.html' "/home/$USER/.config/homepage.html" && \
     dotfile 'browser/homepage.css' "/home/$USER/.config/homepage.css" || \
     return 1
     return 0
 }
 
-security ()
-{
-    install_repo ufw fail2ban apparmor && \
-    service enable ufw && \
-    sed -i 's/DEFAULT_FORWARD_POLICY="DROP"/DEFAULT_FORWARD_POLICY="ACCEPT"/g' /etc/default/ufw && \
-    ufw limit 22/tcp && \
-    ufw allow 80/tcp && \
-    ufw allow 443/tcp && \
-    ufw default deny incoming && \
-    ufw default allow outgoing && \
-    ufw enable && \
-    service enable fail2ban && \
-    dotfile 'security/jail.local' '/etc/fail2ban/jail.local' && \
-    service enable apparmor && \
-    dotfile 'security/host.conf' '/etc/host.conf' && \
-    dotfile 'security/90-netsec.conf' '/etc/sysctl.d/90-netsec.conf' || \
-    return 1
-    return 0
-}
+#security ()
+#{
+    #install_repo ufw fail2ban apparmor && \
+    #service enable ufw && \
+    #sed -i 's/DEFAULT_FORWARD_POLICY="DROP"/DEFAULT_FORWARD_POLICY="ACCEPT"/g' /etc/default/ufw && \
+    #ufw limit 22/tcp && \
+    #ufw allow 80/tcp && \
+    #ufw allow 443/tcp && \
+    #ufw default deny incoming && \
+    #ufw default allow outgoing && \
+    #ufw enable && \
+    #service enable fail2ban && \
+    #dotfile 'security/jail.local' '/etc/fail2ban/jail.local' && \
+    #service enable apparmor && \
+    #dotfile 'security/host.conf' '/etc/host.conf' && \
+    #dotfile 'security/90-netsec.conf' '/etc/sysctl.d/90-netsec.conf' || \
+    #return 1
+    #return 0
+#}
 
-gaming ()
-{
-    install_repo 0ad xonotic minetest supertuxkart dwarffortress nethack rogue warsow openttd sauerbraten && \
-    install_aur zork1 veloren vvvvvv-git thedarkmod-bin freedoom gzdoom tetris-terminal-git unvanquished adom-noteye || \
-    return 1
-    return 0
+#gaming ()
+#{
+    #install_repo 0ad xonotic minetest supertuxkart dwarffortress nethack rogue warsow openttd sauerbraten && \
+    #install_aur zork1 veloren vvvvvv-git thedarkmod-bin freedoom gzdoom tetris-terminal-git unvanquished adom-noteye || \
+    #return 1
+    #return 0
     #*Lutris wiki*
     #*CTT ultimate gaming guide*
     #*Input drivers*
@@ -236,30 +234,28 @@ gaming ()
     #https://github.com/AUNaseef/protonup
     #https://github.com/DavidoTek/ProtonUp-Qt
     #https://unix.stackexchange.com/questions/669565/cannot-use-trackpad-and-keyboard-at-the-same-time
-}
+    #neverball
+    #stunt rally
+    #opensurge
+#}
 
-virtualization ()
-{
-    install_repo qemu qemu-arch-extra libvirt ebtables dnsmasq virt-manager libguestfs edk2-ovmf dmidecode && \
-    usermod -a -G libvirt $USER && \
-    usermod -a -G kvm $USER && \
-    service enable libvirtd && \
-    return 1
-    return 0
-}
+#virtualization ()
+#{
+    #install_repo qemu qemu-arch-extra libvirt ebtables dnsmasq virt-manager libguestfs edk2-ovmf dmidecode && \
+    #usermod -a -G libvirt $USER && \
+    #usermod -a -G kvm $USER && \
+    #service enable libvirtd && \
+    #return 1
+    #return 0
+#}
 
 other ()
 {
-    install_aur mullvad-vpn-cli && \
-    install_repo networkmanager-openvpn && \
-    service start mullvad-daemon && \
-    mullvad account set $MULLVAD && \
-    mullvad auto-connect set on && \
-    mullvad lan set allow && \
-    mullvad relay set tunnel-protocol openvpn || \
+    echo "tmpfs /tmp tmpfs rw,nosuid,nodev,size=4G,mode=1777 0 0" >> /etc/fstab && \
+    echo "tmpfs /home/$USER/.cache tmpfs rw,nosuid,nodev,size=4G,mode=1777 0 0" >> /etc/fstab && \
+    install_repo net-vpn/mullvadvpn-app || \
     return 1
     return 0
-    #https://github.com/blueOkiris/bgrm
 }
 
 clean_up ()
@@ -304,12 +300,12 @@ browser
 check_error "browser failed"
 #security
 #check_error "security failed"
-if [ "${VIRTUALIZATION}" = "y" ]; then
-    virtualization
-    check_error "virtualization failed"
-fi
-#other
-#check_error "other failed"
+#if [ "${VIRTUALIZATION}" = "y" ]; then
+    #virtualization
+    #check_error "virtualization failed"
+#fi
+other
+check_error "other failed"
 clean_up
 check_error "clean_up failed"
 echo "-------------------------------------------------"

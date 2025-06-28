@@ -3,5 +3,6 @@ vim9script
 
 # Only source Lua config if Lua is available
 if has('lua')
-  lua dofile(vim.fn.stdpath("config") .. "/init.lua")
+    const luapath = fnamemodify($MYVIMRC, ':p:h') .. '/init.lua'
+    execute 'luafile ' .. luapath
 endif
