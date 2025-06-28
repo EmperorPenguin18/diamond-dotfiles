@@ -1,4 +1,4 @@
 if test -z "${XDG_RUNTIME_DIR}"; then
     export XDG_RUNTIME_DIR=$(mktemp --tmpdir -d "${UID}-runtime-dir.XXX")
 fi
-dbus-run-session Hyprland
+dbus-run-session niri --session

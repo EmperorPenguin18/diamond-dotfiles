@@ -127,14 +127,13 @@ shell ()
 
 windowmanager ()
 {
-    dotfile 'windowmanager/hyprland.use' '/etc/portage/package.use/hyprland' && \
     dotfile 'windowmanager/clang.use' '/etc/portage/package.use/clang' && \
     dotfile 'windowmanager/seatd.use' '/etc/portage/package.use/seatd' && \
-    install_repo gui-wm/hyprland gui-apps/swaybg gui-apps/waybar && \
+    install_repo gui-wm/niri gui-apps/swaybg gui-apps/waybar && \
     service rc seatd && \
     usermod -aG seat "$USER" && \
     dotfile 'windowmanager/bash_profile' "/home/$USER/.bash_profile" && \
-    dotfile 'windowmanager/hyprland.conf' "/home/$USER/.config/hypr/hyprland.conf" || \
+    dotfile 'windowmanager/niri.conf' "/home/$USER/.config/niri/config.kdl" || \
     return 1
     return 0
 }
